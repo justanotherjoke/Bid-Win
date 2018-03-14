@@ -1,12 +1,12 @@
-package hu.elte.tools.Bid.Win;
+package hu.elte.bidAndWin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class BidAndWinApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(BidAndWinApplication.class, args);
 	}
 }
