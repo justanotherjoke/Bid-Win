@@ -3,6 +3,7 @@ package hu.elte.bidAndWin.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,8 +25,9 @@ import lombok.NoArgsConstructor;
 public class Bidder {
 	
 	@JoinColumn
-    @OneToOne(targetEntity = User.class, optional = false)
-    @JsonIgnoreProperties("bidder")
+    //@OneToOne(targetEntity = User.class, optional = false)
+	@OneToOne(fetch = FetchType.LAZY)
+    //@JsonIgnoreProperties("bidder")
     private User user;
 	
 	//@OneToMany(targetEntity = Bid.class)
