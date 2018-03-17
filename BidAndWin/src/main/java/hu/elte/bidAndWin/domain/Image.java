@@ -26,7 +26,7 @@ public class Image {
     private Item item;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 	
 	// temp

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -25,9 +26,8 @@ import lombok.NoArgsConstructor;
 public class Bidder {
 	
 	@JoinColumn
-    //@OneToOne(targetEntity = User.class, optional = false)
 	@OneToOne(fetch = FetchType.LAZY)
-    //@JsonIgnoreProperties("bidder")
+	@JsonIgnoreProperties("bidder")
     private User user;
 	
 	//@OneToMany(targetEntity = Bid.class)
@@ -36,7 +36,7 @@ public class Bidder {
     private List<Bid> bids;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 	
 	//@Column(nullable = false)

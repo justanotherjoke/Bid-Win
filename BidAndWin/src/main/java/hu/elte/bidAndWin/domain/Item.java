@@ -43,7 +43,7 @@ public class Item {
 	private Category category;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	private String description;
@@ -54,6 +54,7 @@ public class Item {
 	@Column(nullable = false)
 	private long soldPrice;
 	
+	@Column(nullable = true)
 	private long soldToId;
 	
 }

@@ -26,7 +26,7 @@ public class Category {
     private List<Item> items;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
     @Column(nullable=false, unique = true)

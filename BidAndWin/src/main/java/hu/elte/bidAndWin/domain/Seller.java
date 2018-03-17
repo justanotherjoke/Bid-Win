@@ -25,9 +25,8 @@ import lombok.NoArgsConstructor;
 public class Seller {
 	
 	@JoinColumn
-    //@OneToOne(targetEntity = User.class, optional = false)
 	@OneToOne(fetch = FetchType.LAZY)
-    //@JsonIgnoreProperties("seller")
+    @JsonIgnoreProperties("seller")
     private User user;
 	
 	//@OneToMany(targetEntity = Item.class)
@@ -36,7 +35,7 @@ public class Seller {
     private List<Item> items;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 	
 	//@Column(nullable = false)

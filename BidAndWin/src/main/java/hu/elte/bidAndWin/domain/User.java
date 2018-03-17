@@ -22,21 +22,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 	
-    //@OneToOne(targetEntity = Bidder.class, mappedBy = "user")
+//    @OneToOne(targetEntity = Bidder.class, mappedBy = "user")
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
             fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
+//    @JsonIgnore
     private Bidder bidder;
     
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
-            fetch = FetchType.LAZY, optional = false)
+    @OneToOne(targetEntity = Seller.class, mappedBy = "user")
+//	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
+//            fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     private Seller seller;
+	
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     
     
     @Column(nullable=false, unique = true)
