@@ -41,7 +41,7 @@ public class BidService {
 	
 	public Bid updateBid(long id, Bid bid, User user) throws UserNotValidException {
         Bid currentBid = bidRepository.findById(id);
-        
+        //
         Date date = new Date();
         Timestamp currentTime = new Timestamp(date.getTime());
 //        System.out.println("currentTime: " +  currentTime);
