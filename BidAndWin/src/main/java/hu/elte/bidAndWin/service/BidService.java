@@ -1,5 +1,9 @@
 package hu.elte.bidAndWin.service;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +31,44 @@ public class BidService {
     }
 
 	public List<Bid> getMyBids(User user) {
-		// egyelore rossz (nem egyezik a user.id a bidder.id-val... csak teszt miatt probalom)
-        return bidRepository.findByBidderId(user.getId());
+        return bidRepository.findByUserId(user.getId());
     }
 
+	public Bid getBid(long id, User loggedInUser) {
+		return bidRepository.findById(id);
+		// mit dobjunk ha nincs ilyen id?
+	}
+	
+	public Bid updateBid(long id, Bid bid, User user) throws UserNotValidException {
+        Bid currentBid = bidRepository.findById(id);
+        
+        Date date = new Date();
+        Timestamp currentTime = new Timestamp(date.getTime());
+//        System.out.println("currentTime: " +  currentTime);
+//        System.out.println("ez: " + currentBid.getItem().getEndTime());
+//        Timestamp s = currentBid.getItem().getEndTime();
+//        System.out.println(currentTime.after(s));
+
+        if (currentBid!= null && currentTime.before(currentBid.getItem().getEndTime()) ) {
+            currentBid.setItem(bid.getItem());
+            currentBid.setUser(user);
+            return bidRepository.save(currentBid);
+        } else {
+            throw new UserNotValidException();
+        }
+        
+    }
+	/*
+	public Guest updateGuest(long id, Guest guest, User user) throws UserNotValidException {
+        Guest currentGuest = guestRepository.findOne(id);
+        if (currentGuest!= null && currentGuest.getReservation().getUser().getId() == user.getId()) {
+            currentGuest.setFirstName(guest.getFirstName());
+            currentGuest.setLastName(guest.getLastName());
+            currentGuest.setId(id);
+            return guestRepository.save(currentGuest);
+        } else {
+            throw new UserNotValidException();
+        }
+        
+    }*/
 }

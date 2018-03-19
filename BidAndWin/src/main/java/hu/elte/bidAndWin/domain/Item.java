@@ -1,5 +1,6 @@
 package hu.elte.bidAndWin.domain;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -33,9 +34,9 @@ public class Item {
 	private List<Image> images;
 
 	@JoinColumn
-	@ManyToOne(targetEntity = Seller.class, optional = false)
+	@ManyToOne(targetEntity = User.class, optional = false)
 	@JsonIgnoreProperties("items")
-	private Seller seller;
+	private User user;
 
 	@JoinColumn
 	@ManyToOne(targetEntity = Category.class, optional = false)
@@ -54,7 +55,10 @@ public class Item {
 	@Column(nullable = false)
 	private long soldPrice;
 	
-	@Column(nullable = true)
-	private long soldToId;
+	@Column(nullable = false)
+    private Timestamp endTime;
+	
+//	@Column(nullable = true)
+//	private long soldToId;
 	
 }

@@ -1,5 +1,7 @@
 package hu.elte.bidAndWin.domain;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,17 +26,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 	
-//    @OneToOne(targetEntity = Bidder.class, mappedBy = "user")
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
-            fetch = FetchType.LAZY, optional = false)
-//    @JsonIgnore
-    private Bidder bidder;
     
-    @OneToOne(targetEntity = Seller.class, mappedBy = "user")
-//	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
-//            fetch = FetchType.LAZY, optional = false)
+	@OneToMany(targetEntity = Item.class, mappedBy = "user")
     @JsonIgnore
-    private Seller seller;
+    private List<Item> items;
+	
+	@OneToMany(targetEntity = Bid.class, mappedBy = "user")
+    @JsonIgnore
+    private List<Bid> bids;
 	
 	
 	@Id

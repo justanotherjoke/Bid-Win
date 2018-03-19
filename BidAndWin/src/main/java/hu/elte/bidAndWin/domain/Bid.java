@@ -24,9 +24,9 @@ public class Bid {
     private Item item;
 	
 	@JoinColumn
-    @ManyToOne(targetEntity = Bidder.class, optional = false)
+    @ManyToOne(targetEntity = User.class, optional = false)
     @JsonIgnoreProperties("bids")
-    private Bidder bidder;
+    private User user;
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

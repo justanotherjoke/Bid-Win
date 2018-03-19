@@ -10,6 +10,9 @@ import hu.elte.bidAndWin.domain.Bid;
 @Repository
 public interface BidRepository extends CrudRepository<Bid, Long>{
 
-	List<Bid> findByBidderId(long id);
+	List<Bid> findByUserId(long id);
+	
+	Bid findById(long id);
+	
 
 }
