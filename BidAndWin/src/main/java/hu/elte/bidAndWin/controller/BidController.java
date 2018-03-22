@@ -20,6 +20,7 @@ import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
 import hu.elte.bidAndWin.annotation.Role;
 import hu.elte.bidAndWin.domain.Bid;
+import hu.elte.bidAndWin.domain.Item;
 
 @RestController
 @RequestMapping(value = "/bids")

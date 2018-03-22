@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hu.elte.bidAndWin.domain.Bid;
+import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
 import hu.elte.bidAndWin.repository.BidRepository;
+import hu.elte.bidAndWin.repository.ItemRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
 
 @Service
@@ -19,7 +21,7 @@ public class BidService {
 
 	private BidRepository bidRepository;
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	public BidService(BidRepository bidRepository, UserRepository userRepository) {
 		this.bidRepository = bidRepository;
@@ -50,7 +52,6 @@ public class BidService {
 //        System.out.println(currentTime.after(s));
 
         if (currentBid!= null && currentTime.before(currentBid.getItem().getEndTime()) ) {
-            currentBid.setItem(bid.getItem());
             currentBid.setUser(user);
             return bidRepository.save(currentBid);
         } else {
@@ -58,17 +59,6 @@ public class BidService {
         }
         
     }
-	/*
-	public Guest updateGuest(long id, Guest guest, User user) throws UserNotValidException {
-        Guest currentGuest = guestRepository.findOne(id);
-        if (currentGuest!= null && currentGuest.getReservation().getUser().getId() == user.getId()) {
-            currentGuest.setFirstName(guest.getFirstName());
-            currentGuest.setLastName(guest.getLastName());
-            currentGuest.setId(id);
-            return guestRepository.save(currentGuest);
-        } else {
-            throw new UserNotValidException();
-        }
-        
-    }*/
+	
+	
 }
