@@ -53,7 +53,7 @@ public class Item {
 	private long startPrice;
 	
 	@Column(nullable = false)
-	private long soldPrice;
+	private long buyItPrice;
 	
 	@Column(nullable = false)
     private Timestamp endTime;

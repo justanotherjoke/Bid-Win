@@ -3,6 +3,7 @@ package hu.elte.bidAndWin.controller;
 import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.annotation.Role;
+import hu.elte.bidAndWin.service.ItemNotValidException;
 import hu.elte.bidAndWin.service.ItemService;
 import hu.elte.bidAndWin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,11 @@ public class ItemController {
 	@Role({ADMIN, USER})
     @PostMapping("/createItem")
     public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
+        try {
+			return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
+		} catch (ItemNotValidException e) {
+			return ResponseEntity.badRequest().build();
+		}
     }
 	
 	@Role({ADMIN, USER})

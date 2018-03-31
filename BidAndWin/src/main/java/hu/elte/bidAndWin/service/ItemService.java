@@ -1,5 +1,8 @@
 package hu.elte.bidAndWin.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,28 @@ public class ItemService {
 	}
 	
 	
-	public Item createItem(Item item, User user) {
-		item.setUser(user);
-        return itemRepository.save(item);
+	public Item createItem(Item item, User user) throws ItemNotValidException {
+		boolean valid= validateItem(item);
+		if(valid) {
+			item.setUser(user);
+			return itemRepository.save(item);
+		} else {
+			throw new ItemNotValidException();
+		}
+        
     }
 	
+	private boolean validateItem(Item item) {
+		Date date = new Date();
+		Timestamp currentTime = new Timestamp(date.getTime());
+
+		if(item.getStartPrice() <= item.getBuyItPrice() && currentTime.before(item.getEndTime()) ) {
+			return true;
+		}
+		return false;
+	}
+
+
 	public Item getItem(long id, User loggedInUser) {
 		return itemRepository.findById(id);
 	}
