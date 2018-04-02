@@ -23,7 +23,7 @@ import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Item;
 
 @RestController
-@RequestMapping(value = "/bids")
+@RequestMapping(value = "/api/bids")
 public class BidController {
 	
 	@Autowired

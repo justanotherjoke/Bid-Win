@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     
     @Autowired
@@ -34,7 +34,9 @@ public class UserController {
     
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User user) {
+        System.out.println("asd");
         try {
+            System.out.println(user.getUsername()+" "+user.getPassword());
             return ResponseEntity.ok(userService.login(user));
         }
         catch (UserNotValidException e) {
