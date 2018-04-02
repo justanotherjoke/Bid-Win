@@ -22,7 +22,7 @@ import static hu.elte.bidAndWin.domain.User.Role.ADMIN;
 import static hu.elte.bidAndWin.domain.User.Role.USER;
 
 @RestController
-@RequestMapping(value = "/items")
+@RequestMapping(value = "/api/items")
 public class ItemController {
 
     @Autowired
