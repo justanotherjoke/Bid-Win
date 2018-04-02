@@ -15,11 +15,13 @@ insert into item(description, buy_it_price, category_id, start_price, user_id, e
 insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('nagyon jo kis auto', 499999, 2, 300000, 2, timestamp '2017-10-12 21:22:23');
 insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('a leggyorsabb auto', 499999, 2, 300000, 2, timestamp '2018-05-12 21:22:23');
 insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('rossz leiras', 300000, 5, 100000, 3, timestamp '2018-07-20 10:10:10');
+insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('rossz leiras ddd', 30000, 5, 100000, 1, timestamp '2018-08-20 10:10:10');
 
 insert into bid(user_id, item_id) values (1, 2);
 insert into bid(user_id, item_id) values (3, 1);
 insert into bid(user_id, item_id) values (2, 3);
 insert into bid(user_id, item_id) values (5, 4);
+
 
 insert into image(url, item_id) values ('https://www.callofdutycheat.net/wp-content/uploads/best-price-logo.jpg', 1);
 insert into image(url, item_id) values ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/TeamTimeCar.com-BTTF_DeLorean_Time_Machine-OtoGodfrey.com-JMortonPhoto.com-07.jpg/1200px-TeamTimeCar.com-BTTF_DeLorean_Time_Machine-OtoGodfrey.com-JMortonPhoto.com-07.jpg', 2);

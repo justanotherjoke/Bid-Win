@@ -14,5 +14,8 @@ public interface BidRepository extends CrudRepository<Bid, Long>{
 	
 	Bid findById(long id);
 	
+	Bid findByItemId(long id);
+
+	
 
 }
