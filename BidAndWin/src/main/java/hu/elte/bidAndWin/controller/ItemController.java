@@ -65,7 +65,7 @@ public class ItemController {
 			System.out.println("itemnotvalid"); // frontenden akarjuk külön kezelni a hiábkat?
 			return ResponseEntity.badRequest().build();
 		} catch (UserNotValidException e) {
-			System.out.println("usernatvalid");
+			System.out.println("usernatvalid"); // frontenden akarjuk külön kezelni a hiábkat?
 			return ResponseEntity.badRequest().build();
 		}		
 			
