@@ -34,9 +34,7 @@ public class UserController {
     
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User user) {
-        System.out.println("asd");
         try {
-            System.out.println(user.getUsername()+" "+user.getPassword());
             return ResponseEntity.ok(userService.login(user));
         }
         catch (UserNotValidException e) {

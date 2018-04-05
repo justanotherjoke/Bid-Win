@@ -15,7 +15,7 @@ export class RegisterService {
     ) { }
   
     public register(user: User): Promise<User> {
-      const response$: Observable<any> = this.http.post('/user/register', user);
+      const response$: Observable<any> = this.http.post('api/user/register', user);
       const responsePromise: Promise<any> = response$.toPromise();
       return responsePromise
         .then(res => res.json())
