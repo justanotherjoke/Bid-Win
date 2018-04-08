@@ -1,6 +1,7 @@
 package hu.elte.bidAndWin.domain;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -38,6 +39,9 @@ public class Bid {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+	
+	@Column(nullable = false)
+	private long bidOffer;
 	
 	
 }

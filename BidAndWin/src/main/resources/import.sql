@@ -11,16 +11,16 @@ insert into category(id, name) values (4, 'konyv');
 insert into category(id, name) values (5, 'elektronika');
 
 
-insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('nagyon jo kis leiras', 2500, 1, 1000, 1, timestamp '2017-10-12 21:22:23');
-insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('nagyon jo kis auto', 499999, 2, 300000, 2, timestamp '2017-10-12 21:22:23');
-insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('a leggyorsabb auto', 499999, 2, 300000, 2, timestamp '2018-05-12 21:22:23');
-insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('rossz leiras', 300000, 5, 100000, 3, timestamp '2018-07-20 10:10:10');
-insert into item(description, buy_it_price, category_id, start_price, user_id, end_time) values ('rossz leiras ddd', 30000, 5, 100000, 1, timestamp '2018-08-20 10:10:10');
+insert into item(description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('nagyon jo kis leiras', 2500, 1, 1000, 1, timestamp '2017-10-12 21:22:23', 100);
+insert into item(description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('nagyon jo kis auto', 499999, 2, 300000, 2, timestamp '2017-10-12 21:22:23', 1000);
+insert into item(description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('a leggyorsabb auto', 499999, 2, 300000, 2, timestamp '2018-05-12 21:22:23', 2000);
+insert into item(description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('rossz leiras', 300000, 5, 100000, 3, timestamp '2018-07-20 10:10:10', 1000);
+insert into item(description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('rossz leiras ddd', 30000, 5, 100000, 1, timestamp '2018-08-20 10:10:10', 2000);
 
-insert into bid(user_id, item_id) values (1, 2);
-insert into bid(user_id, item_id) values (3, 1);
-insert into bid(user_id, item_id) values (2, 3);
-insert into bid(user_id, item_id) values (5, 4);
+insert into bid(user_id, item_id, bid_offer) values (1, 2, 300000);
+insert into bid(user_id, item_id, bid_offer) values (3, 1, 1000);
+insert into bid(user_id, item_id, bid_offer) values (2, 3, 300000);
+insert into bid(user_id, item_id, bid_offer) values (5, 4, 300000);
 
 
 insert into image(url, item_id) values ('https://www.callofdutycheat.net/wp-content/uploads/best-price-logo.jpg', 1);

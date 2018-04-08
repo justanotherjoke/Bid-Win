@@ -41,6 +41,27 @@ public class BidService {
 		// mit dobjunk ha nincs ilyen id?
 	}
 	
+	public Bid makeBid(Bid bid, User user) throws BidNotValidException {
+		Bid currentBid = bidRepository.findById(bid.getItem().getId());
+		if(currentBid != null) {
+			if(bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement()) ) {
+				currentBid.setUser(user);
+				
+				return bidRepository.save(currentBid);
+			} else {
+				throw new BidNotValidException();
+			}
+		} else {
+			if(bid.getBidOffer() >= bid.getItem().getStartPrice()) {
+				currentBid.setUser(user);
+				return bidRepository.save(currentBid);
+			} else {
+				throw new BidNotValidException();
+			}
+		}
+	}
+
+	/*
 	public Bid updateBid(long id, Bid bid, User user) throws UserNotValidException {
         Bid currentBid = bidRepository.findById(id);
         //
@@ -51,14 +72,13 @@ public class BidService {
 //        Timestamp s = currentBid.getItem().getEndTime();
 //        System.out.println(currentTime.after(s));
 
-        if (currentBid!= null && currentTime.before(currentBid.getItem().getEndTime()) ) {
+        if (currentBid!= null && currentTime.before(currentBid.getItem().getEndTime())) {
             currentBid.setUser(user);
             return bidRepository.save(currentBid);
         } else {
             throw new UserNotValidException();
         }
-        
-    }
+    }*/
 	
 	
 }

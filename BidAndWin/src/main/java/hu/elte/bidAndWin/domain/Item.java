@@ -67,6 +67,9 @@ public class Item {
 	@Column(nullable = false)
     private Timestamp endTime;
 	
+	@Column(nullable = false)
+	private long bidIncrement;
+	
 //	@Column(nullable = true)
 //	private long soldToId;
 	

@@ -15,6 +15,7 @@ import static hu.elte.bidAndWin.domain.User.Role.USER;
 
 import java.util.List;
 
+import hu.elte.bidAndWin.service.BidNotValidException;
 import hu.elte.bidAndWin.service.BidService;
 import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
@@ -59,12 +60,12 @@ public class BidController {
 	
 	@Role({ADMIN, USER} )
     @PutMapping("/{id}")
-    private ResponseEntity<Bid> updateBid(@PathVariable long id, @RequestBody Bid bid) {
+    private ResponseEntity<Bid> makeBid(@PathVariable long id, @RequestBody Bid bid) {
         Bid updated;
         try {
-            updated = bidService.updateBid(id, bid, userService.getLoggedInUser());
+            updated = bidService.makeBid(bid, userService.getLoggedInUser());
             return ResponseEntity.ok(updated);
-        } catch (UserNotValidException ex) {
+        } catch (BidNotValidException ex) {
             return ResponseEntity.badRequest().build();
         }
     }
