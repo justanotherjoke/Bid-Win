@@ -21,11 +21,13 @@ public class BidService {
 
 	private BidRepository bidRepository;
 	private UserRepository userRepository;
+	private ItemRepository itemRepository;
 
 	@Autowired
-	public BidService(BidRepository bidRepository, UserRepository userRepository) {
+	public BidService(BidRepository bidRepository, UserRepository userRepository, ItemRepository itemRepository) {
 		this.bidRepository = bidRepository;
 		this.userRepository = userRepository;
+		this.itemRepository = itemRepository;
 	}
 
 	public List<Bid> getAllBids() {
@@ -41,8 +43,26 @@ public class BidService {
 		// mit dobjunk ha nincs ilyen id?
 	}
 	
+	private boolean validateItemTime(Item item) {
+		Date date = new Date();
+		Timestamp currentTime = new Timestamp(date.getTime());
+
+		if (currentTime.before(item.getEndTime())) {
+			return true;
+		}
+		return false;
+	}
+
+	
 	public Bid makeBid(Bid bid, User user) throws BidNotValidException {
 		Bid currentBid = bidRepository.findById(bid.getItem().getId());
+	/*	System.out.println("ez a currentBid " + currentBid.getId());
+		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
+		Item item = itemRepository.findById(currentBid.getItem().getId());
+		System.out.println("ez az item id: " + item.getId());
+		if(!validateItemTime(item)) {
+			throw new BidNotValidException();
+		}*/
 		if(currentBid != null) {
 			if(bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement()) ) {
 				currentBid.setUser(user);
@@ -53,13 +73,15 @@ public class BidService {
 			}
 		} else {
 			if(bid.getBidOffer() >= bid.getItem().getStartPrice()) {
-				currentBid.setUser(user);
-				return bidRepository.save(currentBid);
+				bid.setUser(user);
+				return bidRepository.save(bid);
 			} else {
 				throw new BidNotValidException();
 			}
 		}
+		
 	}
+
 
 	/*
 	public Bid updateBid(long id, Bid bid, User user) throws UserNotValidException {
