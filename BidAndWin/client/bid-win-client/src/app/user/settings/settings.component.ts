@@ -15,7 +15,8 @@ export class SettingsComponent implements OnInit {
     passwordAgain: string,
   }
   model2:{
-    category:string,
+    id : number,
+    name : string,
   }
   @ViewChild('form') form;
   constructor(
@@ -28,25 +29,27 @@ export class SettingsComponent implements OnInit {
       "passwordAgain":'',
     };
     this.model2={
-      "category":'',
+      id: -1,
+      "name":'',
     }
    }
   ngOnInit() {
+    this.itemService.getAllCategories();
   }
 
   pwsNotMatching(): boolean{
     return(this.model.password!=this.model.passwordAgain);
    }
    categoryExists(): boolean{
-    return this.itemService.getCategories().indexOf(this.model2.category)>-1;   
+    return this.itemService.getCategories().indexOf(this.model2)>-1;   
    }
   onSubmitCategory(){
     if(this.form.valid){
-      this.model2.category=this.model2.category.trim();
+      this.model2.name=this.model2.name.trim();
       if(this.categoryExists()){
 
       }else{
-        this.itemService.addCategory(this.model2.category);
+        this.itemService.addCategory(this.model2);
       }
     }
     /*kell még egy itemService több formview (viewchildren maybe)...

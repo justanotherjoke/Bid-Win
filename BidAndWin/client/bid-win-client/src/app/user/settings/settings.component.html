@@ -14,9 +14,9 @@
     <form #form="ngForm" (submit)="onSubmitCategory()">
       <div class="form-group">
         <label for="category">Kategória:</label>
-        <input type="text" required name="category" [(ngModel)]="model2.category" #category="ngModel"/>
-        <div class="error" *ngIf="category.invalid && category.touched">
-          <span *ngIf="category.errors.required">Kötelező Mező</span>
+        <input type="text" required name="category" [(ngModel)]="model2.name" #name="ngModel"/>
+        <div class="error" *ngIf="name.invalid && name.touched">
+          <span *ngIf="name.errors.required">Kötelező Mező</span>
         </div>
       </div>
       <input type="submit" value="Hozzáadás"/>

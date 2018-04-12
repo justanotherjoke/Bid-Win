@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
+import {Category} from "./category"
+
 @Injectable()
 export class ItemService {
-  categories: String[];
+  categories: Category[];
   constructor(
     private http: Http,
   ) { }
@@ -18,15 +20,11 @@ export class ItemService {
         return responseCategories;
       });
   }
-  getCategories() : String[]{
-    this.getAllCategories();
-    setTimeout(() => {
-      
-    }, 300);
-    console.log(this.categories);
+  getCategories() : Category[]{
     return this.categories;
   }
-  addCategory(category: String) :Promise<String[]>{
+  addCategory(category: Category) :Promise<Category[]>{
+    console.log(category);
     const response$: Observable<any> = this.http.post('/api/category/createcategory', category);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise
