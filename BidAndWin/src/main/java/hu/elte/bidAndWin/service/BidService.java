@@ -56,13 +56,13 @@ public class BidService {
 	
 	public Bid makeBid(Bid bid, User user) throws BidNotValidException {
 		Bid currentBid = bidRepository.findById(bid.getItem().getId());
-	/*	System.out.println("ez a currentBid " + currentBid.getId());
-		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
-		Item item = itemRepository.findById(currentBid.getItem().getId());
+//		System.out.println("ez a currentBid " + currentBid.getId());
+//		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
+		Item item = itemRepository.findById(bid.getItem().getId());
 		System.out.println("ez az item id: " + item.getId());
 		if(!validateItemTime(item)) {
 			throw new BidNotValidException();
-		}*/
+		}
 		if(currentBid != null) {
 			if(bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement()) ) {
 				currentBid.setUser(user);
