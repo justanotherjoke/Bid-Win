@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth.service';
+import { ItemService } from '../../item.service';
 import { Observable } from 'rxjs/observable';
 import { Router } from '@angular/router';
 
@@ -19,6 +20,7 @@ export class SettingsComponent implements OnInit {
   @ViewChild('form') form;
   constructor(
     private authService: AuthService,
+    private itemService: ItemService,
     private router: Router,
   ) {
     this.model={
@@ -35,9 +37,17 @@ export class SettingsComponent implements OnInit {
   pwsNotMatching(): boolean{
     return(this.model.password!=this.model.passwordAgain);
    }
+   categoryExists(){
+    return this.itemService.getCategories().indexOf(this.model2.category)>-1;   
+   }
   onSubmitCategory(){
-    /*if(this.form.valid){}
-    kell még egy itemService több formview (viewchildren maybe)...
+    if(this.form.valid){
+      this.model2.category=this.model2.category.trim();
+      if(this.categoryExists()){
+
+      }
+    }
+    /*kell még egy itemService több formview (viewchildren maybe)...
     */
   }
   onSubmitPW(){
