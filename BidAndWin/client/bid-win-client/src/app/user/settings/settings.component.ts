@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit {
   pwsNotMatching(): boolean{
     return(this.model.password!=this.model.passwordAgain);
    }
-   categoryExists(){
+   categoryExists(): boolean{
     return this.itemService.getCategories().indexOf(this.model2.category)>-1;   
    }
   onSubmitCategory(){
@@ -45,6 +45,8 @@ export class SettingsComponent implements OnInit {
       this.model2.category=this.model2.category.trim();
       if(this.categoryExists()){
 
+      }else{
+        this.itemService.addCategory(this.model2.category);
       }
     }
     /*kell még egy itemService több formview (viewchildren maybe)...

@@ -47,7 +47,7 @@ public class CategoryController {
 	
 
 	@Role({ ADMIN, USER })
-	@PostMapping("/createCategory")
+	@PostMapping("/createcategory")
 	public ResponseEntity<Category> createCategory(@RequestBody Category category) {
 		try {
 			return ResponseEntity.ok(categoryService.createCategory(category, userService.getLoggedInUser()));

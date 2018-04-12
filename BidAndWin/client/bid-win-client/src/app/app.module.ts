@@ -1,3 +1,4 @@
+import { ItemService } from './item.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +37,7 @@ const appRoutes : Routes = [
       appRoutes, {enableTracing: true}
     )
   ],
-  providers: [AuthService, RegisterService],//ide kell írni majd a Service-eket.
+  providers: [AuthService, RegisterService, ItemService],//ide kell írni majd a Service-eket.
   bootstrap: [AppComponent]
 })
 export class AppModule { }
