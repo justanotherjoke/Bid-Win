@@ -38,6 +38,7 @@ public class CategoryController {
 	@Autowired
 	private UserService userService;
 	
+	/**/
 	@Role({ADMIN, USER})
     @GetMapping(value = "/all")
     public ResponseEntity<List<Category>> getAllCategories() {
