@@ -11,10 +11,12 @@ import { RegistrationComponent } from './registration/registration.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthService } from './auth.service';
 import { RegisterService } from './register.service';
+import { SettingsComponent } from './user/settings/settings.component';
 const appRoutes : Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'index', component: IndexComponent},
   {path: 'registration', component: RegistrationComponent},
+  {path: 'user/settings', component: SettingsComponent},
   {path: '**', redirectTo: 'index'},
 ];
 @NgModule({
@@ -23,7 +25,8 @@ const appRoutes : Routes = [
     LoginComponent,
     IndexComponent,
     RegistrationComponent,
-    HeaderComponent
+    HeaderComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

@@ -48,7 +48,7 @@ export class AuthService {
       alert("Felkerültél a bannlistára muhahahaha!");
     }
   }*/
-  /*public changePassword(newPassword: string){
+  public changePassword(newPassword: string){
     this.user.password=newPassword;
     const response$: Observable<any> = this.http.post('/user/changepassword', this.user);
     const responsePromise: Promise<any> = response$.toPromise();
@@ -59,5 +59,5 @@ export class AuthService {
       //this.banned=false;
       return loggedInUser;
       });
-  }*/
+  }
 }
