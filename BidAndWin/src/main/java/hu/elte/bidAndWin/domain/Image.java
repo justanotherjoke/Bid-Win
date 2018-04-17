@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,6 +20,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
+	
+	public Image(byte[] pic, String path, Item item) {
+		this.pic = pic;
+		this.path = path;
+		this.item = item;
+	}
 
 	@JoinColumn
     @ManyToOne(targetEntity = Item.class, optional = false)
@@ -30,5 +37,9 @@ public class Image {
     private long id;
 	
 	// temp
-    private String url;
+    private String path;
+    
+    @Lob
+    @Column(name="pic")
+    private byte[] pic;
 }

@@ -38,9 +38,9 @@ public class Item {
 	@OneToOne(mappedBy="item")
 	private Bid bid;
 	
-	@OneToMany(targetEntity = Image.class, mappedBy = "item")
+/*	@OneToMany(targetEntity = Image.class, mappedBy = "item")
 	@JsonIgnore
-	private List<Image> images;
+	private List<Image> images;*/
 
 	@JoinColumn
 	@ManyToOne(targetEntity = User.class, optional = false)

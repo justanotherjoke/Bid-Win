@@ -23,6 +23,6 @@ insert into bid(user_id, item_id, bid_offer) values (2, 3, 300000);
 insert into bid(user_id, item_id, bid_offer) values (5, 4, 300000);
 
 
-insert into image(url, item_id) values ('https://www.callofdutycheat.net/wp-content/uploads/best-price-logo.jpg', 1);
-insert into image(url, item_id) values ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/TeamTimeCar.com-BTTF_DeLorean_Time_Machine-OtoGodfrey.com-JMortonPhoto.com-07.jpg/1200px-TeamTimeCar.com-BTTF_DeLorean_Time_Machine-OtoGodfrey.com-JMortonPhoto.com-07.jpg', 2);
-insert into image(url, item_id) values ('https://www.telegraph.co.uk/cars/images/2016/06/24/101519846_DeLorean-DMC-12-ReduxEyevine-xlarge_trans_NvBQzQNjv4BqqMKo2z_7YU_WfwkpJGaSMkWQ2KsSeoXntDmU1Wc8Jvc.jpg', 2);
+insert into image(path, item_id) values ('images/Cat.jpg', 1);
+insert into image(path, item_id) values ('images/Cat.jpg', 2);
+insert into image(path, item_id) values ('images/potato.png', 2);
