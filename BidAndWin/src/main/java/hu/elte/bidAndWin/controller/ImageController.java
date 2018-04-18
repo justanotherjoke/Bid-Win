@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,4 +63,15 @@ public class ImageController {
 			return ResponseEntity.badRequest().build();
 		}
     }
+	
+	@Role({ADMIN, USER})
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<List<Image>> getImagesByItemId(@PathVariable(value = "id") long id) {
+		if( imageService.getImagesByItemId(id, userService.getLoggedInUser())==null ) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(imageService.getImagesByItemId(id, userService.getLoggedInUser()));
+		
+    }
+	
 }
