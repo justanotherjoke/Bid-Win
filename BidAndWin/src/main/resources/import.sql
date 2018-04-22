@@ -23,6 +23,6 @@ insert into bid(user_id, item_id, bid_offer) values (2, 3, 300000);
 insert into bid(user_id, item_id, bid_offer) values (5, 4, 300000);
 
 
-insert into image(path, item_id) values ('images/Cat.jpg', 1);
-insert into image(path, item_id) values ('images/Cat.jpg', 2);
-insert into image(path, item_id) values ('images/potato.png', 2);
+insert into image(item_id) values (1);
+insert into image(item_id) values (2);
+insert into image(item_id) values (2);

@@ -3,9 +3,14 @@ package hu.elte.bidAndWin.controller;
 import static hu.elte.bidAndWin.domain.User.Role.ADMIN;
 import static hu.elte.bidAndWin.domain.User.Role.USER;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import hu.elte.bidAndWin.annotation.Role;
 import hu.elte.bidAndWin.domain.Bid;
@@ -42,24 +51,13 @@ public class ImageController {
 	private UserService userService;
 	
 	
-	/*
-	@Role({ ADMIN, USER })
-	@GetMapping("/createImage")
-	public ResponseEntity<Image> createImage() {
-		try {
-			return ResponseEntity.ok(imageService.uploadImage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().build();
-		} 
-	}*/
-	
 	@Role({ADMIN, USER})
     @PostMapping("/uploadimage")
-    public ResponseEntity<Image> createItem(@RequestBody Image image) {
+    public ResponseEntity<Image> createImage(@RequestParam(value="itemId") long id, @RequestParam(value="file") MultipartFile file) {
         try {
-			return ResponseEntity.ok(imageService.uploadImage(image, userService.getLoggedInUser()));
+			return ResponseEntity.ok(imageService.uploadImage(file, id, userService.getLoggedInUser()));
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
     }
@@ -74,4 +72,5 @@ public class ImageController {
 		
     }
 	
+
 }

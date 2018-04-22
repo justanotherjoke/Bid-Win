@@ -23,7 +23,6 @@ public class Image {
 	
 	public Image(byte[] pic, String path, Item item) {
 		this.pic = pic;
-		this.path = path;
 		this.item = item;
 	}
 
@@ -36,9 +35,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 	
-	// temp
-    private String path;
-    
     @Lob
     @Column(name="pic")
     private byte[] pic;
