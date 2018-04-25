@@ -13,11 +13,15 @@ import { HeaderComponent } from './header/header.component';
 import { AuthService } from './auth.service';
 import { RegisterService } from './register.service';
 import { SettingsComponent } from './user/settings/settings.component';
+import { ItemlistComponent } from './user/items/itemlist/itemlist.component';
+import { ItemformComponent } from './user/items/itemform/itemform.component';
+import { ItemuploadComponent } from './user/items/itemupload/itemupload.component';
 const appRoutes : Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'index', component: IndexComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'user/settings', component: SettingsComponent},
+  {path: 'user/items', component: ItemformComponent},
   {path: '**', redirectTo: 'index'},
 ];
 @NgModule({
@@ -27,7 +31,10 @@ const appRoutes : Routes = [
     IndexComponent,
     RegistrationComponent,
     HeaderComponent,
-    SettingsComponent
+    SettingsComponent,
+    ItemlistComponent,
+    ItemformComponent,
+    ItemuploadComponent
   ],
   imports: [
     BrowserModule,
