@@ -5,7 +5,7 @@
       <label for="name">Kategória: </label>
       <select name="name" [(ngModel)]="model.name" #name="ngModel" >
         <option>{{model.name}}</option>
-        <option *ngFor="let category of categories">{{category.name}}</option>
+        <option *ngFor="let category of categoryNames">{{category}}</option>
       </select>
     </div>
     <input type="submit" value="Szűrés!" />

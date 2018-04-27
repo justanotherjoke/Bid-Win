@@ -9,13 +9,13 @@ import { ItemService } from '../../../item.service';
 export class ItemformComponent implements OnInit {
 
   model: Category;
-  categories: Category[];
+  categoryNames: String[];
   constructor(
-    itemService: ItemService,
+    private itemService: ItemService,
   ) {
     itemService.getAllCategories();
-    this.categories=itemService.getCategories();
-    console.log(this.categories);
+    this.categoryNames=itemService.getCategoriesName();
+    console.log(this.categoryNames);
     this.model={
       "name":'',
     };

@@ -20,11 +20,14 @@ export class ItemService {
         return responseCategories;
       });
   }
-  getCategories() : Category[]{
-    return this.categories;
+  getCategoriesName() : String[]{
+    let names :String[]=[];
+    for (let i = 0; i < this.categories.length; i++ ){
+      names[i]=(this.categories[i].name);
+    }
+    return names;
   }
   addCategory(category: Category) :Promise<Category[]>{
-    console.log(category);
     const response$: Observable<any> = this.http.post('/api/category/createcategory', category);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise

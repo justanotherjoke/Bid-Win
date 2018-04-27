@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '../user';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs/observable';
+import { ItemService } from '../item.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private itemService: ItemService,
     private router: Router,
   ) {
     this.model = {
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
           /*if(this.authService.isBanned()){
             this.validationMessage = 'Bannolva vagy!'
           }else{*/
+            this.itemService.getAllCategories();
             this.router.navigateByUrl('/index');
           //}
         })
