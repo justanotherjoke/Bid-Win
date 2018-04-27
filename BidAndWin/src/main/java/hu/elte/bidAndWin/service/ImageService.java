@@ -33,6 +33,10 @@ public class ImageService {
 	public List<Image> getImagesByItemId(long id, User loggedInUser) {
 		return imageRepository.findAllByItemId(id);
 	}
+	
+	public List<Image> getAllImages() {
+		return imageRepository.findAll();
+	}
 
 	public Image uploadImage(MultipartFile file, long id, User user)
 			throws IOException, UserNotValidException, ItemNotValidException {

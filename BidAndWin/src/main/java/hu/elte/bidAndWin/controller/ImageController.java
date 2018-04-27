@@ -72,5 +72,11 @@ public class ImageController {
 		
     }
 	
+	@Role({ADMIN, USER})
+    @GetMapping("/all")
+    public ResponseEntity<List<Image>> getAllImages() {
+		return ResponseEntity.ok(imageService.getAllImages());
+    }
+	
 
 }
