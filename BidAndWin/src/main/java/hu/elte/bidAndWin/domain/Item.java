@@ -34,13 +34,23 @@ public class Item {
 //	private List<Bid> bids;
 	
 	
-	@JsonBackReference
-	@OneToOne(mappedBy="item")
+//	@JsonBackReference
+//	@OneToOne(mappedBy="item")
+//	private Bid bid;
+	
+	@OneToOne
+	@JoinColumn(name="bid_id")
 	private Bid bid;
 	
-	@OneToMany(targetEntity = Image.class, mappedBy = "item")
-	@JsonIgnore
-	private List<Image> images;
+
+//	@OneToMany(targetEntity = Image.class, mappedBy = "item")
+//	@JsonIgnore
+//	private List<Image> images;
+	
+	@OneToOne
+	@JoinColumn(name="image_id")
+	private Image image;
+	
 
 	@JoinColumn
 	@ManyToOne(targetEntity = User.class, optional = false)
