@@ -14,9 +14,10 @@
     <form #form="ngForm" (submit)="onSubmitCategory()">
       <div class="form-group">
         <label for="category">Kategória:</label>
-        <input type="text" required name="category" [(ngModel)]="model2.name" #name="ngModel"/>
+        <input type="text" required name="category" [(ngModel)]="model2.name" #name="ngModel" (change)="categoryExists()"/>
         <div class="error" *ngIf="name.invalid && name.touched">
           <span *ngIf="name.errors.required">Kötelező Mező</span>
+          <span *ngIf="categoryExists()">Van már ilyen kategória!</span>
         </div>
       </div>
       <input type="submit" value="Hozzáadás"/>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ItemService } from '../../../item.service';
+import { Item } from '../../../item';
 
 @Component({
   selector: 'app-itemlist',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./itemlist.component.css']
 })
 export class ItemlistComponent implements OnInit {
+  items: Item[];
 
-  constructor() { }
+  constructor(
+    private itemService: ItemService,
+  ) {
+    this.items = itemService.getItems();
+  }
 
   ngOnInit() {
   }
-
+  getImage(id:number){
+    
+  }
 }

@@ -34,29 +34,26 @@ export class SettingsComponent implements OnInit {
     }
    }
   ngOnInit() {
-    this.itemService.getAllCategories();
   }
 
   pwsNotMatching(): boolean{
     return(this.model.password!=this.model.passwordAgain);
    }
    categoryExists(): boolean{
-    return this.itemService.getCategories().indexOf(this.model2)>-1;   
+     console.log(this.itemService.getCategoriesName());
+    return this.itemService.getCategoriesName().indexOf(this.model2.name)>-1;   
    }
   onSubmitCategory(){
     if(this.form.valid){
       this.model2.name=this.model2.name.trim();
-      if(this.categoryExists()){
-
-      }else{
+      if(!this.categoryExists()){
         this.itemService.addCategory(this.model2);
+      }else{
       }
     }
-    /*kell még egy itemService több formview (viewchildren maybe)...
-    */
   }
-  onSubmitPW(){
-    /* ehhez kellene egy szerver oldali végpont! */
+  /*onSubmitPW(){
+    // ehhez kellene egy szerver oldali végpont! 
      if(this.form.valid){
       if(this.pwsNotMatching()){}
       else{
@@ -67,5 +64,5 @@ export class SettingsComponent implements OnInit {
         });
       }
     }
-  }
+  }*/
 }
