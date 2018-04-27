@@ -12,4 +12,6 @@ import hu.elte.bidAndWin.domain.Item;
 public interface ItemRepository extends CrudRepository<Item, Long>{
 
 	Item findById(long id);
+
+	List<Item> findAllByUserId(long id);
 }

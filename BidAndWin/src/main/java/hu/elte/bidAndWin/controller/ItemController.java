@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static hu.elte.bidAndWin.domain.User.Role.ADMIN;
 import static hu.elte.bidAndWin.domain.User.Role.USER;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/items")
 public class ItemController {
@@ -51,6 +53,23 @@ public class ItemController {
 		return ResponseEntity.ok(itemService.getItem(id, userService.getLoggedInUser()));
 		
     }
+	
+	@Role({ADMIN, USER})
+    @GetMapping("/all")
+    public ResponseEntity<List<Item>> getAllItems() {
+		return ResponseEntity.ok(itemService.getAllItems());		
+    }
+	
+	@Role({ADMIN, USER})
+    @GetMapping("/myitems")
+    public ResponseEntity<List<Item>> getMyItems() {
+		if( userService.getLoggedInUser() == null ) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(itemService.getMyItems(userService.getLoggedInUser()));
+		
+    }
+	
 	
 	@Role({ADMIN, USER} )
     @PutMapping("/{id}")

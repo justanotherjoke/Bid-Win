@@ -30,7 +30,7 @@ public class CategoryService {
 	}
 	
 
-	public Category createCategory(Category category, User user) throws UserNotValidException, CategoryNotValidException {
+	public List<Category> createCategory(Category category, User user) throws UserNotValidException, CategoryNotValidException {
 		if(!user.getRole().toString().equals("ADMIN") )  {
 			throw new UserNotValidException();
 		}
@@ -42,7 +42,9 @@ public class CategoryService {
 			}
 		}
 		
-		return categoryRepository.save(category);
+		categoryRepository.save(category);
+		
+		return findAll();
 	}
 
 }

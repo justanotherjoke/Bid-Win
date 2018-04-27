@@ -2,6 +2,7 @@ package hu.elte.bidAndWin.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,14 @@ public class ItemService {
 		return itemRepository.findById(id);
 	}
 
+	public List<Item> getAllItems(){
+		return (List<Item>) itemRepository.findAll();
+	}
+	
+	public List<Item> getMyItems(User loggedInUser){
+		return itemRepository.findAllByUserId(loggedInUser.getId());
+	}
+	
 	public Item updateItem(long id, Item item, User user) throws ItemNotValidException, UserNotValidException {
 		Bid currentBid = bidRepository.findByItemId(id);
 		Item currentItem = itemRepository.findById(id);
