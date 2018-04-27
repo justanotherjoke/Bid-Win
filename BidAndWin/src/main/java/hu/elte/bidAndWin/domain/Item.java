@@ -56,6 +56,9 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@Column(nullable = false)
+	private String name;
+	
 	private String description;
 
 	@Column(nullable = false)
