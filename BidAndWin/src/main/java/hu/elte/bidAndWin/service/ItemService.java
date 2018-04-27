@@ -28,11 +28,12 @@ public class ItemService {
 		this.bidRepository = bidRepository;
 	}
 
-	public Item createItem(Item item, User user) throws ItemNotValidException {
+	public List<Item> createItem(Item item, User user) throws ItemNotValidException {
 		boolean valid = validateItem(item);
 		if (valid) {
 			item.setUser(user);
-			return itemRepository.save(item);
+			itemRepository.save(item);
+			return getAllItems();
 		} else {
 			throw new ItemNotValidException();
 		}
