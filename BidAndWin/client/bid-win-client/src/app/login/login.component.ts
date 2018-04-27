@@ -40,9 +40,11 @@ export class LoginComponent implements OnInit {
           /*if(this.authService.isBanned()){
             this.validationMessage = 'Bannolva vagy!'
           }else{*/
-            this.itemService.getAllCategories();
+            this.itemService.getAllImages();
             this.itemService.getAllItems();
             this.itemService.getAllBids();
+            this.itemService.getAllCategories();
+            //this.itemService.fuseItemsBidsImages();
             this.router.navigateByUrl('/index');
           //}
         })
