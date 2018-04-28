@@ -33,6 +33,10 @@ public class ItemService {
 		if (valid) {
 			item.setUser(user);
 			itemRepository.save(item);
+			
+			Bid bid = new Bid(item, -1, user);
+			bidRepository.save(bid);
+			
 			return getAllItems();
 		} else {
 			throw new ItemNotValidException();

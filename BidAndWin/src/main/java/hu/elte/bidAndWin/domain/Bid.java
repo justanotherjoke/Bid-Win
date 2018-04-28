@@ -43,5 +43,11 @@ public class Bid {
 	@Column(nullable = false)
 	private long bidOffer;
 	
+	public Bid(Item item, long bidOffer, User user) {
+		this.item = item;
+		this.bidOffer =bidOffer;
+		this.user = user;
+		
+	}
 	
 }
