@@ -41,21 +41,23 @@ public class BidController {
     }
 	
 	@Role({ADMIN, USER})
-    @GetMapping(value = "/myBids")
+    @GetMapping(value = "/mybids")
     public ResponseEntity<List<Bid>> getMyBids() {
-		if(userService.getLoggedInUser() != null) {
-        return ResponseEntity.ok(bidService.getMyBids(userService.getLoggedInUser()));
+        try {
+			return ResponseEntity.ok(bidService.getMyBids(userService.getLoggedInUser()));
+		} catch (UserNotValidException e) {
+			return ResponseEntity.badRequest().build();
 		}
-		else {
-			System.out.println("nem bejelentkezett felhasznalo");
-            return ResponseEntity.badRequest().build();
-        }
     }
 	
 	@Role({ADMIN, USER})
     @GetMapping(value = "/{id}")
     public ResponseEntity<Bid> getBid(@PathVariable(value = "id") long id) {
-		return ResponseEntity.ok(bidService.getBid(id, userService.getLoggedInUser()));
+		try {
+			return ResponseEntity.ok(bidService.getBid(id, userService.getLoggedInUser()));
+		} catch (UserNotValidException e) {
+			return ResponseEntity.badRequest().build();
+		}
     }
 	
 	@Role({ADMIN, USER} )

@@ -34,12 +34,18 @@ public class BidService {
             return (List<Bid>)bidRepository.findAll();
     }
 
-	public List<Bid> getMyBids(User user) {
+	public List<Bid> getMyBids(User user) throws UserNotValidException {
+		if(user == null) {
+			throw new UserNotValidException();
+		}
         return bidRepository.findByUserId(user.getId());
     }
 
-	public Bid getBid(long id, User loggedInUser) {
-		List<Bid> bid = bidRepository.findByUserId(id);
+	public Bid getBid(long id, User loggedInUser) throws UserNotValidException {
+		Bid bid = bidRepository.findById(id);
+		if(loggedInUser == null || loggedInUser.getId() != bid.getItem().getUser().getId() ) {
+			throw new UserNotValidException();
+		}
 		return bidRepository.findById(id);
 		// mit dobjunk ha nincs ilyen id?
 	}
@@ -60,17 +66,11 @@ public class BidService {
 	
 	public Bid makeBid(long itemId, Bid bid, User user) throws BidNotValidException {
 		Bid currentBid = bidRepository.findByItemId(itemId);
-//		Bid currentBid = bidRepository.findById(bid.getItem().getId());
-		System.out.println("ez a currentBid " + currentBid.getId());
-		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
 		Item item = itemRepository.findById(currentBid.getItem().getId());
-//		System.out.println("ez az item id: " + item.getId());
 		if(!validateItemTime(item)) {
-			System.out.println("itt");
 			throw new BidNotValidException();
 		}
 		if(currentBid != null && currentBid.getBidOffer() != -1) {
-			System.out.println("ott");
 			if(bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement()) ) {
 				currentBid.setUser(user);
 				
@@ -79,7 +79,6 @@ public class BidService {
 				throw new BidNotValidException();
 			}
 		} else {
-			System.out.println("else ág");
 			if(bid.getBidOffer() >= currentBid.getItem().getStartPrice() && bid.getUser().getId() != user.getId()) {
 				currentBid.setUser(user);
 				currentBid.setBidOffer(bid.getBidOffer());
@@ -91,25 +90,6 @@ public class BidService {
 		
 	}
 
-
-	/*
-	public Bid updateBid(long id, Bid bid, User user) throws UserNotValidException {
-        Bid currentBid = bidRepository.findById(id);
-        //
-        Date date = new Date();
-        Timestamp currentTime = new Timestamp(date.getTime());
-//        System.out.println("currentTime: " +  currentTime);
-//        System.out.println("ez: " + currentBid.getItem().getEndTime());
-//        Timestamp s = currentBid.getItem().getEndTime();
-//        System.out.println(currentTime.after(s));
-
-        if (currentBid!= null && currentTime.before(currentBid.getItem().getEndTime())) {
-            currentBid.setUser(user);
-            return bidRepository.save(currentBid);
-        } else {
-            throw new UserNotValidException();
-        }
-    }*/
 	
 	
 }
