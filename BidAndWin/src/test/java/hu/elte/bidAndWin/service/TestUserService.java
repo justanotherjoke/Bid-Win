@@ -4,8 +4,6 @@ import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
 import hu.elte.bidAndWin.repository.UserRepository;
-import hu.elte.bidAndWin.service.UserNotValidException;
-import hu.elte.bidAndWin.service.UserService;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,10 +30,10 @@ public class TestUserService {
     @InjectMocks
     UserService userService;
 
-    List<Item> items = new LinkedList<>();
-    List<Bid> bids = new LinkedList<>();
-    User userSpy = spy(new User());
-    User userTwoSpy = spy(new User(items, bids, 2, "a", "b", "c", User.Role.USER));
+    List<Item> listItemEmpty = new LinkedList<>();
+    List<Bid> listBidEmpty = new LinkedList<>();
+    User userEmptySpy = spy(new User());
+    User userNotEmptySpy = spy(new User(listItemEmpty, listBidEmpty, 2, "david", "2222", "2@2", User.Role.USER));
 
     @Before
     public void setUp() throws Exception {
@@ -46,74 +44,75 @@ public class TestUserService {
 
     @Test
     public void testRegister() {
-        // to do:nem dob exceptiont ures userre most azt at kene irni itt: userservice.register
-        doReturn(userSpy).when(userRepositoryMock).save(userSpy);
-        userService.register(userSpy);
-        verify(userSpy, times(1)).setRole(User.Role.USER);
-        assertEquals(userService.register(userSpy), userSpy);
+        doReturn(userEmptySpy).when(userRepositoryMock).save(userEmptySpy);
+        userService.register(userEmptySpy);
+        verify(userEmptySpy, times(1)).setRole(User.Role.USER);
+        assertEquals(userService.register(userEmptySpy), userEmptySpy);
 
-        doReturn(userTwoSpy).when(userRepositoryMock).save(userTwoSpy);
-        userService.register(userTwoSpy);
-        verify(userTwoSpy, times(1)).setRole(User.Role.USER);
-        assertEquals(userService.register(userTwoSpy), userTwoSpy);
+        doReturn(userNotEmptySpy).when(userRepositoryMock).save(userNotEmptySpy);
+        userService.register(userNotEmptySpy);
+        verify(userNotEmptySpy, times(1)).setRole(User.Role.USER);
+        assertEquals(userService.register(userNotEmptySpy), userNotEmptySpy);
     }
 
     @Test(expected = UserNotValidException.class)
-    public void testlogin_ExceptionThrown() throws UserNotValidException {
-        String username = userSpy.getUsername();
-        String password = userSpy.getPassword();
-        Optional<User> optional = Optional.ofNullable(null);
-        doReturn(optional).when(userRepositoryMock).findByUsernameAndPassword(username, password);
-        userService.login(userSpy);
+    public void testLogin_UserNotValidExceptionThrown() throws UserNotValidException {
+        String username = userEmptySpy.getUsername();
+        String password = userEmptySpy.getPassword();
+        Optional<User> optionalEmpty = Optional.ofNullable(null);
+        doReturn(optionalEmpty).when(userRepositoryMock).findByUsernameAndPassword(username, password);
+        userService.login(userEmptySpy);
     }
 
     @Test
-    public void testlogin_ExceptionNotThrown() throws UserNotValidException {
-        String username = userTwoSpy.getUsername();
-        String password = userTwoSpy.getPassword();
-        Optional<User> optional = Optional.of(userTwoSpy);
-        doReturn(optional).when(userRepositoryMock).findByUsernameAndPassword(username, password);
-        doReturn(userTwoSpy).when(userRepositoryMock).findByUsername(username);
-        assertEquals(userService.login(userTwoSpy), userTwoSpy);
+    public void testLogin_RetrunUser() throws UserNotValidException {
+        String username = userNotEmptySpy.getUsername();
+        String password = userNotEmptySpy.getPassword();
+        Optional<User> optionalNoEmpty = Optional.of(userNotEmptySpy);
+        doReturn(optionalNoEmpty).when(userRepositoryMock).findByUsernameAndPassword(username, password);
+        doReturn(userNotEmptySpy).when(userRepositoryMock).findByUsername(username);
+        assertEquals(userService.login(userNotEmptySpy), userNotEmptySpy);
     }
 
     @Test
     public void testIsLoggedIn_ReturnFalse() throws UserNotValidException {
-        UserService userServiceNullUser = new UserService();
-        assertEquals(userServiceNullUser.isLoggedIn(), false);
+        UserService userServiceEmptyUser = new UserService();
+        assertEquals(userServiceEmptyUser.isLoggedIn(), false);
 
     }
 
     @Test
     public void testIsLoggedIn_ReturnTrue() throws UserNotValidException {
-        UserService userServiceNotNullUser = new UserService(userTwoSpy, userRepositoryMock);
-        assertEquals(userServiceNotNullUser.isLoggedIn(), true);
+        UserService userServiceNotEmptyUser = new UserService(userNotEmptySpy, userRepositoryMock);
+        assertEquals(userServiceNotEmptyUser.isLoggedIn(), true);
     }
 
     @Test
     public void testGetLoggedInUser_ReturnNull() {
-        UserService userServiceNullUser = new UserService();
-        assertEquals(userServiceNullUser.getLoggedInUser(), null);
+        UserService userServiceEmptyUser = new UserService();
+        assertEquals(userServiceEmptyUser.getLoggedInUser(), null);
 
     }
 
     @Test
     public void testGetLoggedInUser_ReturnUser() {
-        UserService userServiceNotNullUser = new UserService(userTwoSpy, userRepositoryMock);
-        assertEquals(userServiceNotNullUser.getLoggedInUser(), userTwoSpy);
+        UserService userServiceNotEmptyUser = new UserService(userNotEmptySpy, userRepositoryMock);
+        assertEquals(userServiceNotEmptyUser.getLoggedInUser(), userNotEmptySpy);
     }
 
     @Test
     public void testLogout_ReturnNull() {
-        UserService userServiceNullUser = new UserService();
-        userServiceNullUser.logout();
-        assertEquals(userServiceNullUser.getUser(),null);
+        UserService userServiceEmptyUser = new UserService();
+        userServiceEmptyUser.logout();
+        assertEquals(userServiceEmptyUser.getUser(), null);
 
-        UserService userServiceNotNullUser = new UserService(userTwoSpy, userRepositoryMock);
-        userServiceNotNullUser.logout();
-        assertEquals(userServiceNullUser.getUser(),null);
-        
+        UserService userServiceNotEmptyUser = new UserService(userNotEmptySpy, userRepositoryMock);
+        userServiceNotEmptyUser.logout();
+        assertEquals(userServiceEmptyUser.getUser(), null);
 
     }
+    //to do: test nulls
+    //to do:nem dob exceptiont ures userre most azt at kene irni itt: userservice.register
+    //to do: cleanup unnecesary shit
 
 }

@@ -7,12 +7,14 @@ import org.springframework.web.context.annotation.SessionScope;
 import hu.elte.bidAndWin.domain.User;
 import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Service
 @SessionScope
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class UserService {
 
     private User user;
@@ -48,9 +50,5 @@ public class UserService {
 
     public void logout() {
         user = null;
-    }
-
-    public User getUser() {
-        return user;
     }
 }
