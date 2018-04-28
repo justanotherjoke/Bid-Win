@@ -49,34 +49,33 @@ public class ImageController {
 
 	@Autowired
 	private UserService userService;
-	
-	
-	@Role({ADMIN, USER})
-    @PostMapping("/uploadimage")
-    public ResponseEntity<Image> createImage(@RequestParam(value="itemId") long id, @RequestParam(value="file") MultipartFile file) {
-        try {
+
+	@Role({ ADMIN, USER })
+	@PostMapping("/uploadimage")
+	public ResponseEntity<Image> createImage(@RequestParam(value = "itemId") long id,
+			@RequestParam(value = "file") MultipartFile file) {
+		try {
 			return ResponseEntity.ok(imageService.uploadImage(file, id, userService.getLoggedInUser()));
 		} catch (Exception e) {
-			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
-    }
-	
-	@Role({ADMIN, USER})
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<List<Image>> getImagesByItemId(@PathVariable(value = "id") long id) {
-		if( imageService.getImagesByItemId(id, userService.getLoggedInUser())==null ) {
-			return ResponseEntity.notFound().build();
+	}
+
+	@Role({ ADMIN, USER })
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Image> getImageByItemId(@PathVariable(value = "id") long id) {
+		try {
+			return ResponseEntity.ok(imageService.getImageByItemId(id, userService.getLoggedInUser()));
+		} catch (UserNotValidException e) {
+			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.ok(imageService.getImagesByItemId(id, userService.getLoggedInUser()));
-		
-    }
-	
-	@Role({ADMIN, USER})
-    @GetMapping("/all")
-    public ResponseEntity<List<Image>> getAllImages() {
+
+	}
+
+	@Role({ ADMIN, USER })
+	@GetMapping("/all")
+	public ResponseEntity<List<Image>> getAllImages() {
 		return ResponseEntity.ok(imageService.getAllImages());
-    }
-	
+	}
 
 }

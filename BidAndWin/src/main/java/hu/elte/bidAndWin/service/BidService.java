@@ -39,6 +39,7 @@ public class BidService {
     }
 
 	public Bid getBid(long id, User loggedInUser) {
+		List<Bid> bid = bidRepository.findByUserId(id);
 		return bidRepository.findById(id);
 		// mit dobjunk ha nincs ilyen id?
 	}

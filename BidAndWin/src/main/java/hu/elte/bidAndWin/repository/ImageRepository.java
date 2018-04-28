@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import hu.elte.bidAndWin.domain.Image;
  
  
-public interface ImageRepository extends JpaRepository<Image, Long>{
-	List<Image> findAllByItemId(long id);
+public interface ImageRepository extends JpaRepository<Image, Long>{	
+	Image findByItemId(long id);
 }

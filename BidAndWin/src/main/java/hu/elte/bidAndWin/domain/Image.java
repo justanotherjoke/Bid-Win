@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,10 +27,13 @@ public class Image {
 		this.item = item;
 	}
 
-	@JoinColumn
-    @ManyToOne(targetEntity = Item.class, optional = false)
-    @JsonIgnoreProperties("images")
-    private Item item;
+//	@JoinColumn
+//    @ManyToOne(targetEntity = Item.class, optional = false)
+//    @JsonIgnoreProperties("images")
+//    private Item item;
+	@OneToOne
+	@JoinColumn(name="item_id")
+	private Item item;
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

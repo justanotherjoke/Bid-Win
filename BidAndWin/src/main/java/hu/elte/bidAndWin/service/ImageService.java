@@ -30,8 +30,14 @@ public class ImageService {
 		this.itemRepository = itemRepository;
 	}
 
-	public List<Image> getImagesByItemId(long id, User loggedInUser) {
-		return imageRepository.findAllByItemId(id);
+	public Image getImageByItemId(long id, User loggedInUser) throws UserNotValidException {
+		Image im = imageRepository.findByItemId(id);
+		if(im != null && loggedInUser != null && im.getItem().getUser().getId() == loggedInUser.getId() ) {
+			return imageRepository.findByItemId(id);
+		}
+		else {
+			throw new UserNotValidException();
+		}
 	}
 	
 	public List<Image> getAllImages() {
@@ -49,6 +55,12 @@ public class ImageService {
 		if (it.getUser().getId() != user.getId()) {
 			System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
 			throw new UserNotValidException();
+		}
+		
+		Image image = imageRepository.findByItemId(id);
+		if (image != null) {
+			image.setPic(file.getBytes());
+			return imageRepository.save(image);
 		}
 		Image im = new Image();
 		im.setPic(file.getBytes());
