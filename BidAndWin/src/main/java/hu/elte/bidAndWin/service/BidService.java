@@ -46,24 +46,30 @@ public class BidService {
 	private boolean validateItemTime(Item item) {
 		Date date = new Date();
 		Timestamp currentTime = new Timestamp(date.getTime());
+		System.out.println(item.getEndTime());
+		System.out.println(currentTime);
 
 		if (currentTime.before(item.getEndTime())) {
+			
 			return true;
 		}
 		return false;
 	}
 
 	
-	public Bid makeBid(Bid bid, User user) throws BidNotValidException {
-		Bid currentBid = bidRepository.findById(bid.getItem().getId());
-//		System.out.println("ez a currentBid " + currentBid.getId());
-//		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
-		Item item = itemRepository.findById(bid.getItem().getId());
+	public Bid makeBid(long itemId, Bid bid, User user) throws BidNotValidException {
+		Bid currentBid = bidRepository.findByItemId(itemId);
+//		Bid currentBid = bidRepository.findById(bid.getItem().getId());
+		System.out.println("ez a currentBid " + currentBid.getId());
+		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
+		Item item = itemRepository.findById(currentBid.getItem().getId());
 //		System.out.println("ez az item id: " + item.getId());
 		if(!validateItemTime(item)) {
+			System.out.println("itt");
 			throw new BidNotValidException();
 		}
-		if(currentBid != null) {
+		if(currentBid != null && currentBid.getBidOffer() != -1) {
+			System.out.println("ott");
 			if(bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement()) ) {
 				currentBid.setUser(user);
 				
@@ -72,9 +78,11 @@ public class BidService {
 				throw new BidNotValidException();
 			}
 		} else {
-			if(bid.getBidOffer() >= bid.getItem().getStartPrice()) {
-				bid.setUser(user);
-				return bidRepository.save(bid);
+			System.out.println("else ág");
+			if(bid.getBidOffer() >= currentBid.getItem().getStartPrice() && bid.getUser().getId() != user.getId()) {
+				currentBid.setUser(user);
+				currentBid.setBidOffer(bid.getBidOffer());
+				return bidRepository.save(currentBid);
 			} else {
 				throw new BidNotValidException();
 			}

@@ -28,7 +28,10 @@ public class ItemService {
 		this.bidRepository = bidRepository;
 	}
 
-	public List<Item> createItem(Item item, User user) throws ItemNotValidException {
+	public List<Item> createItem(Item item, User user) throws ItemNotValidException, UserNotValidException {
+		if(user == null || user.getId() != item.getUser().getId()) {
+			throw new UserNotValidException();
+		}
 		boolean valid = validateItem(item);
 		if (valid) {
 			item.setUser(user);

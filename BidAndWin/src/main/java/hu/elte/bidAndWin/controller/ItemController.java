@@ -39,7 +39,7 @@ public class ItemController {
     public ResponseEntity<List<Item>> createItem(@RequestBody Item item) {
         try {
 			return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
-		} catch (ItemNotValidException e) {
+		} catch (ItemNotValidException | UserNotValidException e) {
 			return ResponseEntity.badRequest().build();
 		}
     }

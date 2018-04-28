@@ -63,7 +63,7 @@ public class BidController {
     private ResponseEntity<Bid> makeBid(@PathVariable long id, @RequestBody Bid bid) {
         Bid updated;
         try {
-            updated = bidService.makeBid(bid, userService.getLoggedInUser());
+            updated = bidService.makeBid(id, bid, userService.getLoggedInUser());
             return ResponseEntity.ok(updated);
         } catch (BidNotValidException ex) {
             return ResponseEntity.badRequest().build();
