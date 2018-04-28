@@ -40,10 +40,10 @@ public class Item {
 	@OneToOne(mappedBy="item")
 	private Bid bid;
 	
-	public Item(Bid bid, List<Image> images, User user, Category category, String name, String description, long startPrice,
+	public Item(Bid bid, Image image, User user, Category category, String name, String description, long startPrice,
 		long buyItPrice, Timestamp endTime, long bidIncrement) {
 	this.bid = bid;
-	this.images = images;
+	this.image = image;
 	this.user = user;
 	this.category = category;
 	this.name = name;
@@ -54,9 +54,13 @@ public class Item {
 	this.bidIncrement = bidIncrement;
 }
 
-	@OneToMany(targetEntity = Image.class, mappedBy = "item")
-	@JsonIgnore
-	private List<Image> images;
+//	@OneToMany(targetEntity = Image.class, mappedBy = "item")
+//	@JsonIgnore
+//	private List<Image> images;
+	
+	@OneToOne
+	@JoinColumn(name="image_id")
+	private Image image;
 
 	@JoinColumn
 	@ManyToOne(targetEntity = User.class, optional = false)

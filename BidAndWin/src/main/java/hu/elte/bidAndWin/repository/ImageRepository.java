@@ -9,4 +9,6 @@ import hu.elte.bidAndWin.domain.Image;
  
 public interface ImageRepository extends JpaRepository<Image, Long>{
 	List<Image> findAllByItemId(long id);
+	
+	Image findById(long id);
 }

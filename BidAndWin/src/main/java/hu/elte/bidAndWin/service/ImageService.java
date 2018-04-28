@@ -2,6 +2,7 @@ package hu.elte.bidAndWin.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,21 +39,41 @@ public class ImageService {
 		return imageRepository.findAll();
 	}
 
+//	public Image uploadImage(MultipartFile file, long id, User user)
+//			throws IOException, UserNotValidException, ItemNotValidException {
+//		Item it = itemRepository.findById(id);
+//		if (it == null) {
+//			System.out.println("nincs ilyen item");
+//			throw new ItemNotValidException();
+//		}
+//		System.out.println(user.getId() + "hey");
+//		if (it.getUser().getId() != user.getId()) {
+//			System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
+//			throw new UserNotValidException();
+//		}
+//		Image im = new Image();
+//		im.setPic(file.getBytes());
+//		im.setItem(itemRepository.findById(id));
+//
+//		return imageRepository.save(im);
+//	}
+	
 	public Image uploadImage(MultipartFile file, long id, User user)
 			throws IOException, UserNotValidException, ItemNotValidException {
-		Item it = itemRepository.findById(id);
-		if (it == null) {
-			System.out.println("nincs ilyen item");
+		Image im = imageRepository.findById(id);
+		if (im == null) {
+			System.out.println("nincs ilyen image");
 			throw new ItemNotValidException();
 		}
 		System.out.println(user.getId() + "hey");
+		Item it = itemRepository.findByImageId(id);
 		if (it.getUser().getId() != user.getId()) {
 			System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
 			throw new UserNotValidException();
 		}
-		Image im = new Image();
+
 		im.setPic(file.getBytes());
-		im.setItem(itemRepository.findById(id));
+		//im.setItem(itemRepository.findById(id));
 
 		return imageRepository.save(im);
 	}
