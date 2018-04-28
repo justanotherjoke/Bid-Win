@@ -14,6 +14,4 @@ public interface ItemRepository extends CrudRepository<Item, Long>{
 	Item findById(long id);
 
 	List<Item> findAllByUserId(long id);
-	
-	Item findByImageId(long id);
 }

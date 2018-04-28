@@ -51,20 +51,9 @@ public class ImageController {
 	private UserService userService;
 	
 	
-//	@Role({ADMIN, USER})
-//    @PostMapping("/uploadimage")
-//    public ResponseEntity<Image> createImage(@RequestParam(value="itemId") long id, @RequestParam(value="file") MultipartFile file) {
-//        try {
-//			return ResponseEntity.ok(imageService.uploadImage(file, id, userService.getLoggedInUser()));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return ResponseEntity.badRequest().build();
-//		}
-//    }
-	
 	@Role({ADMIN, USER})
     @PostMapping("/uploadimage")
-    public ResponseEntity<Image> createImage(@RequestParam(value="imageId") long id, @RequestParam(value="file") MultipartFile file) {
+    public ResponseEntity<Image> createImage(@RequestParam(value="itemId") long id, @RequestParam(value="file") MultipartFile file) {
         try {
 			return ResponseEntity.ok(imageService.uploadImage(file, id, userService.getLoggedInUser()));
 		} catch (Exception e) {
@@ -72,7 +61,6 @@ public class ImageController {
 			return ResponseEntity.badRequest().build();
 		}
     }
-	
 	
 	@Role({ADMIN, USER})
     @GetMapping(value = "/{id}")

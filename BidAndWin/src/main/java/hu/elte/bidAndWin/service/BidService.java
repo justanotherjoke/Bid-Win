@@ -60,14 +60,16 @@ public class BidService {
 	public Bid makeBid(long itemId, Bid bid, User user) throws BidNotValidException {
 		Bid currentBid = bidRepository.findByItemId(itemId);
 //		Bid currentBid = bidRepository.findById(bid.getItem().getId());
-//		System.out.println("ez a currentBid " + currentBid.getId());
-//		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
+		System.out.println("ez a currentBid " + currentBid.getId());
+		System.out.println("ez a currentBidhez az item " + currentBid.getItem().getId());
 		Item item = itemRepository.findById(currentBid.getItem().getId());
 //		System.out.println("ez az item id: " + item.getId());
 		if(!validateItemTime(item)) {
+			System.out.println("itt");
 			throw new BidNotValidException();
 		}
 		if(currentBid != null && currentBid.getBidOffer() != -1) {
+			System.out.println("ott");
 			if(bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement()) ) {
 				currentBid.setUser(user);
 				
@@ -76,6 +78,7 @@ public class BidService {
 				throw new BidNotValidException();
 			}
 		} else {
+			System.out.println("else ág");
 			if(bid.getBidOffer() >= currentBid.getItem().getStartPrice() && bid.getUser().getId() != user.getId()) {
 				currentBid.setUser(user);
 				currentBid.setBidOffer(bid.getBidOffer());
