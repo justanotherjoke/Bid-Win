@@ -40,8 +40,10 @@ Image (id, auction_id, base64str)<br>
   * az application.properties-ben a h2-re vonatkozó beállításokat alkalmaztunk
   * az import.sql fájlból az alkalmazás indításakor feltölti a generált táblákat
   * indítás grafikus környezetből(NetBeans) vagy parancssorból: mvn spring-boot:run paranccsal.
+  * a backend elérhetősége: http://localhost:8080/ 
 
 ### Fronend
   * npm install segítségével a függőségeket telepítjük
   * npm start segítségével elindítjuk a frontendet
+  * a frontend elérhetősége http://localhost:4200/
  
