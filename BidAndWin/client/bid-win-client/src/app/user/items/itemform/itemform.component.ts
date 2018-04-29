@@ -23,5 +23,7 @@ export class ItemformComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  onSubmit(){
+    this.itemService.listItems(this.model.name);
+  }
 }

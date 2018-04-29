@@ -1,0 +1,34 @@
+<app-header></app-header>
+<div id="itemDetails">
+  <form #form="ngForm" (submit)="onSubmit()">
+  <table class="itemtable">
+    <tr>
+      <th>Tárgy neve</th>
+      <th>Kép a tárgyról</th>
+      <th>Leírás</th>
+      <th>Vétel ár</th>
+      <th *ngIf="!isOwner()">Licitálás</th>
+    </tr>
+    <tr *ngIf="!isOwner()">
+        <td>{{item.name}}</td>
+        <td><img src="data:image/jpeg;base64,{{item.picture}}"/></td>
+        <td>{{item.description}}</td>
+        <td>{{item.buyItPrice}}</td>
+        <td *ngIf="item.currentPrice<item.buyItPrice && !vege(item.id);then licit else elkelt"></td>
+        <ng-template #licit><td><input id="bid{{item.id}}" type="text" placeholder="{{item.currentPrice + item.bidIncrement}}">
+          <input type="button" value="Licitálás!"/></td>
+        </ng-template>
+        <ng-template #elkelt><td><a class="vege">Elkelt!</a></td></ng-template>
+    </tr>
+    <tr *ngIf="isOwner()">
+      
+        <td><input type="text" name="name" [(ngModel)]="model.name" #name="ngModel"/></td>
+        <td><img src="data:image/jpeg;base64,{{item.picture}}"/><input type="file" name="file" [(ngModel)]="model.file" #file="ngModel" accept="image/jpeg"/></td>
+        <td><textarea name="description" [(ngModel)]="model.description" #description="ngModel"></textarea></td>
+        <td><div *ngIf="item.currentPrice==item.startPrice;then mod else nonmod"></div><ng-template #mod><input type="text" name="buyItPrice" [(ngModel)]="model.buyItPrice" /></ng-template><ng-template #nonmod>{{model.buyItPrice}}</ng-template></td>
+      
+    </tr>
+  </table>
+
+  </form>
+</div>

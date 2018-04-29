@@ -1,4 +1,5 @@
 import {User} from './user';
+import { Category } from './category';
 export interface Item {
     id?: number;
     name?: String;
@@ -8,7 +9,9 @@ export interface Item {
     buyItPrice? : number;
     description? : String;
     endTime? : Date;
-    categoryId? : number;
+    category? : Category;
     user? : User;
-    startPrice : number;
+    startPrice? : number;
+    file? : File;
+    bestBidderId?: number;
   }

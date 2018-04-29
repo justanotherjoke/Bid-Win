@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemService } from '../../../item.service';
 import { Item } from '../../../item';
+import { AuthService } from '../../../auth.service';
 
 @Component({
   selector: 'app-itemlist',
@@ -9,16 +10,23 @@ import { Item } from '../../../item';
 })
 export class ItemlistComponent implements OnInit {
   items: Item[];
-
   constructor(
     private itemService: ItemService,
+    private authService: AuthService,
   ) {
-    this.items = itemService.getItems();
+    if(this.authService.isLoggedIn()){
+      this.itemService.fuseItemsBidsImages();
+    }
+    this.itemService.listItems("");
+    this.items = this.itemService.getListedItems();
   }
 
   ngOnInit() {
   }
-  getImage(id:number){
-    
+  setChosenItem(itemid:number){
+    this.itemService.setChosenItem(itemid);
+  }
+  vege(id:number):boolean{
+    return false;
   }
 }

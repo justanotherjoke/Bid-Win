@@ -1,3 +1,15 @@
-<p>
-  itemupload works!
-</p>
+<app-header></app-header>
+<div *ngIf="isLoggedIn()">
+<div class="form">
+  <form #form="ngForm" (submit)="onSubmit()">
+    <input type="text" name="name" [(ngModel)]="model.name" #name="ngModel"/>
+    <input type="file" name="file" [(ngModel)]="model.file" #file="ngModel" accept="image/jpeg"/>
+    <textarea name="description" [(ngModel)]="model.description" #description="ngModel"></textarea>
+    <input type="text" name="startPrice" [(ngModel)]="model.startPrice"/>
+    <input type="text" name="bidIncrement" [(ngModel)]="model.bidIncrement"/>
+    <input type="text" name="buyItPrice" [(ngModel)]="model.buyItPrice" />
+    <input type="datetime-local" name="endTime" [(ngModel)]="model.endTime"/>
+    <input type="submit" value="Feltölt!"/>
+  </form>
+</div>
+</div>

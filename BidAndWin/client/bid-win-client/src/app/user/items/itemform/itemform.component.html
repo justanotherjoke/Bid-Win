@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="registration">
+<div class="form">
   <form #form="ngForm" (submit)="onSubmit()">
     <div class="form-group">
       <label for="name">Kategória: </label>
@@ -10,4 +10,5 @@
     </div>
     <input type="submit" value="Szűrés!" />
   </form>
+  <div id="itemuploadlink"><a routerLink="./itemupload">Új tárgy hozzáadása!</a></div>
 </div>

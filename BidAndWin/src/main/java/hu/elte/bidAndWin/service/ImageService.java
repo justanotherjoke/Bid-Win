@@ -14,6 +14,7 @@ import hu.elte.bidAndWin.repository.ImageRepository;
 import hu.elte.bidAndWin.repository.ItemRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
@@ -24,9 +25,12 @@ public class ImageService {
 	private UserRepository userRepository;
 	private ItemRepository itemRepository;
 
-	public Image getImageByItemId(long id, User loggedInUser) throws UserNotValidException {
+	public Image getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
+
+		@NonNull
 		Image im = imageRepository.findByItemId(id);
-		if (im != null && loggedInUser != null && im.getItem().getUser().getId() == loggedInUser.getId()) {
+
+		if (im.getItem().getUser().getId() == loggedInUser.getId()) {
 			return imageRepository.findByItemId(id);
 		} else {
 			throw new UserNotValidException();
@@ -37,29 +41,30 @@ public class ImageService {
 		return imageRepository.findAll();
 	}
 
-	public Image uploadImage(MultipartFile file, long id, User user)
-		throws IOException, UserNotValidException, ItemNotValidException {
+	public Image uploadImage(@NonNull MultipartFile file, long id, @NonNull User user)
+		throws IOException, UserNotValidException {
+
+		@NonNull
 		Item it = itemRepository.findById(id);
-		if (it == null) {
-			System.out.println("nincs ilyen item");
-			throw new ItemNotValidException();
-		}
-		System.out.println(user.getId() + "hey");
+
+		//System.out.println(user.getId() + "hey");
 		if (it.getUser().getId() != user.getId()) {
-			System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
+			//System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
 			throw new UserNotValidException();
 		}
 
-		Image image = imageRepository.findByItemId(id);
-		if (image != null) {
+		try {
+			@NonNull
+			Image image = imageRepository.findByItemId(id);
+
 			image.setPic(file.getBytes());
 			return imageRepository.save(image);
+
+		} catch (NullPointerException e) {
+			Image im = new Image();
+			im.setPic(file.getBytes());
+			im.setItem(itemRepository.findById(id));
+			return imageRepository.save(im);
 		}
-		Image im = new Image();
-		im.setPic(file.getBytes());
-		im.setItem(itemRepository.findById(id));
-
-		return imageRepository.save(im);
 	}
-
 }
