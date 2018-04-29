@@ -32,13 +32,16 @@ public class Item {
 //	@OneToMany(targetEntity = Bid.class, mappedBy = "item")
 //	@JsonIgnore
 //	private List<Bid> bids;
-	@JsonBackReference
-	@OneToOne(mappedBy = "item")
-	private Bid bid;
+	@OneToMany(targetEntity = Image.class, mappedBy = "item")
+	@JsonIgnore
+	private List<Bid> bids;
+	
+//	@JsonBackReference
+//	@OneToOne(mappedBy = "item")
+//	private Bid bid;
 
-	public Item(Bid bid, List<Image> images, User user, Category category, String name, String description, long startPrice,
+	public Item(List<Image> images, User user, Category category, String name, String description, long startPrice,
 		long buyItPrice, Timestamp endTime, long bidIncrement) {
-		this.bid = bid;
 		this.images = images;
 		this.user = user;
 		this.category = category;

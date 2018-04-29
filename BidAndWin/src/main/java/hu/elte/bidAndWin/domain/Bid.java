@@ -22,14 +22,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bid {
-//	@JoinColumn
-//    @ManyToOne(targetEntity = Item.class, optional = false)
-//    @JsonIgnoreProperties("bids")
-//    private Item item;
+	@JoinColumn
+    @ManyToOne(targetEntity = Item.class, optional = false)
+    @JsonIgnoreProperties("bids")
+    private Item item;
 
-	@OneToOne
-	@JoinColumn(name = "item_id")
-	private Item item;
+//	@OneToOne
+//	@JoinColumn(name = "item_id")
+//	private Item item;
 
 	@JoinColumn
 	@ManyToOne(targetEntity = User.class, optional = false)

@@ -88,7 +88,38 @@ public class BidService {
 				throw new BidNotValidException();
 			}
 		}
+	}
+		
+	public Bid makeBid2(long itemId, @NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
+			Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(itemId);
 
+			System.out.println(bestBid.getId() + " " + bestBid.getItem().getId() + " " + bestBid.getBidOffer());
+			
+			@NonNull
+			Item item = itemRepository.findById(itemId);
+			
+			if(item.getUser().getId() == user.getId()) {
+				throw new UserNotValidException();
+			}
+			
+			if (!validateItemTime(item)) {
+				System.out.println("vége a licitnek");
+				throw new BidNotValidException();
+			}
+			
+			if(bid.getBidOffer() > bestBid.getBidOffer() ) {
+				if(bestBid.getUser().getId() == bid.getUser().getId()) { // ha a saját licitemet akarom megemelni... mondjuk, hogy a villámárat megadjam
+					bestBid.setBidOffer(bid.getBidOffer());
+					return bidRepository.save(bestBid);
+				}
+				bid.setItem(bestBid.getItem());
+				bid.setUser(user);
+				return bidRepository.save(bid);
+			}
+
+			throw new BidNotValidException();
+		
+		
 	}
 
 }

@@ -73,4 +73,15 @@ public class BidController {
     }
 	
 	
+	@Role({ADMIN, USER} )
+    @PutMapping("/mb2/{id}")
+    private ResponseEntity<Bid> makeBid2(@PathVariable long id, @RequestBody Bid bid) {
+        Bid updated;
+        try {
+            updated = bidService.makeBid2(id, bid, userService.getLoggedInUser());
+            return ResponseEntity.ok(updated);
+        } catch (BidNotValidException | NullPointerException | UserNotValidException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
