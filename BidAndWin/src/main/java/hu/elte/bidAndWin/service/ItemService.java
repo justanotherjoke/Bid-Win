@@ -26,13 +26,21 @@ public class ItemService {
 	private BidRepository bidRepository;
 
 	public List<Item> createItem(@NonNull Item item, @NonNull User user) throws ItemNotValidException, UserNotValidException {
-		if (user.getId() != item.getUser().getId()) {
-			throw new UserNotValidException();
-		}
 		boolean valid = validateItem(item);
 		if (valid) {
-			item.setUser(user);
-			itemRepository.save(item);
+			Item it = new Item();
+			it.setUser(user);
+			it.setBestBidderId(-1);
+			
+			it.setBidIncrement(item.getBidIncrement());
+			it.setBuyItPrice(item.getBuyItPrice());
+			it.setDescription(item.getDescription());
+			it.setEndTime(item.getEndTime());
+			it.setName(item.getName());
+			it.setStartPrice(item.getStartPrice());
+			it.setCategory(item.getCategory());
+		
+			itemRepository.save(it);
 
 			Bid bid = new Bid(item, -1, user);
 			bidRepository.save(bid);

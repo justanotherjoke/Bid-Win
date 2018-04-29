@@ -47,6 +47,7 @@ public class Item {
 		this.endTime = endTime;
 		this.bidIncrement = bidIncrement;
 	}
+	
 
 	@OneToMany(targetEntity = Image.class, mappedBy = "item")
 	@JsonIgnore
