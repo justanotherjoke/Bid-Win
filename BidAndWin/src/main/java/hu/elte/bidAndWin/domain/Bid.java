@@ -19,18 +19,17 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Bid {
+
 	@JoinColumn
-    @ManyToOne(targetEntity = Item.class, optional = false)
-    @JsonIgnoreProperties("bids")
-    private Item item;
+	@ManyToOne(targetEntity = Item.class, optional = false)
+	@JsonIgnoreProperties("bids")
+	private Item item;
 
 //	@OneToOne
 //	@JoinColumn(name = "item_id")
 //	private Item item;
-
 	@JoinColumn
 	@ManyToOne(targetEntity = User.class, optional = false)
 	@JsonIgnoreProperties("bids")
