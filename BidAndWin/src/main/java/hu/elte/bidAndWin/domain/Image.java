@@ -43,3 +43,5 @@ public class Image {
 	@Column(name = "pic")
 	private byte[] pic;
 }
+
+//to do:noargsconstruktor hasznalva van imageserviceben-- nem kene

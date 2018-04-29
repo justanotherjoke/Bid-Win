@@ -9,10 +9,10 @@ import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Service
 @SessionScope
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class UserService {
@@ -22,12 +22,12 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User register(User user) {
+	public User register( @NonNull User user) {
 		user.setRole(User.Role.USER);
 		return this.user = userRepository.save(user);
 	}
 
-	public User login(User user) throws UserNotValidException {
+	public User login(@NonNull User user) throws UserNotValidException {
 		if (isValid(user)) {
 			return this.user = userRepository.findByUsername(user.getUsername());
 		}
@@ -48,7 +48,7 @@ public class UserService {
 		return user;
 	}
 
-	public void logout() {
-		user = null;
+	public User logout() {
+		return user = null;
 	}
 }
