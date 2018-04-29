@@ -37,23 +37,20 @@ public class CategoryController {
 
 	@Autowired
 	private UserService userService;
-	
-	/**/
-	@Role({ADMIN, USER})
-    @GetMapping(value = "/all")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.findAll());
-    }
-	
 
-	@Role({ ADMIN, USER })
+	//
+	@Role({ADMIN, USER})
+	@GetMapping(value = "/all")
+	public ResponseEntity<List<Category>> getAllCategories() {
+		return ResponseEntity.ok(categoryService.findAll());
+	}
+
+	@Role({ADMIN, USER})
 	@PostMapping("/createcategory")
 	public ResponseEntity<List<Category>> createCategory(@RequestBody Category category) {
 		try {
 			return ResponseEntity.ok(categoryService.createCategory(category, userService.getLoggedInUser()));
-		} catch (CategoryNotValidException e) {
-			return ResponseEntity.badRequest().build();
-		} catch (UserNotValidException e) {
+		} catch (CategoryNotValidException | UserNotValidException | NullPointerException e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}

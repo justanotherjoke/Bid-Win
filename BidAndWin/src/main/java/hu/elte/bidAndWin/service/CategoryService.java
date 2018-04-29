@@ -10,6 +10,7 @@ import hu.elte.bidAndWin.domain.User;
 import hu.elte.bidAndWin.repository.CategoryRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
@@ -24,7 +25,7 @@ public class CategoryService {
 		return allCategory;
 	}
 
-	public List<Category> createCategory(Category category, User user) throws UserNotValidException, CategoryNotValidException {
+	public List<Category> createCategory(@NonNull Category category, @NonNull User user) throws UserNotValidException, CategoryNotValidException {
 		if (!user.getRole().toString().equals("ADMIN")) {
 			throw new UserNotValidException();
 		}
