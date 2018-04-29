@@ -30,10 +30,12 @@ public class BidService {
 	public List<Bid> getAllBids() {
 		return (List<Bid>) bidRepository.findAll();
 	}
+	
 
 	public List<Bid> getMyBids(@NonNull User user) {
 		return bidRepository.findByUserId(user.getId());
 	}
+
 
 	public Bid getBid(long id, @NonNull User loggedInUser) throws UserNotValidException {
 
@@ -108,6 +110,7 @@ public class BidService {
 			}
 			
 			if(bid.getBidOffer() > bestBid.getBidOffer() ) {
+				item.setBestBidderId(user.getId());
 				if(bestBid.getUser().getId() == bid.getUser().getId()) { // ha a saját licitemet akarom megemelni... mondjuk, hogy a villámárat megadjam
 					bestBid.setBidOffer(bid.getBidOffer());
 					return bidRepository.save(bestBid);
@@ -118,7 +121,6 @@ public class BidService {
 			}
 
 			throw new BidNotValidException();
-		
 		
 	}
 

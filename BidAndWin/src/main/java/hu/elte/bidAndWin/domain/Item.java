@@ -88,6 +88,6 @@ public class Item {
 	@Column(nullable = false)
 	private long bidIncrement;
 
-//	@Column(nullable = true)
-//	private long soldToId;
+	@Column(nullable = false)
+	private long bestBidderId;
 }
