@@ -20,6 +20,7 @@ import hu.elte.bidAndWin.domain.Image;
 import hu.elte.bidAndWin.service.ImageService;
 import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/api/image")
@@ -31,29 +32,29 @@ public class ImageController {
 	@Autowired
 	private UserService userService;
 
-	@Role({ ADMIN, USER })
+	@Role({ADMIN, USER})
 	@PostMapping("/uploadimage")
 	public ResponseEntity<Image> createImage(@RequestParam(value = "itemId") long id,
-			@RequestParam(value = "file") MultipartFile file) {
+		@RequestParam(value = "file") MultipartFile file) {
 		try {
 			return ResponseEntity.ok(imageService.uploadImage(file, id, userService.getLoggedInUser()));
-		} catch (Exception e) {
+		} catch (UserNotValidException | IOException | NullPointerException e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}
 
-	@Role({ ADMIN, USER })
+	@Role({ADMIN, USER})
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Image> getImageByItemId(@PathVariable(value = "id") long id) {
 		try {
 			return ResponseEntity.ok(imageService.getImageByItemId(id, userService.getLoggedInUser()));
-		} catch (UserNotValidException e) {
+		} catch (UserNotValidException | NullPointerException e) {
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
-	@Role({ ADMIN, USER })
+	@Role({ADMIN, USER})
 	@GetMapping("/all")
 	public ResponseEntity<List<Image>> getAllImages() {
 		return ResponseEntity.ok(imageService.getAllImages());
