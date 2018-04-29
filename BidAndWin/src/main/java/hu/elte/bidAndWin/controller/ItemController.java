@@ -33,7 +33,7 @@ public class ItemController {
 	private UserService userService;
 
 	@Role({ADMIN, USER})
-	@PostMapping("/createItem")
+	@PostMapping("/createitem")
 	public ResponseEntity<List<Item>> createItem(@RequestBody Item item) {
 		try {
 			return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
