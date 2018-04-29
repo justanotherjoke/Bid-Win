@@ -27,27 +27,27 @@ public class Bid {
 //    @JsonIgnoreProperties("bids")
 //    private Item item;
 
-    @OneToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
+	@OneToOne
+	@JoinColumn(name = "item_id")
+	private Item item;
 
-    @JoinColumn
-    @ManyToOne(targetEntity = User.class, optional = false)
-    @JsonIgnoreProperties("bids")
-    private User user;
+	@JoinColumn
+	@ManyToOne(targetEntity = User.class, optional = false)
+	@JsonIgnoreProperties("bids")
+	private User user;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Column(nullable = false)
-    private long bidOffer;
+	@Column(nullable = false)
+	private long bidOffer;
 
-    public Bid(Item item, long bidOffer, User user) {
-        this.item = item;
-        this.bidOffer = bidOffer;
-        this.user = user;
+	public Bid(Item item, long bidOffer, User user) {
+		this.item = item;
+		this.bidOffer = bidOffer;
+		this.user = user;
 
-    }
+	}
 
 }

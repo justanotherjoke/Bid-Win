@@ -13,32 +13,32 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
-        @Autowired))
+	@Autowired))
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
-    private UserRepository userRepository;
+	private CategoryRepository categoryRepository;
+	private UserRepository userRepository;
 
-    public List<Category> findAll() {
-        List<Category> allCategory = (List<Category>) categoryRepository.findAll();
-        return allCategory;
-    }
+	public List<Category> findAll() {
+		List<Category> allCategory = (List<Category>) categoryRepository.findAll();
+		return allCategory;
+	}
 
-    public List<Category> createCategory(Category category, User user) throws UserNotValidException, CategoryNotValidException {
-        if (!user.getRole().toString().equals("ADMIN")) {
-            throw new UserNotValidException();
-        }
+	public List<Category> createCategory(Category category, User user) throws UserNotValidException, CategoryNotValidException {
+		if (!user.getRole().toString().equals("ADMIN")) {
+			throw new UserNotValidException();
+		}
 
-        List<Category> allCategory = findAll();
-        for (Category cat : allCategory) {
-            if (cat.getName().equals(category.getName())) {
-                throw new CategoryNotValidException();
-            }
-        }
+		List<Category> allCategory = findAll();
+		for (Category cat : allCategory) {
+			if (cat.getName().equals(category.getName())) {
+				throw new CategoryNotValidException();
+			}
+		}
 
-        categoryRepository.save(category);
+		categoryRepository.save(category);
 
-        return findAll();
-    }
+		return findAll();
+	}
 
 }

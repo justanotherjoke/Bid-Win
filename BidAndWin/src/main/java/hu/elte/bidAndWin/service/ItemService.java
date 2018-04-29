@@ -13,38 +13,33 @@ import hu.elte.bidAndWin.domain.User;
 import hu.elte.bidAndWin.repository.BidRepository;
 import hu.elte.bidAndWin.repository.ItemRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(
+	@Autowired))
 public class ItemService {
 
 	private ItemRepository itemRepository;
 	private UserRepository userRepository;
 	private BidRepository bidRepository;
 
-	@Autowired
-	public ItemService(ItemRepository itemRepository, UserRepository userRepository, BidRepository bidRepository) {
-		this.itemRepository = itemRepository;
-		this.userRepository = userRepository;
-		this.bidRepository = bidRepository;
-	}
-
 	public List<Item> createItem(Item item, User user) throws ItemNotValidException, UserNotValidException {
-		if(user == null || user.getId() != item.getUser().getId()) {
+		if (user == null || user.getId() != item.getUser().getId()) {
 			throw new UserNotValidException();
 		}
 		boolean valid = validateItem(item);
 		if (valid) {
 			item.setUser(user);
 			itemRepository.save(item);
-			
+
 			Bid bid = new Bid(item, -1, user);
 			bidRepository.save(bid);
-			
+
 			return getAllItems();
 		} else {
 			throw new ItemNotValidException();
 		}
-
 	}
 
 	private boolean validateItem(Item item) {
@@ -57,40 +52,37 @@ public class ItemService {
 		return false;
 	}
 
-	public Item getItem(long id, User loggedInUser){
+	public Item getItem(long id, User loggedInUser) {
 		return itemRepository.findById(id);
 	}
 
-	public List<Item> getAllItems(){
+	public List<Item> getAllItems() {
 		return (List<Item>) itemRepository.findAll();
 	}
-	
-	public List<Item> getMyItems(User loggedInUser){
+
+	public List<Item> getMyItems(User loggedInUser) {
 		return itemRepository.findAllByUserId(loggedInUser.getId());
 	}
-	
+
 	public Item updateItem(long id, Item item, User user) throws ItemNotValidException, UserNotValidException {
 		Bid currentBid = bidRepository.findByItemId(id);
 		Item currentItem = itemRepository.findById(id);
-		if(currentItem == null) {
+		if (currentItem == null) {
 			return null;
 		}
-		if(currentItem.getUser().getId() != user.getId()) {
+		if (currentItem.getUser().getId() != user.getId()) {
 			throw new UserNotValidException();
 		}
-		if (currentBid == null && currentItem !=null) { // ha van ilyen item, de nincs még rá licit
+		if (currentBid == null && currentItem != null) { // ha van ilyen item, de nincs még rá licit
 			boolean valid = validateItem(item);
 			if (valid) {
 				item.setUser(user);
 				return itemRepository.save(item);
 			} else {
 				throw new ItemNotValidException();
-			}	
+			}
 		} else {
 			throw new ItemNotValidException();
 		}
 	}
-			
-
 }
-

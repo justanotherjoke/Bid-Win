@@ -28,76 +28,84 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TestBidService {
 
-    @Mock
-    BidRepository bidRepositoryMock;
-    @Mock
-    UserRepository userRepositoryMock;
-    @Mock
-    ItemRepository itemRepositoryMock;
+	@Mock
+	BidRepository bidRepositoryMock;
+	@Mock
+	UserRepository userRepositoryMock;
+	@Mock
+	ItemRepository itemRepositoryMock;
 
-    @InjectMocks
-    BidService bidService;
+	@InjectMocks
+	BidService bidService;
 
-    List<Bid> listBidEmpty = new LinkedList<>();
-    List<Bid> listBidNotEmpty = new LinkedList<>();
-    List<Item> listItemEmpty = new LinkedList<>();
-    List<Image> listImageEmpty = new LinkedList<>();
-    Item itemEmpty = new Item();
-    Bid bidEmpty = new Bid();
-    Category categoryEmpty = new Category();
-    Timestamp timestampEmpty = new Timestamp(0);
-    User userEmptySpy = spy(new User());
-    User userNotEmptySpy = spy(new User(listItemEmpty, listBidEmpty, 2, "david", "2222", "2@2", User.Role.USER));
-    Bid bidNotEmptySpy = spy(new Bid(itemEmpty, userEmptySpy, 1, 1000));
-    Bid bidNotEmptyOriginalSpy = spy(new Bid(itemEmpty, userEmptySpy, 1, 500));
-    Item itemNotEmptySpy = spy(new Item(bidEmpty, listImageEmpty, userEmptySpy, categoryEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampEmpty, 100));
+	List<Bid> listBidEmpty = new LinkedList<>();
+	List<Bid> listBidNotEmpty = new LinkedList<>();
+	List<Category> listCategoryEmpty = new LinkedList<>();
+	List<Category> listCategoryNotEmpty = new LinkedList<>();
+	List<Image> listImageEmpty = new LinkedList<>();
+	List<Item> listItemEmpty = new LinkedList<>();
 
-    @Before
-    public void setUp() throws Exception {
+	Bid bidEmpty = spy(new Bid());
+	Category categoryEmpty = spy(new Category());
+	Item itemEmpty = spy(new Item());
+	Image imageEmpty = spy(new Image());
+	User userEmptySpy = spy(new User());
 
-        MockitoAnnotations.initMocks(this);
-        listBidNotEmpty.add(bidEmpty);
+	Timestamp timestampEmpty = new Timestamp(0);
+	byte[] byteEmpty = "".getBytes();
 
-    }
+	User userNotEmptySpy = spy(new User(listItemEmpty, listBidEmpty, 2, "david", "2222", "2@2", User.Role.USER));
+	User userAdminSpy = spy(new User(listItemEmpty, listBidEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN));
+	Bid bidNotEmptyOriginalSpy;
+	Bid bidNotEmptySpy;
+	Category categoryNotEmpty = spy(new Category(listItemEmpty, 1, "auto"));
+	Category categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
+	Item itemNotEmptySpy = spy(new Item(bidNotEmptySpy, listImageEmpty, userNotEmptySpy, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampEmpty, 100));
+	Image imageNotEmpty = spy(new Image(itemNotEmptySpy, 1, byteEmpty));
 
-    @Test
-    public void testGetAllBids_ReturnEmptyBidList() {
-        doReturn(listBidEmpty).when(bidRepositoryMock).findAll();
-        assertEquals(bidService.getAllBids(), listBidEmpty);
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public void testGetAllBids_ReturnBidList() {
-        doReturn(listBidNotEmpty).when(bidRepositoryMock).findAll();
-        assertEquals(bidService.getAllBids(), listBidNotEmpty);
-    }
+		MockitoAnnotations.initMocks(this);
+		listBidNotEmpty.add(bidEmpty);
+		bidNotEmptyOriginalSpy = spy(new Bid(itemNotEmptySpy, userEmptySpy, 1, 500));
+		bidNotEmptySpy = spy(new Bid(itemNotEmptySpy, userEmptySpy, 2, 1000));
+	}
 
-    @Test
-    public void testGetMyBids_ReturnEmptyBidList() {
-        long userId = userNotEmptySpy.getId();
-        doReturn(listBidEmpty).when(bidRepositoryMock).findByUserId(userId);
-        assertEquals(bidService.getMyBids(userNotEmptySpy), listBidEmpty);
-    }
+	@Test
+	public void testGetAllBids_ReturnEmptyBidList() {
+		doReturn(listBidEmpty).when(bidRepositoryMock).findAll();
+		assertEquals(bidService.getAllBids(), listBidEmpty);
+	}
 
-    @Test
-    public void testGetMyBids_ReturnBidList() {
-        long userId = userNotEmptySpy.getId();
-        doReturn(listBidNotEmpty).when(bidRepositoryMock).findByUserId(userId);
-        assertEquals(bidService.getMyBids(userNotEmptySpy), listBidNotEmpty);
-    }
+	@Test
+	public void testGetAllBids_ReturnBidList() {
+		doReturn(listBidNotEmpty).when(bidRepositoryMock).findAll();
+		assertEquals(bidService.getAllBids(), listBidNotEmpty);
+	}
 
-    @Test
-    public void testGetBid_ReturnEmptyBid() {
-        doReturn(bidEmpty).when(bidRepositoryMock).findById(1);
-        assertEquals(bidService.getBid(1, userNotEmptySpy), bidEmpty);
-    }
+	@Test
+	public void testGetMyBids_ReturnEmptyBidList() throws UserNotValidException {
+		long userId = userNotEmptySpy.getId();
+		doReturn(listBidEmpty).when(bidRepositoryMock).findByUserId(userId);
+		assertEquals(bidService.getMyBids(userNotEmptySpy), listBidEmpty);
+	}
 
-    @Test
-    public void testGetBid_ReturnBid() {
-        doReturn(bidNotEmptySpy).when(bidRepositoryMock).findById(1);
-        assertEquals(bidService.getBid(1, userNotEmptySpy), bidNotEmptySpy);
-    }
-    //to do: test bidservice.makebid
-    //to do: test nulls
-    //to do: cleanup unnecesary shit
+	@Test
+	public void testGetMyBids_ReturnBidList() throws UserNotValidException {
+		long userId = userNotEmptySpy.getId();
+		doReturn(listBidNotEmpty).when(bidRepositoryMock).findByUserId(userId);
+		assertEquals(bidService.getMyBids(userNotEmptySpy), listBidNotEmpty);
+	}
+
+	@Test
+	public void testGetBid_ReturnBid() throws UserNotValidException {
+		doReturn(bidNotEmptySpy).when(bidRepositoryMock).findById(1);
+		assertEquals(bidService.getBid(1, userNotEmptySpy), bidNotEmptySpy);
+	}
+	//to do: test bidservice.makebid
+	//to do: test nulls
+	//to do: cleanup unnecesary shit
+	//to do: testgetbid,testgetmybif redo.
+	//to do: getbid?
 }

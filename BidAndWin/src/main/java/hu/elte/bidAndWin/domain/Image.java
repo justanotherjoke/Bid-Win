@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
-	
+
 	public Image(byte[] pic, String path, Item item) {
 		this.pic = pic;
 		this.item = item;
@@ -32,14 +32,14 @@ public class Image {
 //    @JsonIgnoreProperties("images")
 //    private Item item;
 	@OneToOne
-	@JoinColumn(name="item_id")
+	@JoinColumn(name = "item_id")
 	private Item item;
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-	
-    @Lob
-    @Column(name="pic")
-    private byte[] pic;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
+	@Lob
+	@Column(name = "pic")
+	private byte[] pic;
 }

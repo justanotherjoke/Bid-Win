@@ -21,14 +21,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Category {
 
-    @OneToMany(targetEntity = Item.class, mappedBy = "category")
-    @JsonIgnore
-    private List<Item> items;
+	@OneToMany(targetEntity = Item.class, mappedBy = "category")
+	@JsonIgnore
+	private List<Item> items;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+	@Column(nullable = false, unique = true)
+	private String name;
 }

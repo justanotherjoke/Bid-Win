@@ -26,32 +26,32 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 
-    @OneToMany(targetEntity = Item.class, mappedBy = "user")
-    @JsonIgnore
-    private List<Item> items;
+	@OneToMany(targetEntity = Item.class, mappedBy = "user")
+	@JsonIgnore
+	private List<Item> items;
 
-    @OneToMany(targetEntity = Bid.class, mappedBy = "user")
-    @JsonIgnore
-    private List<Bid> bids;
+	@OneToMany(targetEntity = Bid.class, mappedBy = "user")
+	@JsonIgnore
+	private List<Bid> bids;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+	@Column(nullable = false, unique = true)
+	private String username;
 
-    @Column(nullable = false)
-    private String password;
+	@Column(nullable = false)
+	private String password;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+	@Column(nullable = false, unique = true)
+	private String email;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
-    public enum Role {
-        GUEST, USER, ADMIN
-    }
+	public enum Role {
+		GUEST, USER, ADMIN
+	}
 }
