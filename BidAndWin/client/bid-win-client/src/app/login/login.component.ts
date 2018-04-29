@@ -44,7 +44,6 @@ export class LoginComponent implements OnInit {
             this.itemService.getAllItems();
             this.itemService.getAllBids();
             this.itemService.getAllCategories();
-            //this.itemService.fuseItemsBidsImages();
             this.router.navigateByUrl('/index');
           //}
         })

@@ -1,5 +1,5 @@
 <div id="itemlist">
-  <table id="itemtable">
+  <table class="itemtable">
     <tr>
       <th>Tárgy neve</th>
       <th>Kép a tárgyról</th>
@@ -9,10 +9,12 @@
     </tr>
     <tr *ngFor="let item of items">
         <td>{{item.name}}</td>
-        <td><img src="data:image/jpeg;base64,'{{item.picture}}'"/>CSS méretezés!</td>
+        <td><img src="data:image/jpeg;base64,{{item.picture}}"/></td>
         <td>{{item.buyItPrice}}</td>
-        <td>Link a tárgyhoz</td>
-        <td><input id="bid{{item.id}}" type="text" placeholder="{{item.currentPrice + item.bidIncrement}}"><input type="button" value="Licitálás!"/></td>
+        <td><a routerLink="./item" (click)="setChosenItem(item.id)">Link a tárgyhoz</a></td>
+        <td *ngIf="item.currentPrice<item.buyItPrice && !vege(item.id);then content else other_content"></td>
+        <ng-template #content><td><input id="bid{{item.id}}" type="text" placeholder="{{item.currentPrice + item.bidIncrement}}"><input type="button" value="Licitálás!"/></td></ng-template>
+        <ng-template #other_content><td><a class="vege">Elkelt!</a></td></ng-template>
     </tr>
   </table>
 </div>

@@ -17,12 +17,15 @@ import { ItemlistComponent } from './user/items/itemlist/itemlist.component';
 import { ItemformComponent } from './user/items/itemform/itemform.component';
 import { ItemuploadComponent } from './user/items/itemupload/itemupload.component';
 import { ItemsComponent } from './user/items/items.component';
+import { ItemComponent } from './user/items/item/item.component';
 const appRoutes : Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'index', component: IndexComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'user/settings', component: SettingsComponent},
   {path: 'user/items', component: ItemsComponent},
+  {path: 'user/items/item', component: ItemComponent},
+  {path: 'user/items/itemupload', component: ItemuploadComponent},
   {path: '**', redirectTo: 'index'},
 ];
 @NgModule({
@@ -36,7 +39,8 @@ const appRoutes : Routes = [
     ItemlistComponent,
     ItemformComponent,
     ItemuploadComponent,
-    ItemsComponent
+    ItemsComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,13 @@ export class AuthService {
   ) {
     //this.banned=false;
   }
+  public getLoggedInUsername(): String{
+    if(this.isLoggedIn()){
+      return this.user.username;
+    }else{
+      return "";
+    }
+  }
   public isLoggedIn(): boolean{
     return (this.user!==undefined);
   }
