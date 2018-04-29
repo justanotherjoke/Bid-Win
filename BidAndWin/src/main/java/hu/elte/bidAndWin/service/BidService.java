@@ -1,8 +1,6 @@
 package hu.elte.bidAndWin.service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -62,37 +60,8 @@ public class BidService {
 		return false;
 	}
 
-	public Bid makeBid(long itemId, @NonNull Bid bid, @NonNull User user) throws BidNotValidException {
-		
-		@NonNull
-		Bid currentBid = bidRepository.findByItemId(itemId);
-		
-		@NonNull
-		Item item = itemRepository.findById(currentBid.getItem().getId());
-		
-		if (!validateItemTime(item)) {
-			throw new BidNotValidException();
-		}
-		if (currentBid.getBidOffer() != -1) {
-			if (bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement())) {
-				currentBid.setUser(user);
 
-				return bidRepository.save(currentBid);
-			} else {
-				throw new BidNotValidException();
-			}
-		} else {
-			if (bid.getBidOffer() >= currentBid.getItem().getStartPrice() && bid.getUser().getId() != user.getId()) {
-				currentBid.setUser(user);
-				currentBid.setBidOffer(bid.getBidOffer());
-				return bidRepository.save(currentBid);
-			} else {
-				throw new BidNotValidException();
-			}
-		}
-	}
-		
-	public Bid makeBid2(long itemId, @NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
+	public Bid makeBid(long itemId, @NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
 			Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(itemId);
 
 			System.out.println(bestBid.getId() + " " + bestBid.getItem().getId() + " " + bestBid.getBidOffer());
