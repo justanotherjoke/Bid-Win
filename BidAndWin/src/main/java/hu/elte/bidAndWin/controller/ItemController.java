@@ -1,12 +1,10 @@
 package hu.elte.bidAndWin.controller;
 
-import hu.elte.bidAndWin.domain.Bid;
-import hu.elte.bidAndWin.domain.Item;
-import hu.elte.bidAndWin.annotation.Role;
-import hu.elte.bidAndWin.service.ItemNotValidException;
-import hu.elte.bidAndWin.service.ItemService;
-import hu.elte.bidAndWin.service.UserNotValidException;
-import hu.elte.bidAndWin.service.UserService;
+import static hu.elte.bidAndWin.domain.User.Role.ADMIN;
+import static hu.elte.bidAndWin.domain.User.Role.USER;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import static hu.elte.bidAndWin.domain.User.Role.ADMIN;
-import static hu.elte.bidAndWin.domain.User.Role.USER;
-
-import java.util.List;
+import hu.elte.bidAndWin.annotation.Role;
+import hu.elte.bidAndWin.domain.Item;
+import hu.elte.bidAndWin.service.ItemNotValidException;
+import hu.elte.bidAndWin.service.ItemService;
+import hu.elte.bidAndWin.service.UserNotValidException;
+import hu.elte.bidAndWin.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api/items")

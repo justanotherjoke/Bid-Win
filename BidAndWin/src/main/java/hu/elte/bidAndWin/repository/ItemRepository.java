@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Item;
 
 @Repository

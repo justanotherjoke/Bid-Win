@@ -1,8 +1,6 @@
 package hu.elte.bidAndWin.service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
