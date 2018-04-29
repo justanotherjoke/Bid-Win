@@ -58,25 +58,13 @@ public class BidController {
 		}
     }
 	
+		
 	@Role({ADMIN, USER} )
     @PutMapping("/{id}")
     private ResponseEntity<Bid> makeBid(@PathVariable long id, @RequestBody Bid bid) {
         Bid updated;
         try {
             updated = bidService.makeBid(id, bid, userService.getLoggedInUser());
-            return ResponseEntity.ok(updated);
-        } catch (BidNotValidException | NullPointerException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-	
-	
-	@Role({ADMIN, USER} )
-    @PutMapping("/mb2/{id}")
-    private ResponseEntity<Bid> makeBid2(@PathVariable long id, @RequestBody Bid bid) {
-        Bid updated;
-        try {
-            updated = bidService.makeBid2(id, bid, userService.getLoggedInUser());
             return ResponseEntity.ok(updated);
         } catch (BidNotValidException | NullPointerException | UserNotValidException e) {
             return ResponseEntity.badRequest().build();
