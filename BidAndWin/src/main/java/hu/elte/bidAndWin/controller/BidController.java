@@ -45,7 +45,7 @@ public class BidController {
     public ResponseEntity<List<Bid>> getMyBids() {
         try {
 			return ResponseEntity.ok(bidService.getMyBids(userService.getLoggedInUser()));
-		} catch (UserNotValidException e) {
+		} catch (NullPointerException e) {
 			return ResponseEntity.badRequest().build();
 		}
     }
@@ -55,7 +55,7 @@ public class BidController {
     public ResponseEntity<Bid> getBid(@PathVariable(value = "id") long id) {
 		try {
 			return ResponseEntity.ok(bidService.getBid(id, userService.getLoggedInUser()));
-		} catch (UserNotValidException e) {
+		} catch (UserNotValidException | NullPointerException e) {
 			return ResponseEntity.badRequest().build();
 		}
     }
@@ -67,7 +67,7 @@ public class BidController {
         try {
             updated = bidService.makeBid(id, bid, userService.getLoggedInUser());
             return ResponseEntity.ok(updated);
-        } catch (BidNotValidException ex) {
+        } catch (BidNotValidException | NullPointerException e) {
             return ResponseEntity.badRequest().build();
         }
     }

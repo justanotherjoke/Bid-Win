@@ -16,6 +16,7 @@ import hu.elte.bidAndWin.repository.BidRepository;
 import hu.elte.bidAndWin.repository.ItemRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
@@ -30,16 +31,16 @@ public class BidService {
 		return (List<Bid>) bidRepository.findAll();
 	}
 
-	public List<Bid> getMyBids(User user) throws UserNotValidException {
-		if (user == null) {
-			throw new UserNotValidException();
-		}
+	public List<Bid> getMyBids(@NonNull User user) {
 		return bidRepository.findByUserId(user.getId());
 	}
 
-	public Bid getBid(long id, User loggedInUser) throws UserNotValidException {
+	public Bid getBid(long id, @NonNull User loggedInUser) throws UserNotValidException {
+
+		@NonNull
 		Bid bid = bidRepository.findById(id);
-		if (loggedInUser == null || loggedInUser.getId() != bid.getItem().getUser().getId()) {
+
+		if (loggedInUser.getId() != bid.getItem().getUser().getId()) {
 			throw new UserNotValidException();
 		}
 		return bidRepository.findById(id);
@@ -59,13 +60,18 @@ public class BidService {
 		return false;
 	}
 
-	public Bid makeBid(long itemId, Bid bid, User user) throws BidNotValidException {
+	public Bid makeBid(long itemId, @NonNull Bid bid, @NonNull User user) throws BidNotValidException {
+		
+		@NonNull
 		Bid currentBid = bidRepository.findByItemId(itemId);
+		
+		@NonNull
 		Item item = itemRepository.findById(currentBid.getItem().getId());
+		
 		if (!validateItemTime(item)) {
 			throw new BidNotValidException();
 		}
-		if (currentBid != null && currentBid.getBidOffer() != -1) {
+		if (currentBid.getBidOffer() != -1) {
 			if (bid.getBidOffer() >= (currentBid.getBidOffer() + currentBid.getItem().getBidIncrement())) {
 				currentBid.setUser(user);
 
