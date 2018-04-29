@@ -13,6 +13,7 @@ import lombok.NonNull;
 
 @Service
 @SessionScope
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class UserService {
