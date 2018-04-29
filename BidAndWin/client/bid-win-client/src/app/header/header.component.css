@@ -1,0 +1,15 @@
+
+div .link {
+    display: inline-block;
+    padding: 10px;
+}
+
+div .link a {
+    color: whitesmoke;
+    text-decoration: none;
+    transition: color 0.5s;
+} 
+
+div .link a:hover{
+    color: deepskyblue;
+}
