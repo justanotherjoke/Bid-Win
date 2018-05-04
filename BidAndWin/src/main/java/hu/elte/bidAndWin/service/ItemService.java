@@ -42,7 +42,7 @@ public class ItemService {
 		
 			itemRepository.save(it);
 
-			Bid bid = new Bid(item, -1, user);
+			Bid bid = new Bid(it, -1, user); 
 			bidRepository.save(bid);
 
 			return getAllItems();
