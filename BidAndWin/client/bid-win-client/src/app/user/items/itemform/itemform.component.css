@@ -1,0 +1,8 @@
+select{
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 120px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    -webkit-appearance: default-button;
+}

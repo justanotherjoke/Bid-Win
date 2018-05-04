@@ -1,0 +1,19 @@
+table {
+    margin: 0 auto;;
+    border-collapse: collapse;
+}
+
+table, th /*,td*/{
+    border: 1px solid black;
+}
+
+th {
+    font-weight: bold;
+    height: 30px;
+}
+
+td {
+    height:140px;
+    width: 180px;
+    text-align: center;
+}
