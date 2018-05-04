@@ -27,7 +27,11 @@ export class ItemuploadComponent implements OnInit {
     }
   }
   onSubmit(){
+    console.log(this.model);
+    this.model.category={id:this.model.categoryId};
+    this.model.categoryId=undefined;
     this.itemService.uploadItem(this.model);
+    //this.router.navigateByUrl("/index");
   }
   ngOnInit() {
   }

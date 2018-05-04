@@ -39,13 +39,38 @@ export class ItemService {
     }
   }
   uploadItem(item: Item):Promise<Item[]>{
+    let img:{
+      pic?:File,
+      itemId?:number,
+    };
+    img={};
+    img.pic=item.file;
+    item.file=undefined;
     console.log(item);
-    const response$: Observable<any> = this.http.post('/api/items/createItem', item);
+    const response$: Observable<any> = this.http.post('/api/items/createitem', item);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise
       .then(res => res.json())
-      .then(responseItems => {
+      .then(responseItem => {
+        if(img.pic.size!==0){
+          img.itemId=responseItem.id;
+          this.uploadPicture(img);
+        }
         return this.getAllItems();
+      });
+  }
+  uploadPicture(img:{pic?:File, itemId?: number}):Promise<{
+    id:number,
+    pic:File,
+    itemId:number,
+  }>{
+    const response$: Observable<any> = this.http.post('/api/image/uploadimage', img);
+    const responsePromise: Promise<any> = response$.toPromise();
+    return responsePromise
+      .then(res => res.json())
+      .then(responseImage => {
+        this.images.push(responseImage);
+        return responseImage;
       });
   }
   getAllImages() :Promise<{
@@ -59,7 +84,6 @@ export class ItemService {
       .then(res => res.json())
       .then(responseImages => {
         this.images = responseImages;
-        console.log(this.images);
         return responseImages;
       });
   }

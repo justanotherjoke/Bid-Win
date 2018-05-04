@@ -10,6 +10,7 @@ export interface Item {
     description? : String;
     endTime? : Date;
     category? : Category;
+    categoryId?: number;
     user? : User;
     startPrice? : number;
     file? : File;
