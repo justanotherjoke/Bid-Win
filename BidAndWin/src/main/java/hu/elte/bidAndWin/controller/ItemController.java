@@ -34,7 +34,7 @@ public class ItemController {
 
 	@Role({ADMIN, USER})
 	@PostMapping("/createitem")
-	public ResponseEntity<List<Item>> createItem(@RequestBody Item item) {
+	public ResponseEntity<Item> createItem(@RequestBody Item item) {
 		try {
 			return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
 		} catch (ItemNotValidException | UserNotValidException | NullPointerException e) {
