@@ -35,7 +35,7 @@ public class Item {
 //	@JsonBackReference
 //	@OneToOne(mappedBy = "item")
 //	private Bid bid;
-	public Item(List<Image2> images, User user, Category category, String name, String description, long startPrice,
+	public Item(List<Image> images, User user, Category category, String name, String description, long startPrice,
 		long buyItPrice, Timestamp endTime, long bidIncrement) {
 		this.images = images;
 		this.user = user;
@@ -51,7 +51,7 @@ public class Item {
 
 	@OneToMany(targetEntity = Image.class, mappedBy = "item")
 	@JsonIgnore
-	private List<Image2> images;
+	private List<Image> images;
 
 	@JoinColumn
 	@ManyToOne(targetEntity = User.class, optional = false)

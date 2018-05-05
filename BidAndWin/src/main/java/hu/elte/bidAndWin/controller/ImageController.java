@@ -16,24 +16,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import hu.elte.bidAndWin.annotation.Role;
-import hu.elte.bidAndWin.domain.Image2;
-import hu.elte.bidAndWin.service.ImageService2;
+import hu.elte.bidAndWin.domain.Image;
+import hu.elte.bidAndWin.service.ImageService;
 import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
 
 @RestController
-@RequestMapping(value = "/api/image2")
-public class ImageController2 {
+@RequestMapping(value = "/api/image")
+public class ImageController {
 
 	@Autowired
-	private ImageService2 imageService;
+	private ImageService imageService;
 
 	@Autowired
 	private UserService userService;
 
 	@Role({ADMIN, USER})
-	@PostMapping("/uploadimage/")
-	public ResponseEntity<Image2> createImage(@RequestBody Image2 image) {
+	@PostMapping("/uploadimage")
+	public ResponseEntity<Image> createImage(@RequestBody Image image) {
 		try {
 			return ResponseEntity.ok(imageService.uploadImage(image ,userService.getLoggedInUser()));
 		} catch (UserNotValidException | IOException | NullPointerException e) {
@@ -43,7 +43,7 @@ public class ImageController2 {
 
 	@Role({ADMIN, USER})
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Image2> getImageByItemId(@PathVariable(value = "id") long id) {
+	public ResponseEntity<Image> getImageByItemId(@PathVariable(value = "id") long id) {
 		try {
 			return ResponseEntity.ok(imageService.getImageByItemId(id, userService.getLoggedInUser()));
 		} catch (UserNotValidException | NullPointerException e) {
@@ -54,7 +54,7 @@ public class ImageController2 {
 
 	@Role({ADMIN, USER})
 	@GetMapping("/all")
-	public ResponseEntity<List<Image2>> getAllImages() {
+	public ResponseEntity<List<Image>> getAllImages() {
 		return ResponseEntity.ok(imageService.getAllImages());
 	}
 

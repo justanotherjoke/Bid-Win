@@ -13,6 +13,7 @@ export class ItemService {
   items: Item[];
   listedItems: Item[];
   chosenItem: Item;
+  base64:String;
   bids:{
     id?:number;
     item?:Item;
@@ -40,25 +41,25 @@ export class ItemService {
   }
   uploadItem(item: Item):Promise<Item[]>{
     let img:{
-      pic?:File,
+      pic?:String,
       itemId?:number,
     };
     img={};
-    img.pic=item.file;
-    item.file=undefined;
+    img.pic=item.picture;
+    item.picture=undefined;
     const response$: Observable<any> = this.http.post('/api/items/createitem', item);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise
       .then(res => res.json())
       .then(responseItem => {
-        if(img.pic.size!==0){
+        if(img.pic.length!==0){
           img.itemId=responseItem.id;
           this.uploadPicture(img);
         }
         return this.getAllItems();
       });
   }
-  uploadPicture(img:{file?:File, itemId?: number}) {
+  /*uploadPicture(img:{file?:File, itemId?: number}) {
     var formData: FormData = new FormData();
     formData.append("itemId", img.itemId.toString());
     formData.append("file", img.file);
@@ -68,14 +69,14 @@ export class ItemService {
     });
     xhr.open("POST", "/api/image/uploadimage", true);
     xhr.send(formData);
-}
-  /*uploadPicture(img:{file?:File, itemId?: number}):Promise<{
+}*/
+  uploadPicture(img:{pic?:String, itemId?: number}):Promise<{
     id:number,
-    file:File,
+    file:String,
     itemId:number,
   }>{
-    console.log(img.file);
-    const response$: Observable<any> = this.http.post('/api/image/uploadimage', img);
+    let sendPic:{pic:String, item:Item}={pic:img.pic.substring(23), item:{id:img.itemId}};
+    const response$: Observable<any> = this.http.post('/api/image/uploadimage', sendPic);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise
       .then(res => res.json())
@@ -83,7 +84,7 @@ export class ItemService {
         this.images.push(responseImage);
         return responseImage;
       });
-  }*/
+  }
   getAllImages() :Promise<{
     id?:number;
     pic?:String;

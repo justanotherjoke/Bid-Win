@@ -6,28 +6,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import hu.elte.bidAndWin.domain.Image2;
+import hu.elte.bidAndWin.domain.Image;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
-import hu.elte.bidAndWin.repository.ImageRepository2;
 import hu.elte.bidAndWin.repository.ItemRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import hu.elte.bidAndWin.repository.ImageRepository;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
 	@Autowired))
-public class ImageService2 {
+public class ImageService {
 
-	private ImageRepository2 imageRepository;
+	private ImageRepository imageRepository;
 	private UserRepository userRepository;
 	private ItemRepository itemRepository;
 
-	public Image2 getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
+	public Image getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
 
 		@NonNull
-		Image2 im = imageRepository.findByItemId(id);
+		Image im = imageRepository.findByItemId(id);
 
 		if (im.getItem().getUser().getId() == loggedInUser.getId()) {
 			return imageRepository.findByItemId(id);
@@ -36,11 +36,11 @@ public class ImageService2 {
 		}
 	}
 
-	public List<Image2> getAllImages() {
+	public List<Image> getAllImages() {
 		return imageRepository.findAll();
 	}
 
-	public Image2 uploadImage(@NonNull Image2 image, @NonNull User user)
+	public Image uploadImage(@NonNull Image image, @NonNull User user)
 		throws IOException, UserNotValidException {
 		
 
@@ -54,13 +54,13 @@ public class ImageService2 {
 
 		try {
 			@NonNull
-			Image2 image2 = imageRepository.findByItemId(image.getItem().getId());
+			Image image2 = imageRepository.findByItemId(image.getItem().getId());
 
 			image2.setPic(image.getPic());
 			return imageRepository.save(image);
 
 		} catch (NullPointerException e) {
-			Image2 im = new Image2();
+			Image im = new Image();
 			im.setPic(image.getPic());
 			im.setItem(itemRepository.findById(image.getItem().getId()));
 			return imageRepository.save(im);

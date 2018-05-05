@@ -13,21 +13,21 @@ export class ItemComponent implements OnInit {
   item: Item;
   model:{bid?:number};
   constructor(
-    private itemSerivce : ItemService,
+    private itemService : ItemService,
     private authService : AuthService,
   ) {
-    this.item = this.itemSerivce.getChosenItem();
+    this.item = this.itemService.getChosenItem();
     this.model={bid:this.item.currentPrice+this.item.bidIncrement};
   }
   isOwner():boolean{
     return this.authService.getLoggedInUsername()===this.item.user.username;
   }
   vege():boolean{
-    return false;
+    return this.authService.time<this.item.endTime;
   }
   makebid(){
     let bid:{item:Item, bidOffer:number}={item:{id:this.item.id}, bidOffer:this.model.bid};
-    this.itemSerivce.makebid(bid);
+    this.itemService.makebid(bid);
   }
   ngOnInit() {
   }

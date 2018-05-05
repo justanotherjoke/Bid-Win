@@ -31,6 +31,11 @@ export class ItemlistComponent implements OnInit {
     console.log(bid);
   }
   vege(id:number):boolean{
+    for(let i = 0; i < this.items.length; i++){
+      if(this.items[i].id===id){
+        return this.authService.time<this.items[i].endTime;
+      }
+    }
     return false;
   }
 }

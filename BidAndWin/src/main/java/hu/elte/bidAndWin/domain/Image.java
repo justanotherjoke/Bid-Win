@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image2 {
+public class Image {
 
-	public Image2(String imageStr, String path, Item item) {
+	public Image(String imageStr, String path, Item item) {
 		this.pic = imageStr;
 		this.item = item;
 	}
