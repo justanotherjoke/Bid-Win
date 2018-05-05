@@ -10,6 +10,7 @@ import { AuthService } from '../../../auth.service';
 })
 export class ItemlistComponent implements OnInit {
   items: Item[];
+  itemid: number;
   constructor(
     private itemService: ItemService,
     private authService: AuthService,
@@ -25,6 +26,9 @@ export class ItemlistComponent implements OnInit {
   }
   setChosenItem(itemid:number){
     this.itemService.setChosenItem(itemid);
+  }
+  makebid(bid){
+    console.log(bid);
   }
   vege(id:number):boolean{
     return false;

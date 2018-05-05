@@ -11,19 +11,23 @@ import { AuthService } from '../../../auth.service';
 export class ItemComponent implements OnInit {
 
   item: Item;
-  model: Item;
+  model:{bid?:number};
   constructor(
     private itemSerivce : ItemService,
     private authService : AuthService,
   ) {
     this.item = this.itemSerivce.getChosenItem();
-    this.model = this.item;
+    this.model={bid:this.item.currentPrice+this.item.bidIncrement};
   }
   isOwner():boolean{
-    return this.authService.getLoggedInUsername()===this.model.user.username;
+    return this.authService.getLoggedInUsername()===this.item.user.username;
   }
   vege():boolean{
     return false;
+  }
+  makebid(){
+    let bid:{item:Item, bidOffer:number}={item:{id:this.item.id}, bidOffer:this.model.bid};
+    this.itemSerivce.makebid(bid);
   }
   ngOnInit() {
   }

@@ -144,6 +144,18 @@ export class ItemService {
       }
     }
   }
+  makebid(bid:{item:Item, bidOffer:number}) : Promise<{itemId: number, bidOffer: number}>{
+    console.log(bid);
+    const response$: Observable<any> = this.http.get('/api/bids/makebid');
+    const responsePromise: Promise<any> = response$.toPromise();
+    return responsePromise
+      .then(res => res.json())
+      .then(responseBid => {
+        this.bids.push(responseBid);
+        this.fuseItemsBidsImages();
+        return responseBid;
+      });
+  }
   getAllCategories() :Promise<String[]>{
     const response$: Observable<any> = this.http.get('/api/category/all');
     const responsePromise: Promise<any> = response$.toPromise();
