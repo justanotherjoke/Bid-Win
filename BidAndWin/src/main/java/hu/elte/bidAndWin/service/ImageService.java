@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import hu.elte.bidAndWin.domain.Image;
+import hu.elte.bidAndWin.domain.Image2;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
-import hu.elte.bidAndWin.repository.ImageRepository;
+import hu.elte.bidAndWin.repository.ImageRepository2;
 import hu.elte.bidAndWin.repository.ItemRepository;
 import hu.elte.bidAndWin.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,16 +18,16 @@ import lombok.NonNull;
 @Service
 @AllArgsConstructor(onConstructor = @__(
 	@Autowired))
-public class ImageService {
+public class ImageService2 {
 
-	private ImageRepository imageRepository;
+	private ImageRepository2 imageRepository;
 	private UserRepository userRepository;
 	private ItemRepository itemRepository;
 
-	public Image getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
+	public Image2 getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
 
 		@NonNull
-		Image im = imageRepository.findByItemId(id);
+		Image2 im = imageRepository.findByItemId(id);
 
 		if (im.getItem().getUser().getId() == loggedInUser.getId()) {
 			return imageRepository.findByItemId(id);
@@ -37,17 +36,17 @@ public class ImageService {
 		}
 	}
 
-	public List<Image> getAllImages() {
+	public List<Image2> getAllImages() {
 		return imageRepository.findAll();
 	}
 
-	public Image uploadImage(@NonNull MultipartFile file, long id, @NonNull User user)
+	public Image2 uploadImage(@NonNull Image2 image, @NonNull User user)
 		throws IOException, UserNotValidException {
+		
 
 		@NonNull
-		Item it = itemRepository.findById(id);
+		Item it = itemRepository.findById(image.getItem().getId());
 
-		//System.out.println(user.getId() + "hey");
 		if (it.getUser().getId() != user.getId()) {
 			//System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
 			throw new UserNotValidException();
@@ -55,15 +54,15 @@ public class ImageService {
 
 		try {
 			@NonNull
-			Image image = imageRepository.findByItemId(id);
+			Image2 image2 = imageRepository.findByItemId(image.getItem().getId());
 
-			image.setPic(file.getBytes());
+			image2.setPic(image.getPic());
 			return imageRepository.save(image);
 
 		} catch (NullPointerException e) {
-			Image im = new Image();
-			im.setPic(file.getBytes());
-			im.setItem(itemRepository.findById(id));
+			Image2 im = new Image2();
+			im.setPic(image.getPic());
+			im.setItem(itemRepository.findById(image.getItem().getId()));
 			return imageRepository.save(im);
 		}
 	}

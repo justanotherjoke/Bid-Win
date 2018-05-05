@@ -17,17 +17,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class Image2 {
 
-	public Image(byte[] pic, String path, Item item) {
-		this.pic = pic;
+	public Image2(String imageStr, String path, Item item) {
+		this.pic = imageStr;
 		this.item = item;
 	}
 
-//	@JoinColumn
-//    @ManyToOne(targetEntity = Item.class, optional = false)
-//    @JsonIgnoreProperties("images")
-//    private Item item;
 	@OneToOne
 	@JoinColumn(name = "item_id")
 	private Item item;
@@ -36,9 +32,8 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Lob
-	@Column(name = "pic")
-	private byte[] pic;
+	@Column(columnDefinition="TEXT")
+	private String pic;
 }
 
 //to do:noargsconstruktor hasznalva van imageserviceben-- nem kene
