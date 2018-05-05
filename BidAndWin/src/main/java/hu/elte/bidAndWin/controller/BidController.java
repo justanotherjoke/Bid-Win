@@ -68,7 +68,6 @@ public class BidController {
             updated = bidService.makeBid(bid, userService.getLoggedInUser());
             return ResponseEntity.ok(updated);
         } catch (BidNotValidException | NullPointerException | UserNotValidException e) {
-        	e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
