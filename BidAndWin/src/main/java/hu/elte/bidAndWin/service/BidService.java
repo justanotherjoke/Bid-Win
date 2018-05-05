@@ -50,8 +50,8 @@ public class BidService {
 	private boolean validateItemTime(Item item) {
 		Date date = new Date();
 		Timestamp currentTime = new Timestamp(date.getTime());
-		System.out.println(item.getEndTime());
-		System.out.println(currentTime);
+//		System.out.println(item.getEndTime());
+//		System.out.println(currentTime);
 
 		if (currentTime.before(item.getEndTime())) {
 
@@ -61,15 +61,15 @@ public class BidService {
 	}
 
 
-	public Bid makeBid(long itemId, @NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
-			Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(itemId);
+	public Bid makeBid(@NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
+			Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(bid.getItem().getId());
 
 			System.out.println(bestBid.getId() + " " + bestBid.getItem().getId() + " " + bestBid.getBidOffer());
 			
 			@NonNull
-			Item item = itemRepository.findById(itemId);
+			Item item = itemRepository.findById(bid.getItem().getId());
 			
-			if(item.getUser().getId() == user.getId()) {
+			if(item.getUser().getId() == user.getId()) { // saját tárgyra ne licitáljunk! 
 				throw new UserNotValidException();
 			}
 			

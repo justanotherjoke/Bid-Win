@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,11 +61,11 @@ public class BidController {
 	
 		
 	@Role({ADMIN, USER} )
-    @PutMapping("/{id}")
-    private ResponseEntity<Bid> makeBid(@PathVariable long id, @RequestBody Bid bid) {
+    @PostMapping("/makebid")
+    private ResponseEntity<Bid> makeBid(@RequestBody Bid bid) {
         Bid updated;
         try {
-            updated = bidService.makeBid(id, bid, userService.getLoggedInUser());
+            updated = bidService.makeBid(bid, userService.getLoggedInUser());
             return ResponseEntity.ok(updated);
         } catch (BidNotValidException | NullPointerException | UserNotValidException e) {
             return ResponseEntity.badRequest().build();
