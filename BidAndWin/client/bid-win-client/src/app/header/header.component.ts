@@ -13,7 +13,13 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService : AuthService,
     //private router: Router,
-  ) {}
+  ) {
+    this.authService.getServerTime();
+    setInterval(function(){
+      let milisecs= new Date().valueOf() + authService.timeSub;
+      authService.time=new Date(milisecs);
+    },1000);
+  }
 
   ngOnInit() {
   }
