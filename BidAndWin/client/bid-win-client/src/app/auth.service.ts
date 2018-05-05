@@ -7,11 +7,26 @@ import { User } from './user';
 @Injectable()
 export class AuthService {
   user: User;
+  serverTime: Date;
+  time:Date;
+  timeSub:number;
   //private banned: boolean;
   constructor(
     private http: Http,
   ) {
-    //this.banned=false;
+  }
+  public getServerTime():Promise<Date>{
+    const response$: Observable<any> = this.http.get('api/systime/get');
+    const responsePromise: Promise<any> = response$.toPromise();
+    return responsePromise
+      .then(res => res.json())
+      .then(serverTime => {
+        this.time = new Date();
+        this.serverTime = serverTime;
+        this.timeSub=this.time.valueOf()-new Date(this.serverTime).valueOf();
+        return serverTime;
+      });
+
   }
   public getLoggedInUsername(): String{
     if(this.isLoggedIn()){

@@ -4,4 +4,5 @@
   <div class="link" *ngIf="!isLoggedIn()"><a routerLink="/registration">Regisztráció</a></div>
   <div class="link" *ngIf="isLoggedIn()"><a routerLink="/user/items">Tárgyak</a></div>
   <div class="link" *ngIf="isLoggedIn()"><a routerLink="/user/settings">Beállítások</a></div>
+  <div class="link">{{authService.time | date : 'yyyy.MM.dd HH:mm:ss'}}</div>
 </div>

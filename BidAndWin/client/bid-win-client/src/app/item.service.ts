@@ -146,7 +146,7 @@ export class ItemService {
   }
   makebid(bid:{item:Item, bidOffer:number}) : Promise<{itemId: number, bidOffer: number}>{
     console.log(bid);
-    const response$: Observable<any> = this.http.get('/api/bids/makebid');
+    const response$: Observable<any> = this.http.post('/api/bids/makebid', bid);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise
       .then(res => res.json())
