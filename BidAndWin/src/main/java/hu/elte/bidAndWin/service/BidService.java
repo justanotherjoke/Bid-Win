@@ -50,8 +50,6 @@ public class BidService {
 	private boolean validateItemTime(Item item) {
 		Date date = new Date();
 		Timestamp currentTime = new Timestamp(date.getTime());
-//		System.out.println(item.getEndTime());
-//		System.out.println(currentTime);
 
 		if (currentTime.before(item.getEndTime())) {
 
@@ -63,8 +61,6 @@ public class BidService {
 
 	public Bid makeBid(@NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
 			Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(bid.getItem().getId());
-
-			System.out.println(bestBid.getId() + " " + bestBid.getItem().getId() + " " + bestBid.getBidOffer());
 			
 			@NonNull
 			Item item = itemRepository.findById(bid.getItem().getId());
@@ -77,16 +73,19 @@ public class BidService {
 				System.out.println("vége a licitnek");
 				throw new BidNotValidException();
 			}
-			
 			if(bid.getBidOffer() > bestBid.getBidOffer() ) {
 				item.setBestBidderId(user.getId());
-				if(bestBid.getUser().getId() == bid.getUser().getId()) { // ha a saját licitemet akarom megemelni... mondjuk, hogy a villámárat megadjam
+				if(bestBid.getUser().getId() == user.getId()) { // ha a saját licitemet akarom megemelni... mondjuk, hogy a villámárat megadjam
 					bestBid.setBidOffer(bid.getBidOffer());
+					itemRepository.save(item);
 					return bidRepository.save(bestBid);
-				}
+				} else {
 				bid.setItem(bestBid.getItem());
 				bid.setUser(user);
+				
+				itemRepository.save(item);
 				return bidRepository.save(bid);
+				}
 			}
 
 			throw new BidNotValidException();
