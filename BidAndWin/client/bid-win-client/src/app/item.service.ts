@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import {Category} from "./category";
 import {Item} from "./item";
 import { isUndefined } from 'util';
-import { and } from '@angular/router/src/utils/collection';
 import { Bid } from './bid';
 
 @Injectable()
