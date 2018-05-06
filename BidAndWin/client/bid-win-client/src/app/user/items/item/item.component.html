@@ -16,14 +16,14 @@
         <td>{{item.description}}</td>
         <td>{{item.buyItPrice}}</td>
         <td>{{item.endTime | date : 'yyyy.MM.dd HH:mm:ss'}}</td>
-        <td *ngIf="item.currentPrice<item.buyItPrice && !vege(item.id);then licit else elkelt"></td>
+        <td *ngIf="item.currentPrice<item.buyItPrice && !vege();then licit else elkelt"></td>
           <ng-template #licit><td><input type="text"
           name="bid" [(ngModel)]="model.bid"
           #bid="ngModel"
           placeholder="{{item.currentPrice + item.bidIncrement}}">
           <input type="button" value="Licitálás!" (click)="makebid()"/></td>
         </ng-template>
-        <ng-template #elkelt><td><a class="vege">Elkelt!</a></td></ng-template>
+        <ng-template #elkelt><td><a class="vege" *ngIf="vege()">Lejárt az aukció!</a><a class="vege" *ngIf="!vege()">Elkelt!</a></td></ng-template>
     </tr>
     <tr *ngIf="isOwner()">
       
