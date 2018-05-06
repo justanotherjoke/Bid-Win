@@ -11,10 +11,10 @@ insert into category(id, name) values (4, 'konyv');
 insert into category(id, name) values (5, 'elektronika');
 
 
-insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('a', 3, 'nagyon jo kis leiras', 2500, 1, 1000, 1, timestamp '2017-10-12 21:22:23', 100);
-insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('b', 4, 'nagyon jo kis auto', 499999, 2, 300000, 2, timestamp '2018-10-12 21:22:23', 1000);
+insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('a', 2, 'nagyon jo kis leiras', 2500, 1, 1000, 1, timestamp '2017-10-12 21:22:23', 100);
+insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('b', 7, 'nagyon jo kis auto', 499999, 2, 300000, 2, timestamp '2018-10-12 21:22:23', 1000);
 insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('c', 3, 'a leggyorsabb auto', 499999, 2, 300000, 2, timestamp '2018-05-12 21:22:23', 2000);
-insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('d', 5, 'rossz leiras', 300000, 5, 100000, 3, timestamp '2018-07-20 10:10:10', 1000);
+insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('d', 4, 'rossz leiras', 300000, 5, 100000, 3, timestamp '2018-07-20 10:10:10', 1000);
 insert into item(name, best_bid_id, description, buy_it_price, category_id, start_price, user_id, end_time, bid_increment) values ('e', -1, 'rossz leiras ddd', 30000, 5, 1000, 1, timestamp '2018-08-20 10:10:10', 2000);
 
 insert into bid(user_id, item_id, bid_offer) values (1, 2, 300000);
