@@ -85,5 +85,5 @@ public class Item {
 	private long bidIncrement;
 
 	@Column(nullable = false)
-	private long bestBidderId;
+	private long bestBidId;
 }

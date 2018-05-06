@@ -30,7 +30,7 @@ public class ItemService {
 		if (valid) {
 			Item it = new Item();
 			it.setUser(user);
-			it.setBestBidderId(-1);
+			it.setBestBidId(-1);
 			
 			it.setBidIncrement(item.getBidIncrement());
 			it.setBuyItPrice(item.getBuyItPrice());
