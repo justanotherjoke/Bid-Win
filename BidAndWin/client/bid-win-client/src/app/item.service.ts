@@ -203,6 +203,7 @@ export class ItemService {
     for(let i = 0; i<this.items.length; i++){
       let bidkesz=false;
       let pickesz=false;
+      this.items[i].endTime = new Date(this.items[i].endTime);
       for(let j = 0; j<this.bids.length || j<this.images.length; j++){
         if(!bidkesz &&j<this.bids.length){
           if(this.bids[j].id===this.items[i].bestBidId){

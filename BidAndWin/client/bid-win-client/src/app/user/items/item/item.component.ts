@@ -30,7 +30,7 @@ export class ItemComponent implements OnInit {
     return this.authService.getLoggedInUsername()===this.item.user.username;
   }
   vege():boolean{
-    return this.authService.time<this.item.endTime;
+    return this.authService.time.valueOf()>this.item.endTime.valueOf();
   }
   readUrl(event:any) {
     if (event.target.files && event.target.files[0]) {
