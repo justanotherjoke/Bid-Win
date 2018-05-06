@@ -69,7 +69,7 @@ export class ItemService {
       .then(res => res.json())
       .then(responseItem => {
         if(img.pic.length!==0){
-          img.itemId=responseItem.id;
+          img.itemId=item.id;
           this.uploadPicture(img);
         }
         return this.getAllItems();
@@ -86,6 +86,13 @@ export class ItemService {
     return responsePromise
       .then(res => res.json())
       .then(responseImage => {
+        for(let i = 0; i < this.images.length; i++){
+          if(this.images[i].item.id===responseImage.item.id){
+            this.images[i]=responseImage;
+            this.fuseItemsBidsImages();
+            return responseImage;
+          }
+        }
         this.images.push(responseImage);
         this.fuseItemsBidsImages();
         return responseImage;
