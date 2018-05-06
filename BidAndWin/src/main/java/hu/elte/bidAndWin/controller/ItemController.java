@@ -69,11 +69,11 @@ public class ItemController {
 	}
 
 	@Role({ADMIN, USER})
-	@PutMapping("/{id}")
-	private ResponseEntity<Item> updateItem(@PathVariable long id, @RequestBody Item item) {
+	@PostMapping("/updateitem")
+	private ResponseEntity<Item> updateItem(@RequestBody Item item) {
 		try {
 
-			return ResponseEntity.ok(itemService.updateItem(id, item, userService.getLoggedInUser()));
+			return ResponseEntity.ok(itemService.updateItem(item.getId(), item, userService.getLoggedInUser()));
 
 		} catch (ItemNotValidException | UserNotValidException | NullPointerException e) {
 

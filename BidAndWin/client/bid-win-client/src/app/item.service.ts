@@ -6,6 +6,7 @@ import {Category} from "./category";
 import {Item} from "./item";
 import { isUndefined } from 'util';
 import { and } from '@angular/router/src/utils/collection';
+import { Bid } from './bid';
 
 @Injectable()
 export class ItemService {
@@ -14,12 +15,7 @@ export class ItemService {
   listedItems: Item[];
   chosenItem: Item;
   base64:String;
-  bids:{
-    id?:number;
-    item?:Item;
-    userId?:number;
-    bidOffer?:number;
-  }[];
+  bids:Bid[];
   images:{
     id?:number;
     pic?:String;
@@ -59,29 +55,39 @@ export class ItemService {
         return this.getAllItems();
       });
   }
-  /*uploadPicture(img:{file?:File, itemId?: number}) {
-    var formData: FormData = new FormData();
-    formData.append("itemId", img.itemId.toString());
-    formData.append("file", img.file);
-    var xhr = new XMLHttpRequest();
-    xhr.upload.addEventListener("progress", (ev: ProgressEvent) => {
-        //You can handle progress events here if you want to track upload progress (I used an observable<number> to fire back updates to whomever called this upload)
-    });
-    xhr.open("POST", "/api/image/uploadimage", true);
-    xhr.send(formData);
-}*/
+  updateItem(item:Item):Promise<Item[]>{
+    let img:{
+      pic?:String,
+      itemId?:number,
+    };
+    img={};
+    img.pic=item.picture;
+    item.picture=undefined;
+    const response$: Observable<any> = this.http.post('/api/items/updateitem', item);
+    const responsePromise: Promise<any> = response$.toPromise();
+    return responsePromise
+      .then(res => res.json())
+      .then(responseItem => {
+        if(img.pic.length!==0){
+          img.itemId=responseItem.id;
+          this.uploadPicture(img);
+        }
+        return this.getAllItems();
+      });
+  }
   uploadPicture(img:{pic?:String, itemId?: number}):Promise<{
     id:number,
     file:String,
     itemId:number,
   }>{
-    let sendPic:{pic:String, item:Item}={pic:img.pic.substring(23), item:{id:img.itemId}};
+    let sendPic:{pic:String, item:Item}={pic:img.pic, item:{id:img.itemId}};
     const response$: Observable<any> = this.http.post('/api/image/uploadimage', sendPic);
     const responsePromise: Promise<any> = response$.toPromise();
     return responsePromise
       .then(res => res.json())
       .then(responseImage => {
         this.images.push(responseImage);
+        this.fuseItemsBidsImages();
         return responseImage;
       });
   }
@@ -106,16 +112,10 @@ export class ItemService {
       .then(res => res.json())
       .then(responseItems => {
         this.items = responseItems;
-        //console.log(this.items);
         return responseItems;
       });
   }
-  getAllBids():Promise<{
-    id?:number;
-    itemid?:number;
-    userid?:number;
-    bidOffer?:number;
-  }[]>
+  getAllBids():Promise<Bid[]>
   {
     const response$: Observable<any> = this.http.get('/api/bids/all');
     const responsePromise: Promise<any> = response$.toPromise();
@@ -145,7 +145,7 @@ export class ItemService {
       }
     }
   }
-  makebid(bid:{item:Item, bidOffer:number}) : Promise<{itemId: number, bidOffer: number}>{
+  makebid(bid:Bid) : Promise<Bid>{
     console.log(bid);
     const response$: Observable<any> = this.http.post('/api/bids/makebid', bid);
     const responsePromise: Promise<any> = response$.toPromise();
@@ -153,6 +153,13 @@ export class ItemService {
       .then(res => res.json())
       .then(responseBid => {
         this.bids.push(responseBid);
+        console.log(responseBid);
+        for(let i = 0; i < this.items.length; i++){
+          if(this.items[i].id===responseBid.item.id){
+            this.items[i].bestBidId=responseBid.id;
+            break;
+          }
+        }
         this.fuseItemsBidsImages();
         return responseBid;
       });
@@ -190,11 +197,8 @@ export class ItemService {
       let bidkesz=false;
       let pickesz=false;
       for(let j = 0; j<this.bids.length || j<this.images.length; j++){
-        if(this.items[i].bestBidderId===-1){
-          bidkesz=true;
-        }
         if(!bidkesz &&j<this.bids.length){
-          if(this.bids[j].item.id===this.items[i].bestBidderId){
+          if(this.bids[j].id===this.items[i].bestBidId){
             this.items[i].currentPrice=this.bids[j].bidOffer;
             bidkesz=true;
           }

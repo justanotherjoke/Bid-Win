@@ -14,5 +14,5 @@ export interface Item {
     user? : User;
     startPrice? : number;
     file? : File;
-    bestBidderId?: number;
+    bestBidId?: number;
   }

@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div id="itemDetails">
-  <form #form="ngForm" (submit)="onSubmit()">
+  <form #form="ngForm">
   <table class="itemtable">
     <tr>
       <th>Tárgy neve</th>
@@ -28,9 +28,9 @@
     <tr *ngIf="isOwner()">
       
         <td><input type="text" name="name" [(ngModel)]="item.name" #name="ngModel"/></td>
-        <td><img src="data:image/jpeg;base64,{{item.picture}}"/><input type="file" name="file" [(ngModel)]="item.file" #file="ngModel" accept="image/jpeg"/></td>
+        <td><img src="data:image/jpeg;base64,{{item.picture}}"/><input type="file" name="file" [(ngModel)]="item.file" #file="ngModel" accept="image/jpeg" (change)="readUrl($event)"/></td>
         <td><textarea name="description" [(ngModel)]="item.description" #description="ngModel"></textarea></td>
-        <td><div *ngIf="item.currentPrice==item.startPrice;then mod else nonmod"></div><ng-template #mod><input type="text" name="buyItPrice" [(ngModel)]="model.buyItPrice" /></ng-template><ng-template #nonmod>{{model.buyItPrice}}</ng-template></td>
+        <td><div *ngIf="item.currentPrice==item.startPrice"><input type="text" name="buyItPrice" [(ngModel)]="item.buyItPrice" /></div><div *ngIf="item.currentPrice>item.startPrice">{{item.buyItPrice}}</div></td>
         <td *ngIf="!(item.currentPrice<item.buyItPrice && !vege(item.id))"><a class="vege">Elkelt!</a></td>
         <td *ngIf="item.currentPrice<item.buyItPrice && !vege(item.id)"><input type="button" value="Módosít!" (click)="modify()"></td>
     </tr>
