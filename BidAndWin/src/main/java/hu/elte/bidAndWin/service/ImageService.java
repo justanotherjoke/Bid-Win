@@ -57,7 +57,7 @@ public class ImageService {
 			Image image2 = imageRepository.findByItemId(image.getItem().getId());
 
 			image2.setPic(image.getPic());
-			return imageRepository.save(image);
+			return imageRepository.save(image2);
 
 		} catch (NullPointerException e) {
 			Image im = new Image();
