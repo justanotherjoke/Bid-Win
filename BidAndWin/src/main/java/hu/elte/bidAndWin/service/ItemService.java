@@ -78,8 +78,10 @@ public class ItemService {
 		if (currentItem.getUser().getId() != user.getId()) {
 			throw new UserNotValidException();
 		}
-		if (validateItem(item)) {
-			item.setUser(user);
+		if (validateItem(currentItem)) {
+			currentItem.setName(item.getName());
+			currentItem.setDescription(item.getDescription());
+			currentItem.setBuyItPrice(item.getBuyItPrice());
 			return itemRepository.save(item);
 		} else {
 			throw new ItemNotValidException();
