@@ -56,6 +56,7 @@ export class ItemComponent implements OnInit {
   }
   modify(){
     this.item.picture=window.IMAGE_RESULT.substring(23);
+    window.IMAGE_RESULT=undefined;
     this.itemService.updateItem(this.item);
   }
 

@@ -51,6 +51,7 @@ export class ItemuploadComponent implements OnInit {
     this.model.category={id:this.model.categoryId};
     this.model.categoryId=undefined;
     this.model.picture=window.IMAGE_RESULT.substring(23);
+    window.IMAGE_RESULT=undefined;
     this.itemService.uploadItem(this.model);
     //this.router.navigateByUrl("/index");
   }
