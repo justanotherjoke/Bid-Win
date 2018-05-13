@@ -28,10 +28,10 @@ Image (id, auction_id, base64str)<br>
 * Jenkins
 
 ##### Jenkins beállítása:
-![Jenkins beállítása](docs/images/jenkins1.png)
-![Jenkins beállítása2](docs/images/jenkins1.png)
-![Jenkins beállítása3](docs/images/jenkins1.png)
-![Jenkins futtatása](docs/images/jenkins4.png)
+![Jenkins beállítása](BidAndWin/docs/images/jenkins1.png)
+![Jenkins beállítása2](BidAndWin/docs/images/jenkins1.png)
+![Jenkins beállítása3](BidAndWin/docs/images/jenkins1.png)
+![Jenkins futtatása](BidAndWin/docs/images/jenkins4.png)
 
 ## Frontend megvalósítása
 
