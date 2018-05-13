@@ -24,7 +24,14 @@ Image (id, auction_id, base64str)<br>
 * Lombok
 * Git, GiHub
 * Postman, ARC (teszteléshez)
+* https://www.eclemma.org/ (teszteléshez)
+* Jenkins
 
+##### Jenkins beállítása:
+![Jenkins beállítása](docs/images/jenkins1.png)
+![Jenkins beállítása2](docs/images/jenkins1.png)
+![Jenkins beállítása3](docs/images/jenkins1.png)
+![Jenkins futtatása](docs/images/jenkins4.png)
 
 ## Frontend megvalósítása
 
@@ -33,6 +40,7 @@ Image (id, auction_id, base64str)<br>
 #### Felhasznált eszközök
  * Node.js
  * Angular
+ * DeepScan (https://marketplace.visualstudio.com/items?itemName=DeepScan.vscode-deepscan)
  
 #### Fejlesztői környezet beállítása, indítása
 ### Backend
