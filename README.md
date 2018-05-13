@@ -31,6 +31,8 @@ Image (id, auction_id, base64str)<br>
 ![Jenkins beállítása](BidAndWin/docs/images/jenkins1.png)
 ![Jenkins beállítása2](BidAndWin/docs/images/jenkins1.png)
 ![Jenkins beállítása3](BidAndWin/docs/images/jenkins1.png)
+
+##### Jenkins futtatása:
 ![Jenkins futtatása](BidAndWin/docs/images/jenkins4.png)
 
 ## Frontend megvalósítása
