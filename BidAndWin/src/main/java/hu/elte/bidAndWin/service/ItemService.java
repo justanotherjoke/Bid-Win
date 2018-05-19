@@ -25,7 +25,7 @@ public class ItemService {
 	private UserRepository userRepository;
 	private BidRepository bidRepository;
 
-	public Item createItem(@NonNull Item item, @NonNull User user) throws ItemNotValidException, UserNotValidException {
+	public Item createItem(@NonNull Item item, @NonNull User user) throws ItemNotValidException {
 		boolean valid = validateItem(item);
 		if (valid) {
 			Item it = new Item();
@@ -40,12 +40,10 @@ public class ItemService {
 			it.setStartPrice(item.getStartPrice());
 			it.setCategory(item.getCategory());
 		
-			itemRepository.save(it);
-
 			Bid bid = new Bid(it, -1, user); 
 			bidRepository.save(bid);
 
-			return it;
+			return itemRepository.save(it);
 		} else {
 			throw new ItemNotValidException();
 		}

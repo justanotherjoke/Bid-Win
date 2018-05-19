@@ -128,7 +128,7 @@ public class TestBidService {
 
     @Test(expected = NullPointerException.class)
     public void testGetBid_NullPointerException2() throws UserNotValidException {
-        doReturn(null).when(bidRepositoryMock).findById(1);
+        doReturn(bidNull).when(bidRepositoryMock).findById(1);
         bidService.getBid(1, userNotEmpty);
     }
 

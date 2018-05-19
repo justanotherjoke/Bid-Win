@@ -112,7 +112,7 @@ public class TestImageService {
 
     @Test(expected = NullPointerException.class)
     public void testgetImageByItemId_NullPointerException2() throws UserNotValidException {
-        doReturn(null).when(imageRepositoryMock).findByItemId(1);
+        doReturn(imageNull).when(imageRepositoryMock).findByItemId(1);
         imageService.getImageByItemId(1, userNotEmpty);
     }
 
@@ -147,7 +147,7 @@ public class TestImageService {
     @Test(expected = NullPointerException.class)
     public void testUploadImage_NullPointerException3() throws IOException, UserNotValidException {
         long id = imageNotEmpty.getItem().getId();
-        doReturn(null).when(itemRepositoryMock).findById(id);
+        doReturn(itemNull).when(itemRepositoryMock).findById(id);
         imageService.uploadImage(imageNotEmpty, userNotEmptyAdmin);
     }
     
@@ -172,7 +172,7 @@ public class TestImageService {
         long itemid = imageNotEmpty.getItem().getId();
         long imageid = imageNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(itemid);
-        doReturn(null).when(imageRepositoryMock).findByItemId(imageid);
+        doReturn(imageNull).when(imageRepositoryMock).findByItemId(imageid);
         doReturn(imageNotEmpty).when(imageRepositoryMock).save(Mockito.any(Image.class));
         assertEquals(imageService.uploadImage(imageNotEmpty, userNotEmptyAdmin), imageNotEmpty);
     }
