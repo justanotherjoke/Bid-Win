@@ -35,5 +35,3 @@ public class Image {
 	@Column(columnDefinition="TEXT")
 	private String pic;
 }
-
-//to do:noargsconstruktor hasznalva van imageserviceben-- nem kene
