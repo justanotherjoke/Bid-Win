@@ -40,10 +40,12 @@ public class TestBidService {
 
     List<Bid> listBidEmpty;
     List<Image> listImageEmpty;
+    List<Category> listCategoryEmpty;
     List<Item> listItemEmpty;
     List<Bid> listBidNotEmpty;
     List<Bid> listBidNotEmptyTwo;
     List<Image> listImageNotEmpty;
+    List<Category> listCategoryNotEmpty;
     List<Item> listItemNotEmpty;
 
     Timestamp timestampFuture;
@@ -68,13 +70,15 @@ public class TestBidService {
     public void setUp() throws Exception {
 
         MockitoAnnotations.initMocks(this);
-        
+
         listBidEmpty = new LinkedList<>();
         listImageEmpty = new LinkedList<>();
+        listCategoryEmpty = new LinkedList<>();
         listItemEmpty = new LinkedList<>();
         listBidNotEmpty = new LinkedList<>();
         listBidNotEmptyTwo = new LinkedList<>();
         listImageNotEmpty = new LinkedList<>();
+        listCategoryNotEmpty = new LinkedList<>();
         listItemNotEmpty = new LinkedList<>();
 
         timestampFuture = new Timestamp(1000000000000000000L);
@@ -94,6 +98,7 @@ public class TestBidService {
         listBidNotEmptyTwo.add(bidNotEmpty);
         listImageNotEmpty.add(imageNotEmpty);
         listItemNotEmpty.add(itemNotEmpty);
+        listCategoryNotEmpty.add(categoryNotEmpty);
     }
 
     @Test
@@ -103,7 +108,7 @@ public class TestBidService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetMyBids_ReturnNullPointerException() {
+    public void testGetMyBids_NullPointerException() {
         bidService.getMyBids(userNull);
     }
 
@@ -115,18 +120,18 @@ public class TestBidService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetBid_ReturnNullPointerException() throws UserNotValidException {
+    public void testGetBid_NullPointerException() throws UserNotValidException {
         bidService.getBid(1, userNull);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetBid_ReturnNullPointerException2() throws UserNotValidException {
+    public void testGetBid_NullPointerException2() throws UserNotValidException {
         doReturn(null).when(bidRepositoryMock).findById(1);
         bidService.getBid(1, userNotEmpty);
     }
 
     @Test(expected = UserNotValidException.class)
-    public void testGetBid_ReturnUserNotValidException() throws UserNotValidException {
+    public void testGetBid_UserNotValidException() throws UserNotValidException {
         doReturn(bidNotEmpty).when(bidRepositoryMock).findById(1);
         bidService.getBid(1, userNotEmpty);
     }
@@ -138,24 +143,24 @@ public class TestBidService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testMakeBid_ReturnNullPointerException() throws BidNotValidException, UserNotValidException {
+    public void testMakeBid_NullPointerException() throws BidNotValidException, UserNotValidException {
         bidService.makeBid(bidNotEmpty, userNull);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testMakeBid_ReturnNullPointerException2() throws BidNotValidException, UserNotValidException {
+    public void testMakeBid_NullPointerException2() throws BidNotValidException, UserNotValidException {
         bidService.makeBid(bidNull, userNotEmpty);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testMakeBid_ReturnNullPointerException3() throws BidNotValidException, UserNotValidException {
+    public void testMakeBid_NullPointerException3() throws BidNotValidException, UserNotValidException {
         long id = bidNotEmpty.getItem().getId();
         doReturn(itemNull).when(itemRepositoryMock).findById(id);
         bidService.makeBid(bidNotEmpty, userNotEmpty);
     }
 
     @Test(expected = UserNotValidException.class)
-    public void testMakeBid_ReturnUserNotValidException() throws BidNotValidException, UserNotValidException {
+    public void testMakeBid_UserNotValidException() throws BidNotValidException, UserNotValidException {
         long id = bidNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(id);
         doReturn(bidNotEmpty).when(bidRepositoryMock).findFirstByItemIdOrderByBidOfferDesc(id);
@@ -163,7 +168,7 @@ public class TestBidService {
     }
 
     @Test(expected = BidNotValidException.class)
-    public void testMakeBid_ReturnBidNotValidException() throws BidNotValidException, UserNotValidException {
+    public void testMakeBid_BidNotValidException() throws BidNotValidException, UserNotValidException {
         long id = bidNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(id);
         doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).findFirstByItemIdOrderByBidOfferDesc(id);
@@ -173,7 +178,7 @@ public class TestBidService {
     }
 
     @Test(expected = BidNotValidException.class)
-    public void testMakeBid_ReturnBidNotValidException2() throws BidNotValidException, UserNotValidException {
+    public void testMakeBid_BidNotValidException2() throws BidNotValidException, UserNotValidException {
         long id = bidNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(id);
         doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).findFirstByItemIdOrderByBidOfferDesc(id);

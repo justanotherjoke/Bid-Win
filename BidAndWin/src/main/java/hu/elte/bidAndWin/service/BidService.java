@@ -62,19 +62,16 @@ public class BidService {
 	public Bid makeBid(@NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
 			@NonNull
 			Item item = itemRepository.findById(bid.getItem().getId());
-                        System.out.println(item.getId());
+                        
                         Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(bid.getItem().getId());
-                        System.out.println(bestBid.getId());
 			
 			if(item.getUser().getId() == user.getId() && bestBid.getUser().getId() != user.getId()) { // saját tárgyra ne licitáljunk! 
 				throw new UserNotValidException();
 			}
 			
 			if (!validateItemTime(item)) {
-				System.out.println("vége a licitnek");
 				throw new BidNotValidException();
 			}
-                        System.out.println("itt vagyok");
 			if(bid.getBidOffer() > bestBid.getBidOffer() ) {
 				//item.setBestBidderId(user.getId());
 				
