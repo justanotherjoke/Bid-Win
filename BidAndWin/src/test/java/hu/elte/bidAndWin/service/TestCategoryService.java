@@ -62,6 +62,7 @@ public class TestCategoryService {
     Category categoryNotEmptyTwo;
     Item itemNotEmpty;
     Image imageNotEmpty;
+    Image imageNotEmptyTwo;
 
     @Before
     public void setUp() throws Exception {
@@ -88,6 +89,7 @@ public class TestCategoryService {
         categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
         itemNotEmpty = spy(new Item(listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100));
         imageNotEmpty = spy(new Image("autoitem", "path", itemNotEmpty));
+        imageNotEmptyTwo = spy(new Image("autoitem2", "path2", itemNotEmpty));
         bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));
         bidNotEmptyOriginal = spy(new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500));
 
@@ -128,7 +130,6 @@ public class TestCategoryService {
     @Test
     public void testCreateCategory_ReturnCategoryList() throws UserNotValidException, CategoryNotValidException {
         doReturn(listCategoryNotEmpty).when(categoryRepositoryMock).findAll();
-        categoryService.createCategory(categoryNotEmptyTwo, userNotEmptyAdmin);
         doReturn(categoryNotEmptyTwo).when(categoryRepositoryMock).save(categoryNotEmptyTwo);
         assertEquals(categoryService.createCategory(categoryNotEmptyTwo, userNotEmptyAdmin), listCategoryNotEmpty);
     }

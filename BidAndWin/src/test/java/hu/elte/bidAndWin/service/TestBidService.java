@@ -65,6 +65,7 @@ public class TestBidService {
     Category categoryNotEmptyTwo;
     Item itemNotEmpty;
     Image imageNotEmpty;
+    Image imageNotEmptyTwo;
 
     @Before
     public void setUp() throws Exception {
@@ -91,6 +92,7 @@ public class TestBidService {
         categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
         itemNotEmpty = spy(new Item(listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100));
         imageNotEmpty = spy(new Image("autoitem", "path", itemNotEmpty));
+        imageNotEmptyTwo = spy(new Image("autoitem2", "path2", itemNotEmpty));
         bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));
         bidNotEmptyOriginal = spy(new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500));
 
@@ -172,8 +174,7 @@ public class TestBidService {
         long id = bidNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(id);
         doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).findFirstByItemIdOrderByBidOfferDesc(id);
-        Timestamp timestampPast = new Timestamp(0);
-        bidNotEmpty.getItem().setEndTime(timestampPast);
+        bidNotEmpty.getItem().setEndTime(new Timestamp(0));
         bidService.makeBid(bidNotEmpty, userNotEmpty);
     }
 
@@ -191,8 +192,8 @@ public class TestBidService {
         long id = bidNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(id);
         doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).findFirstByItemIdOrderByBidOfferDesc(id);
-        bidNotEmptyOriginal.setUser(userNotEmpty);
         doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).save(bidNotEmptyOriginal);
+        bidNotEmptyOriginal.setUser(userNotEmpty); 
         assertEquals(bidService.makeBid(bidNotEmpty, userNotEmpty), bidNotEmptyOriginal);
     }
 
