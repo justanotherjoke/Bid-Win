@@ -18,38 +18,38 @@ import lombok.NonNull;
 @Getter
 public class UserService {
 
-	private User user;
+    private User user;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	public User register( @NonNull User user) {
-		user.setRole(User.Role.USER);
-		return this.user = userRepository.save(user);
-	}
+    public User register(@NonNull User user) {
+        user.setRole(User.Role.USER);
 
-	public User login(@NonNull User user) throws UserNotValidException {
-		if (isValid(user)) {
-			return this.user = userRepository.findByUsername(user.getUsername());
-		}
-		throw new UserNotValidException();
-	}
+        return this.user = userRepository.save(user);
+    }
 
-	private boolean isValid(User user) {
-		return userRepository.findByUsernameAndPassword(
-			user.getUsername(), user.getPassword())
-			.isPresent();
-	}
+    public User login(@NonNull User user) throws UserNotValidException {
+        if (isValid(user)) {
+            return this.user = userRepository.findByUsername(user.getUsername());
+        }
 
-	public boolean isLoggedIn() {
-		return user != null;
-	}
+        throw new UserNotValidException();
+    }
 
-	public User getLoggedInUser() {
-		return user;
-	}
+    private boolean isValid(User user) {
+        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).isPresent();
+    }
 
-	public User logout() {
-		return user = null;
-	}
+    public boolean isLoggedIn() {
+        return user != null;
+    }
+
+    public User getLoggedInUser() {
+        return user;
+    }
+
+    public User logout() {
+        return user = null;
+    }
 }

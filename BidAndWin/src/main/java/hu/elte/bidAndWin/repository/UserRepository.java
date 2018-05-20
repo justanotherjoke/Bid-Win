@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import hu.elte.bidAndWin.domain.User;
 
-public interface UserRepository extends CrudRepository<User, Long>{
+public interface UserRepository extends CrudRepository<User, Long> {
 
-	Optional<User> findByUsernameAndPassword(String username, String password);
+    Optional<User> findByUsernameAndPassword(String username, String password);
 
-	User findByUsername(String username);
+    User findByUsername(String username);
 }

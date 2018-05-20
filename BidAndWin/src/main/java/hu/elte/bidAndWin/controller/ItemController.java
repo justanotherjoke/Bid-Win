@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,72 +25,55 @@ import hu.elte.bidAndWin.service.UserService;
 @RequestMapping(value = "/api/items")
 public class ItemController {
 
-	@Autowired
-	private ItemService itemService;
+    @Autowired
+    private ItemService itemService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Role({ADMIN, USER})
-	@PostMapping("/createitem")
-	public ResponseEntity<Item> createItem(@RequestBody Item item) {
-		try {
-			return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
-		} catch (ItemNotValidException | NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
-
-	@Role({ADMIN, USER})
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Item> getItem(@PathVariable(value = "id") long id) {
-		try {
-			return ResponseEntity.ok(itemService.getItem(id, userService.getLoggedInUser()));
-		} catch (NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
-
-	@Role({ADMIN, USER})
-	@GetMapping("/all")
-	public ResponseEntity<List<Item>> getAllItems() {
-		return ResponseEntity.ok(itemService.getAllItems());
-	}
-
-	@Role({ADMIN, USER})
-	@GetMapping("/myitems")
-	public ResponseEntity<List<Item>> getMyItems() {
-		try {
-			return ResponseEntity.ok(itemService.getMyItems(userService.getLoggedInUser()));
-		} catch (NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
-
-	@Role({ADMIN, USER})
-	@PostMapping("/updateitem")
-	private ResponseEntity<Item> updateItem(@RequestBody Item item) {
-		try {
-
-			return ResponseEntity.ok(itemService.updateItem(item.getId(), item, userService.getLoggedInUser()));
-
-		} catch (ItemNotValidException | UserNotValidException | NullPointerException e) {
-
-			return ResponseEntity.badRequest().build();
-		}
-		//System.out.println("itemnotvalid"); // frontenden akarjuk külön kezelni a hiábkat?
-		//System.out.println("usernatvalid"); // frontenden akarjuk külön kezelni a hiábkat?
-
-		//System.out.println("itemnotvalid"); // frontenden akarjuk külön kezelni a hiábkat?
-		//System.out.println("usernatvalid"); // frontenden akarjuk külön kezelni a hiábkat?
-	}
-	/*       Item updated;
+    @Role({ADMIN, USER})
+    @PostMapping("/createitem")
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
         try {
-            updated = itemService.updateItem(id, item, userService.getLoggedInUser());
-            return ResponseEntity.ok(updated);
-        } catch (Exception ex) {
+            return ResponseEntity.ok(itemService.createItem(item, userService.getLoggedInUser()));
+        } catch (ItemNotValidException | NullPointerException e) {
             return ResponseEntity.badRequest().build();
         }
-    }*/
+    }
 
+    @Role({ADMIN, USER})
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Item> getItem(@PathVariable(value = "id") long id) {
+        try {
+            return ResponseEntity.ok(itemService.getItem(id, userService.getLoggedInUser()));
+        } catch (NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @Role({ADMIN, USER})
+    @GetMapping("/all")
+    public ResponseEntity<List<Item>> getAllItems() {
+        return ResponseEntity.ok(itemService.getAllItems());
+    }
+
+    @Role({ADMIN, USER})
+    @GetMapping("/myitems")
+    public ResponseEntity<List<Item>> getMyItems() {
+        try {
+            return ResponseEntity.ok(itemService.getMyItems(userService.getLoggedInUser()));
+        } catch (NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @Role({ADMIN, USER})
+    @PostMapping("/updateitem")
+    private ResponseEntity<Item> updateItem(@RequestBody Item item) {
+        try {
+            return ResponseEntity.ok(itemService.updateItem(item.getId(), item, userService.getLoggedInUser()));
+        } catch (ItemNotValidException | UserNotValidException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

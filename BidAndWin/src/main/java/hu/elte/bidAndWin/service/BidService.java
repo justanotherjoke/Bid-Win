@@ -18,80 +18,68 @@ import lombok.NonNull;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
-	@Autowired))
+        @Autowired))
 public class BidService {
 
-	private BidRepository bidRepository;
-	private UserRepository userRepository;
-	private ItemRepository itemRepository;
+    private BidRepository bidRepository;
+    private UserRepository userRepository;
+    private ItemRepository itemRepository;
 
-	public List<Bid> getAllBids() {
-		return (List<Bid>) bidRepository.findAll();
-	}
-	
+    public List<Bid> getAllBids() {
+        return (List<Bid>) bidRepository.findAll();
+    }
 
-	public List<Bid> getMyBids(@NonNull User user) {
-		return bidRepository.findByUserId(user.getId());
-	}
+    public List<Bid> getMyBids(@NonNull User user) {
+        return bidRepository.findByUserId(user.getId());
+    }
 
+    public Bid getBid(long id, @NonNull User loggedInUser) throws UserNotValidException {
+        @NonNull
+        Bid bid = bidRepository.findById(id);
 
-	public Bid getBid(long id, @NonNull User loggedInUser) throws UserNotValidException {
+        if (loggedInUser.getId() != bid.getItem().getUser().getId()) {
+            throw new UserNotValidException();
+        }
 
-		@NonNull
-		Bid bid = bidRepository.findById(id);
+        return bidRepository.findById(id);
+    }
 
-		if (loggedInUser.getId() != bid.getItem().getUser().getId()) {
-			throw new UserNotValidException();
-		}
-		return bidRepository.findById(id);
-		// mit dobjunk ha nincs ilyen id?
-	}
+    private boolean validateItemTime(Item item) {
+        Date date = new Date();
+        Timestamp currentTime = new Timestamp(date.getTime());
 
-	private boolean validateItemTime(Item item) {
-		Date date = new Date();
-		Timestamp currentTime = new Timestamp(date.getTime());
+        return currentTime.before(item.getEndTime());
+    }
 
-		if (currentTime.before(item.getEndTime())) {
+    public Bid makeBid(@NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
+        @NonNull
+        Item item = itemRepository.findById(bid.getItem().getId());
 
-			return true;
-		}
-		return false;
-	}
+        Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(bid.getItem().getId());
 
+        if (item.getUser().getId() == user.getId() && bestBid.getUser().getId() != user.getId()) { // saját tárgyra ne licitáljunk! 
+            throw new UserNotValidException();
+        }
 
-	public Bid makeBid(@NonNull Bid bid, @NonNull User user) throws BidNotValidException, UserNotValidException {
-			@NonNull
-			Item item = itemRepository.findById(bid.getItem().getId());
-                        
-                        Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(bid.getItem().getId());
-			
-			if(item.getUser().getId() == user.getId() && bestBid.getUser().getId() != user.getId()) { // saját tárgyra ne licitáljunk! 
-				throw new UserNotValidException();
-			}
-			
-			if (!validateItemTime(item)) {
-				throw new BidNotValidException();
-			}
-			if(bid.getBidOffer() > bestBid.getBidOffer() ) {
-				//item.setBestBidderId(user.getId());
-				
-				if(bestBid.getUser().getId() == user.getId()) { // ha a saját licitemet akarom megemelni... mondjuk, hogy a villámárat megadjam
-					bestBid.setBidOffer(bid.getBidOffer());
-					return bidRepository.save(bestBid);
-				}
-				bid.setItem(bestBid.getItem());
-				bid.setUser(user);
-				
-				
-				Bid newBid = bidRepository.save(bid);
-				item.setBestBidId(newBid.getId());
-				itemRepository.save(item);
-				return newBid;
-				
-			}
+        if (!validateItemTime(item)) {
+            throw new BidNotValidException();
+        }
 
-			throw new BidNotValidException();
-		
-	}
+        if (bid.getBidOffer() > bestBid.getBidOffer()) {
+            if (bestBid.getUser().getId() == user.getId()) {
+                bestBid.setBidOffer(bid.getBidOffer());
+                return bidRepository.save(bestBid);
+            }
 
+            bid.setItem(bestBid.getItem());
+            bid.setUser(user);
+            Bid newBid = bidRepository.save(bid);
+            item.setBestBidId(newBid.getId());
+            itemRepository.save(item);
+
+            return newBid;
+        }
+
+        throw new BidNotValidException();
+    }
 }

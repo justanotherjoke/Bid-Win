@@ -25,37 +25,36 @@ import hu.elte.bidAndWin.service.UserService;
 @RequestMapping(value = "/api/image")
 public class ImageController {
 
-	@Autowired
-	private ImageService imageService;
+    @Autowired
+    private ImageService imageService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Role({ADMIN, USER})
-	@PostMapping("/uploadimage")
-	public ResponseEntity<Image> createImage(@RequestBody Image image) {
-		try {
-			return ResponseEntity.ok(imageService.uploadImage(image ,userService.getLoggedInUser()));
-		} catch (UserNotValidException | IOException | NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
+    @Role({ADMIN, USER})
+    @PostMapping("/uploadimage")
+    public ResponseEntity<Image> createImage(@RequestBody Image image) {
+        try {
+            return ResponseEntity.ok(imageService.uploadImage(image, userService.getLoggedInUser()));
+        } catch (UserNotValidException | IOException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
-	@Role({ADMIN, USER})
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Image> getImageByItemId(@PathVariable(value = "id") long id) {
-		try {
-			return ResponseEntity.ok(imageService.getImageByItemId(id, userService.getLoggedInUser()));
-		} catch (UserNotValidException | NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
+    @Role({ADMIN, USER})
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Image> getImageByItemId(@PathVariable(value = "id") long id) {
+        try {
+            return ResponseEntity.ok(imageService.getImageByItemId(id, userService.getLoggedInUser()));
+        } catch (UserNotValidException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
-	}
+    }
 
-	@Role({ADMIN, USER})
-	@GetMapping("/all")
-	public ResponseEntity<List<Image>> getAllImages() {
-		return ResponseEntity.ok(imageService.getAllImages());
-	}
-
+    @Role({ADMIN, USER})
+    @GetMapping("/all")
+    public ResponseEntity<List<Image>> getAllImages() {
+        return ResponseEntity.ok(imageService.getAllImages());
+    }
 }

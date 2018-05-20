@@ -17,53 +17,49 @@ import hu.elte.bidAndWin.repository.ImageRepository;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
-	@Autowired))
+        @Autowired))
 public class ImageService {
 
-	private ImageRepository imageRepository;
-	private UserRepository userRepository;
-	private ItemRepository itemRepository;
+    private ImageRepository imageRepository;
+    private UserRepository userRepository;
+    private ItemRepository itemRepository;
 
-	public Image getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
+    public Image getImageByItemId(long id, @NonNull User loggedInUser) throws UserNotValidException {
+        @NonNull
+        Image im = imageRepository.findByItemId(id);
 
-		@NonNull
-		Image im = imageRepository.findByItemId(id);
+        if (im.getItem().getUser().getId() == loggedInUser.getId()) {
+            return imageRepository.findByItemId(id);
+        } else {
+            throw new UserNotValidException();
+        }
+    }
 
-		if (im.getItem().getUser().getId() == loggedInUser.getId()) {
-			return imageRepository.findByItemId(id);
-		} else {
-			throw new UserNotValidException();
-		}
-	}
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
+    }
 
-	public List<Image> getAllImages() {
-		return imageRepository.findAll();
-	}
+    public Image uploadImage(@NonNull Image image, @NonNull User user) throws IOException, UserNotValidException {
+        @NonNull
+        Item it = itemRepository.findById(image.getItem().getId());
 
-	public Image uploadImage(@NonNull Image image, @NonNull User user)
-		throws IOException, UserNotValidException {
-		
+        if (it.getUser().getId() != user.getId()) {
+            throw new UserNotValidException();
+        }
 
-		@NonNull
-		Item it = itemRepository.findById(image.getItem().getId());
+        try {
+            @NonNull
+            Image image2 = imageRepository.findByItemId(image.getItem().getId());
+            
+            image2.setPic(image.getPic());
 
-		if (it.getUser().getId() != user.getId()) {
-			//System.out.println("a bejelentkezett userhez nem tartozik ilyen item");
-			throw new UserNotValidException();
-		}
+            return imageRepository.save(image2);
+        } catch (NullPointerException e) {
+            Image im = new Image();
+            im.setPic(image.getPic());
+            im.setItem(itemRepository.findById(image.getItem().getId()));
 
-		try {
-			@NonNull
-			Image image2 = imageRepository.findByItemId(image.getItem().getId());
-
-			image2.setPic(image.getPic());
-			return imageRepository.save(image2);
-
-		} catch (NullPointerException e) {
-			Image im = new Image();
-			im.setPic(image.getPic());
-			im.setItem(itemRepository.findById(image.getItem().getId()));
-			return imageRepository.save(im);
-		}
-	}
+            return imageRepository.save(im);
+        }
+    }
 }

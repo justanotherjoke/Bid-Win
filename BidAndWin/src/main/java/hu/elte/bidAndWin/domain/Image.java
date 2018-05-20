@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -19,19 +18,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Image {
 
-	public Image(String imageStr, String path, Item item) {
-		this.pic = imageStr;
-		this.item = item;
-	}
+    @OneToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
 
-	@OneToOne
-	@JoinColumn(name = "item_id")
-	private Item item;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @Column(columnDefinition = "TEXT")
+    private String pic;
 
-	@Column(columnDefinition="TEXT")
-	private String pic;
+    public Image(String imageStr, String path, Item item) {
+        this.pic = imageStr;
+        this.item = item;
+    }
 }

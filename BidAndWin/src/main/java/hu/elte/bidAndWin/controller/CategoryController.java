@@ -24,26 +24,25 @@ import hu.elte.bidAndWin.service.UserService;
 @RequestMapping(value = "/api/category")
 public class CategoryController {
 
-	@Autowired
-	private CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	//
-	@Role({ADMIN, USER})
-	@GetMapping(value = "/all")
-	public ResponseEntity<List<Category>> getAllCategories() {
-		return ResponseEntity.ok(categoryService.findAll());
-	}
+    @Role({ADMIN, USER})
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<Category>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.findAll());
+    }
 
-	@Role({ADMIN, USER})
-	@PostMapping("/createcategory")
-	public ResponseEntity<List<Category>> createCategory(@RequestBody Category category) {
-		try {
-			return ResponseEntity.ok(categoryService.createCategory(category, userService.getLoggedInUser()));
-		} catch (CategoryNotValidException | UserNotValidException | NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
+    @Role({ADMIN, USER})
+    @PostMapping("/createcategory")
+    public ResponseEntity<List<Category>> createCategory(@RequestBody Category category) {
+        try {
+            return ResponseEntity.ok(categoryService.createCategory(category, userService.getLoggedInUser()));
+        } catch (CategoryNotValidException | UserNotValidException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

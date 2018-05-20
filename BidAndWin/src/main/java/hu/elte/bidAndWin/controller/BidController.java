@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,42 +24,40 @@ import hu.elte.bidAndWin.service.UserService;
 @RestController
 @RequestMapping(value = "/api/bids")
 public class BidController {
-	
-	@Autowired
-    private BidService bidService;
-	
-	@Autowired
-	private UserService userService;
 
-	
-	@Role({ADMIN, USER})
+    @Autowired
+    private BidService bidService;
+
+    @Autowired
+    private UserService userService;
+
+    @Role({ADMIN, USER})
     @GetMapping(value = "/all")
     public ResponseEntity<List<Bid>> getAllBids() {
         return ResponseEntity.ok(bidService.getAllBids());
     }
-	
-	@Role({ADMIN, USER})
+
+    @Role({ADMIN, USER})
     @GetMapping(value = "/mybids")
     public ResponseEntity<List<Bid>> getMyBids() {
         try {
-			return ResponseEntity.ok(bidService.getMyBids(userService.getLoggedInUser()));
-		} catch (NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
+            return ResponseEntity.ok(bidService.getMyBids(userService.getLoggedInUser()));
+        } catch (NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-	
-	@Role({ADMIN, USER})
+
+    @Role({ADMIN, USER})
     @GetMapping(value = "/{id}")
     public ResponseEntity<Bid> getBid(@PathVariable(value = "id") long id) {
-		try {
-			return ResponseEntity.ok(bidService.getBid(id, userService.getLoggedInUser()));
-		} catch (UserNotValidException | NullPointerException e) {
-			return ResponseEntity.badRequest().build();
-		}
+        try {
+            return ResponseEntity.ok(bidService.getBid(id, userService.getLoggedInUser()));
+        } catch (UserNotValidException | NullPointerException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-	
-		
-	@Role({ADMIN, USER} )
+
+    @Role({ADMIN, USER})
     @PostMapping("/makebid")
     private ResponseEntity<Bid> makeBid(@RequestBody Bid bid) {
         try {

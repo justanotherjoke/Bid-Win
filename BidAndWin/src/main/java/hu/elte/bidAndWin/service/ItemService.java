@@ -18,72 +18,73 @@ import lombok.NonNull;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(
-	@Autowired))
+        @Autowired))
 public class ItemService {
 
-	private ItemRepository itemRepository;
-	private UserRepository userRepository;
-	private BidRepository bidRepository;
+    private ItemRepository itemRepository;
+    private UserRepository userRepository;
+    private BidRepository bidRepository;
 
-	public Item createItem(@NonNull Item item, @NonNull User user) throws ItemNotValidException {
-		boolean valid = validateItem(item);
-		if (valid) {
-			Item it = new Item();
-			it.setUser(user);
-			it.setBestBidId(-1);
-			
-			it.setBidIncrement(item.getBidIncrement());
-			it.setBuyItPrice(item.getBuyItPrice());
-			it.setDescription(item.getDescription());
-			it.setEndTime(item.getEndTime());
-			it.setName(item.getName());
-			it.setStartPrice(item.getStartPrice());
-			it.setCategory(item.getCategory());
-		
-			Bid bid = new Bid(it, -1, user); 
-			bidRepository.save(bid);
+    public Item createItem(@NonNull Item item, @NonNull User user) throws ItemNotValidException {
+        boolean valid = validateItem(item);
 
-			return itemRepository.save(it);
-		} else {
-			throw new ItemNotValidException();
-		}
-	}
+        if (valid) {
+            Item it = new Item();
+            it.setUser(user);
+            it.setBestBidId(-1);
+            it.setBidIncrement(item.getBidIncrement());
+            it.setBuyItPrice(item.getBuyItPrice());
+            it.setDescription(item.getDescription());
+            it.setEndTime(item.getEndTime());
+            it.setName(item.getName());
+            it.setStartPrice(item.getStartPrice());
+            it.setCategory(item.getCategory());
 
-	private boolean validateItem(Item item) {
-		Date date = new Date();
-		Timestamp currentTime = new Timestamp(date.getTime());
+            Bid bid = new Bid(it, -1, user);
+            bidRepository.save(bid);
 
-		return item.getStartPrice() <= item.getBuyItPrice() && currentTime.before(item.getEndTime());
-	}
+            return itemRepository.save(it);
+        } else {
+            throw new ItemNotValidException();
+        }
+    }
 
-	public Item getItem(long id, @NonNull User loggedInUser) {
-		return itemRepository.findById(id);
-	}
+    private boolean validateItem(Item item) {
+        Date date = new Date();
 
-	public List<Item> getAllItems() {
-		return (List<Item>) itemRepository.findAll();
-	}
+        Timestamp currentTime = new Timestamp(date.getTime());
 
-	public List<Item> getMyItems(@NonNull User loggedInUser) {
-		return itemRepository.findAllByUserId(loggedInUser.getId());
-	}
+        return item.getStartPrice() <= item.getBuyItPrice() && currentTime.before(item.getEndTime());
+    }
 
-	public Item updateItem(long id, @NonNull Item item, @NonNull User user) throws ItemNotValidException, UserNotValidException {
+    public Item getItem(long id, @NonNull User loggedInUser) {
+        return itemRepository.findById(id);
+    }
 
-		@NonNull
-		Item currentItem = itemRepository.findById(id);
+    public List<Item> getAllItems() {
+        return (List<Item>) itemRepository.findAll();
+    }
 
-		if (currentItem.getUser().getId() != user.getId()) {
-			throw new UserNotValidException();
-		}
-		if (validateItem(currentItem)) {
-			currentItem.setName(item.getName());
-			currentItem.setDescription(item.getDescription());
-			currentItem.setBuyItPrice(item.getBuyItPrice());
-			return itemRepository.save(item);
-		} else {
-			throw new ItemNotValidException();
-		}
+    public List<Item> getMyItems(@NonNull User loggedInUser) {
+        return itemRepository.findAllByUserId(loggedInUser.getId());
+    }
 
-	}
+    public Item updateItem(long id, @NonNull Item item, @NonNull User user) throws ItemNotValidException, UserNotValidException {
+        @NonNull
+        Item currentItem = itemRepository.findById(id);
+
+        if (currentItem.getUser().getId() != user.getId()) {
+            throw new UserNotValidException();
+        }
+
+        if (validateItem(currentItem)) {
+            currentItem.setName(item.getName());
+            currentItem.setDescription(item.getDescription());
+            currentItem.setBuyItPrice(item.getBuyItPrice());
+
+            return itemRepository.save(item);
+        } else {
+            throw new ItemNotValidException();
+        }
+    }
 }

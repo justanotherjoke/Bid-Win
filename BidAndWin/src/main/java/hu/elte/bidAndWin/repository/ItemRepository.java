@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import hu.elte.bidAndWin.domain.Item;
 
 @Repository
-public interface ItemRepository extends CrudRepository<Item, Long>{
+public interface ItemRepository extends CrudRepository<Item, Long> {
 
-	Item findById(long id);
+    Item findById(long id);
 
-	List<Item> findAllByUserId(long id);
+    List<Item> findAllByUserId(long id);
 }
