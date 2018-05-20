@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.*;
-import static org.junit.Assert.assertEquals;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
