@@ -24,8 +24,11 @@ Image (id, auction_id, base64str)<br>
 * Lombok
 * Git, GiHub
 * Postman, ARC (teszteléshez)
-* https://www.eclemma.org/ (teszteléshez)
+* https://www.jacoco.org/jacoco/ (teszteléshez)
 * Jenkins
+
+##### Code coverage report(jacoco):
+![Code coverage](BidAndWin/docs/images/code_coverage.png)
 
 ##### Jenkins beállítása:
 ![Jenkins beállítása](BidAndWin/docs/images/jenkins1.png)
