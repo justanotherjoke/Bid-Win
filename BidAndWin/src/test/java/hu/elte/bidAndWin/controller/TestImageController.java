@@ -1,21 +1,23 @@
 package hu.elte.bidAndWin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Category;
 import hu.elte.bidAndWin.domain.Image;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
-import hu.elte.bidAndWin.service.BidService;
+import hu.elte.bidAndWin.service.ImageService;
+import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
+import java.io.IOException;
 import java.sql.Timestamp;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
@@ -30,16 +32,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(BidController.class)
+@WebMvcTest(ImageController.class)
 public class TestImageController {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private BidService bidService;
+    private ImageService imageService;
     @MockBean
     private UserService userService;
 
@@ -109,8 +112,65 @@ public class TestImageController {
     }
 
     @Test
-    public void testgetAllBids_ReturnOK() throws Exception {
-        doReturn(listBidNotEmpty).when(bidService).getAllBids();
-        mvc.perform(get("/api/bids/all")).andExpect(status().isOk());
+    public void testCreateImage_ReturnOk() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(imageNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(imageNotEmpty).when(imageService).uploadImage(Mockito.any(Image.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/image/uploadimage").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreateImage_ReturnBadRequest() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(imageNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(UserNotValidException.class).when(imageService).uploadImage(Mockito.any(Image.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/image/uploadimage").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCreateImage_ReturnBadRequest2() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(imageNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(IOException.class).when(imageService).uploadImage(Mockito.any(Image.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/image/uploadimage").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCreateImage_ReturnBadRequest3() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(imageNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(imageService).uploadImage(Mockito.any(Image.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/image/uploadimage").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetImageByItemId_ReturnOk() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(imageNotEmpty).when(imageService).getImageByItemId(1, userNotEmptyAdmin);
+        mvc.perform(get("/api/image/1")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetImageByItemId_ReturnBadRequest() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(UserNotValidException.class).when(imageService).getImageByItemId(1, userNotEmptyAdmin);
+        mvc.perform(get("/api/image/1")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetImageByItemId_ReturnBadRequest2() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(imageService).getImageByItemId(1, userNotEmptyAdmin);
+        mvc.perform(get("/api/image/1")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetAllBids_ReturnOk() throws Exception {
+        doReturn(listImageNotEmpty).when(imageService).getAllImages();
+        mvc.perform(get("/api/image/all")).andExpect(status().isOk());
     }
 }

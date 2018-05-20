@@ -6,8 +6,6 @@ import hu.elte.bidAndWin.domain.Category;
 import hu.elte.bidAndWin.domain.Image;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
-import hu.elte.bidAndWin.service.BidNotValidException;
-import hu.elte.bidAndWin.service.BidService;
 import hu.elte.bidAndWin.service.ItemNotValidException;
 import hu.elte.bidAndWin.service.ItemService;
 import hu.elte.bidAndWin.service.UserNotValidException;
