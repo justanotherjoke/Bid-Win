@@ -1,21 +1,23 @@
 package hu.elte.bidAndWin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Category;
 import hu.elte.bidAndWin.domain.Image;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
-import hu.elte.bidAndWin.service.BidService;
+import hu.elte.bidAndWin.service.CategoryNotValidException;
+import hu.elte.bidAndWin.service.CategoryService;
+import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
 import java.sql.Timestamp;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
@@ -30,16 +32,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(BidController.class)
+@WebMvcTest(CategoryController.class)
 public class TestCategoryController {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private BidService bidService;
+    private CategoryService categoryService;
     @MockBean
     private UserService userService;
 
@@ -109,8 +112,45 @@ public class TestCategoryController {
     }
 
     @Test
-    public void testgetAllBids_ReturnOK() throws Exception {
-        doReturn(listBidNotEmpty).when(bidService).getAllBids();
-        mvc.perform(get("/api/bids/all")).andExpect(status().isOk());
+    public void testGetAllCategories_ReturnOk() throws Exception {
+        doReturn(listCategoryNotEmpty).when(categoryService).findAll();
+        mvc.perform(get("/api/category/all")).andExpect(status().isOk());
     }
+
+    @Test
+    public void testMakeBid_ReturnOk() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(categoryNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(listCategoryNotEmpty).when(categoryService).createCategory(Mockito.any(Category.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/category/createcategory").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testMakeBid_ReturnBadRequest() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(categoryNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(CategoryNotValidException.class).when(categoryService).createCategory(Mockito.any(Category.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/category/createcategory").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testMakeBid_ReturnBadRequest2() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(categoryNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(UserNotValidException.class).when(categoryService).createCategory(Mockito.any(Category.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/category/createcategory").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testMakeBid_ReturnBadRequest3() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(categoryNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(categoryService).createCategory(Mockito.any(Category.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/category/createcategory").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
 }
