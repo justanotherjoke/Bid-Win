@@ -39,10 +39,10 @@ public class ItemService {
             it.setName(item.getName());
             it.setStartPrice(item.getStartPrice());
             it.setCategory(item.getCategory());
-
+            itemRepository.save(it);
             Bid bid = new Bid(it, -1, user);
             bidRepository.save(bid);
-            itemRepository.save(it);
+           
             return it;
         } else {
             throw new ItemNotValidException();
