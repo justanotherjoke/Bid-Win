@@ -10,10 +10,10 @@
     </tr>
     <tr *ngFor="let item of itemService.listedItems">
         <td>{{item.name}}</td>
-        <td><img src="data:image/jpeg;base64,{{item.picture}}"/></td>
+        <td class="popup"><img src="data:image/jpeg;base64,{{item.picture}}"/></td>
         <td>{{item.buyItPrice}}</td>
         <td>{{item.currentPrice}}</td>
-        <td><a routerLink="./item" (click)="setChosenItem(item.id)">Link a tárgyhoz</a></td>
+        <td class="link"><a routerLink="./item" (click)="setChosenItem(item.id)">Link a tárgyhoz</a></td>
         <td *ngIf="item.currentPrice<item.buyItPrice && !vege(item.id);then content else other_content"></td>
         <ng-template #content><td>{{item.endTime | date : 'yyyy.MM.dd HH:mm:ss'}}</td></ng-template>
         <ng-template #other_content><td><a class="vege" *ngIf="vege(item.id)">Lejárt az aukció!</a><a class="vege" *ngIf="!vege(item.id)">Elkelt!</a></td></ng-template>

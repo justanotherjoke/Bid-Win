@@ -13,3 +13,8 @@ div .link a {
 div .link a:hover{
     color: deepskyblue;
 }
+
+#header div:last-child {
+    float: right;
+    margin-right: 5%;
+}

@@ -18,8 +18,8 @@ margin:0;
 }
 
 #index,
-#itemlist,
-#settings {
+#settings,
+#itemDetails{
     font-family: Arial, Helvetica, sans-serif;
     color: black;
     background: #c0c0c0;
@@ -32,8 +32,21 @@ margin:0;
    
 }
 
+#itemlist {
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    background: #c0c0c0;
+    margin: 0 auto;
+    width: 70%;
+    margin-top: 10px;
+    margin-bottom: 10px;  
+    border-radius: 10px;
+    padding: 30px 40px 40px 40px;
+}
+
 .login,
-.registration
+.registration,
+.upload 
  {
     font-family: Arial, Helvetica, sans-serif;
     color: black;
@@ -64,7 +77,8 @@ margin:0;
 }
 
 [type="submit"],
-[type="reset"] {
+[type="reset"],
+[type="button"] {
 	margin: 5px;
 	background-color: grey;
 	font-weight: bold;
@@ -75,7 +89,8 @@ margin:0;
 }
 
 [type="submit"]:hover,
-[type="reset"]:hover {
+[type="reset"]:hover,
+[type="button"]:hover {
 	background-color: black;
 	border: 1px solid black;
 }

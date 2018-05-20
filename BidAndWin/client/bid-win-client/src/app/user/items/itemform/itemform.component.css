@@ -6,3 +6,10 @@ select{
     border: 1px solid #ccc;
     -webkit-appearance: default-button;
 }
+#itemuploadlink a{
+    color: whitesmoke;
+    font-weight: bold;
+    text-decoration: none;
+}
+#itemuploadlink a:visited { color: whitesmoke; }
+#itemuploadlink a:active { color: deepskyblue; }

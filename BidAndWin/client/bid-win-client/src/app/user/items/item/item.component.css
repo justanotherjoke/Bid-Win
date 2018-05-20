@@ -1,0 +1,61 @@
+table { 
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 auto;;
+    border-collapse: collapse;
+    padding: 1px;
+}
+
+table, th /*,td*/{
+    border: 1px solid black;
+}
+
+th {
+    font-weight: bold;
+    height: 30px;
+}
+
+td {
+    height:140px;
+    width: 180px;
+    text-align: center;
+    padding: 1px;
+    padding-top: 3px;
+}
+
+td img {
+    height:200px;
+    width: 200px;
+}
+
+.link a{
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    transition-delay: 0.25;
+}
+.link a:visited { 
+    color: black; 
+}
+
+.link a:active {
+    color: gray;
+}
+
+.link a:hover{
+    color: darkblue;
+}
+
+[name="buyItPrice"] {
+    text-align: right;
+}
+
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    background: whitesmoke;
+    padding: 1px;
+    border: none;
+    border-style: none;
+    block-size: auto;
+}
+

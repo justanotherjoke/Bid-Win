@@ -22,3 +22,21 @@ div span {
     left: 22%;
     top: 12.5%;
 }
+
+a{
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.25s;
+}
+a:visited { 
+    color: black; 
+}
+
+a:active {
+    color: gray;
+}
+
+a:hover{
+    color: darkblue;
+}

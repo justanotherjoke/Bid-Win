@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div *ngIf="isLoggedIn()">
-<div class="form">
+<div class="upload">
   <form #form="ngForm" (submit)="onSubmit()">
     <div><label for="name">Tárgy neve:</label><input type="text" name="name" [(ngModel)]="model.name" #name="ngModel"/></div>
     <div><label for="category">Kategória:</label>
