@@ -5,6 +5,11 @@ Szépségfelelős: Kornél <br>
 Kliens oldal: Kat <br>
 Tesztelés: Zoli <br>
 <br>
+Adatbázisterv:<br>
+User (id, pw, e-mail, dept, role)<br>
+Bids (id, auction_id, bidder_id, price)<br>
+Auction (id, seller_id, buyer_id, current_price, price_jump, description, ending_time)<br>
+Image (id, auction_id, base64str)<br>
 
 ## Backend megvalósítása
 
@@ -17,13 +22,10 @@ Tesztelés: Zoli <br>
 * JPA
 * H2
 * Lombok
-* Git, GitHub
+* Git, GiHub
 * Postman, ARC (teszteléshez)
-* https://www.jacoco.org/jacoco/ (teszteléshez)
+* https://www.eclemma.org/ (teszteléshez)
 * Jenkins
-
-##### Code coverage report(jacoco):
-![Code coverage](BidAndWin/docs/images/code_coverage.png)
 
 ##### Jenkins beállítása:
 ![Jenkins beállítása](BidAndWin/docs/images/jenkins1.png)
