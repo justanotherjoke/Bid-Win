@@ -42,8 +42,8 @@ public class ItemService {
 
             Bid bid = new Bid(it, -1, user);
             bidRepository.save(bid);
-
-            return itemRepository.save(it);
+            itemRepository.save(it);
+            return it;
         } else {
             throw new ItemNotValidException();
         }
