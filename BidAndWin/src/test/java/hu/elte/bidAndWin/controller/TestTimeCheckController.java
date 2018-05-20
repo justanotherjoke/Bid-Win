@@ -33,7 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BidController.class)
-public class TestImageController {
+public class TestTimeCheckController {
 
     @Autowired
     private MockMvc mvc;

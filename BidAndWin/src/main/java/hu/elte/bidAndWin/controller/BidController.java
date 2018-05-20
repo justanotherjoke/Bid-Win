@@ -63,12 +63,9 @@ public class BidController {
 	@Role({ADMIN, USER} )
     @PostMapping("/makebid")
     private ResponseEntity<Bid> makeBid(@RequestBody Bid bid) {
-        Bid updated;
         try {
-            updated = bidService.makeBid(bid, userService.getLoggedInUser());
-            return ResponseEntity.ok(updated);
+            return ResponseEntity.ok(bidService.makeBid(bid, userService.getLoggedInUser()));
         } catch (BidNotValidException | NullPointerException | UserNotValidException e) {
-        	e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
