@@ -14,17 +14,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import static org.mockito.Mockito.spy;
+
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -93,15 +96,15 @@ public class TestItemService {
 
         byteEmpty = "".getBytes();
 
-        userNotEmpty = new User(listItemEmpty, listBidNotEmptyTwo, 2, "david", "2222", "2@2", User.Role.USER);
-        userNotEmptyAdmin = new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN);
-        categoryNotEmpty = new Category(listItemNotEmptyForCategory, 1, "auto");
-        categoryNotEmptyTwo = new Category(listItemEmpty, 2, "szamitogep");
-        itemNotEmpty = new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1);
-        imageNotEmpty = new Image(itemNotEmpty, 1, "autoitem");
-        imageNotEmptyTwo = new Image(itemNotEmpty, 2, "autoitem2");
-        bidNotEmpty = new Bid(itemNotEmpty, userNotEmpty, 2, 1000);
-        bidNotEmptyOriginal = new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500);
+        userNotEmpty = spy(new User(listItemEmpty, listBidNotEmptyTwo, 2, "david", "2222", "2@2", User.Role.USER));
+        userNotEmptyAdmin = spy(new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN));
+        categoryNotEmpty = spy(new Category(listItemNotEmptyForCategory, 1, "auto"));
+        categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
+        itemNotEmpty = spy(new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1));
+        imageNotEmpty = spy(new Image(itemNotEmpty, 1, "autoitem"));
+        imageNotEmptyTwo = spy(new Image(itemNotEmpty, 2, "autoitem2"));
+        bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));
+        bidNotEmptyOriginal = spy(new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500));
 
         listBidNotEmpty.add(bidNotEmptyOriginal);
         listBidNotEmptyTwo.add(bidNotEmpty);
@@ -148,12 +151,29 @@ public class TestItemService {
         itemService.createItem(itemNotEmpty, userNotEmptyAdmin);
     }
 
-//    @Test
-//    public void testCreateItem_ReturnItem() throws ItemNotValidException {
-//        doReturn(itemNotEmpty).when(itemRepositoryMock).save(Mockito.any(Item.class));
-//        doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).save(Mockito.any(Bid.class));
-//        assertEquals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin), itemNotEmpty);
-//    }
+    @Test
+    public void testCreateItem_ReturnItem() throws ItemNotValidException {
+        User user = itemNotEmpty.getUser();
+        Long BestBidId = -1L;
+        Long bidIncrement = itemNotEmpty.getBidIncrement();
+        Long buyItPrice = itemNotEmpty.getBuyItPrice();
+        String description = itemNotEmpty.getDescription();
+        Timestamp endTime = itemNotEmpty.getEndTime();
+        String name = itemNotEmpty.getName();
+        Long startPrice = itemNotEmpty.getStartPrice();
+        Category category = itemNotEmpty.getCategory();
+        doReturn(itemNotEmpty).when(itemRepositoryMock).save(Mockito.any(Item.class));
+        doReturn(bidNotEmptyOriginal).when(bidRepositoryMock).save(Mockito.any(Bid.class));
+        assertTrue(user.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getUser()));
+        assertTrue((BestBidId).equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getBestBidId()));
+        assertTrue(bidIncrement.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getBidIncrement()));
+        assertTrue(buyItPrice.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getBuyItPrice()));
+        assertTrue(description.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getDescription()));
+        assertTrue(endTime.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getEndTime()));
+        assertTrue(name.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getName()));
+        assertTrue(startPrice.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getStartPrice()));
+        assertTrue(category.equals(itemService.createItem(itemNotEmpty, userNotEmptyAdmin).getCategory()));
+    }
 
     @Test(expected = NullPointerException.class)
     public void testGetItem_NullPointerException_UserNull() {

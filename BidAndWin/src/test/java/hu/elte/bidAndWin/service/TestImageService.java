@@ -98,7 +98,7 @@ public class TestImageService {
         userNotEmptyAdmin = spy(new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN));
         categoryNotEmpty = spy(new Category(listItemNotEmptyForCategory, 1, "auto"));
         categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
-        itemNotEmpty = new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1);
+        itemNotEmpty = spy(new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1));
         imageNotEmpty = spy(new Image(itemNotEmpty, 1, "autoitem"));
         imageNotEmptyTwo = spy(new Image(itemNotEmpty, 2, "autoitem2"));
         bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));

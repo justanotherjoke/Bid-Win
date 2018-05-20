@@ -22,7 +22,6 @@ public class TestTimeCheckController {
         Date date = new Date();
         Timestamp currentTime = new Timestamp(date.getTime());
         Date currentDate = (Date) currentTime;
-        System.out.println(timeCheckController.getTime().compareTo(currentDate));
         assertTrue((timeCheckController.getTime().compareTo(currentDate)) >= 0);
         assertTrue((timeCheckController.getTime().compareTo(currentDate)) <= 1000);
     }
