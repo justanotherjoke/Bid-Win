@@ -15,12 +15,14 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+
 import org.mockito.Mockito;
-
-import static org.mockito.Mockito.*;
-
 import org.mockito.MockitoAnnotations;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
