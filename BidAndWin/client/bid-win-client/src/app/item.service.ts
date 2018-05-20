@@ -47,7 +47,7 @@ export class ItemService {
     return responsePromise
       .then(res => res.json())
       .then(responseItem => {
-        if(img.pic.length!==0){
+        if(img.pic!==undefined){
           img.itemId=responseItem.id;
           this.uploadPicture(img);
         }
