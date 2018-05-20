@@ -44,6 +44,8 @@ public class TestCategoryService {
     List<Image> listImageNotEmpty;
     List<Category> listCategoryNotEmpty;
     List<Item> listItemNotEmpty;
+    List<Item> listItemNotEmptyForCategory;
+    List<Bid> listBidNotEmptyForItem;
 
     Timestamp timestampFuture;
     byte[] byteEmpty;
@@ -78,6 +80,8 @@ public class TestCategoryService {
         listImageNotEmpty = new LinkedList<>();
         listCategoryNotEmpty = new LinkedList<>();
         listItemNotEmpty = new LinkedList<>();
+        listItemNotEmptyForCategory = new LinkedList<>();
+        listBidNotEmptyForItem = new LinkedList<>();
 
         timestampFuture = new Timestamp(1000000000000000000L);
 
@@ -85,11 +89,11 @@ public class TestCategoryService {
 
         userNotEmpty = spy(new User(listItemEmpty, listBidNotEmptyTwo, 2, "david", "2222", "2@2", User.Role.USER));
         userNotEmptyAdmin = spy(new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN));
-        categoryNotEmpty = spy(new Category(listItemNotEmpty, 1, "auto"));
+        categoryNotEmpty = spy(new Category(listItemNotEmptyForCategory, 1, "auto"));
         categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
-        itemNotEmpty = spy(new Item(listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100));
-        imageNotEmpty = spy(new Image("autoitem", "path", itemNotEmpty));
-        imageNotEmptyTwo = spy(new Image("autoitem2", "path2", itemNotEmpty));
+        itemNotEmpty = new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1);
+        imageNotEmpty = spy(new Image(itemNotEmpty, 1, "autoitem"));
+        imageNotEmptyTwo = spy(new Image(itemNotEmpty, 2, "autoitem2"));
         bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));
         bidNotEmptyOriginal = spy(new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500));
 
@@ -98,6 +102,22 @@ public class TestCategoryService {
         listImageNotEmpty.add(imageNotEmpty);
         listItemNotEmpty.add(itemNotEmpty);
         listCategoryNotEmpty.add(categoryNotEmpty);
+        listItemNotEmptyForCategory.add(itemNotEmpty);
+        listBidNotEmptyForItem.add(bidNotEmptyOriginal);
+
+        userNotEmptyAdmin.setBids(listBidNotEmpty);
+        userNotEmpty.setBids(listBidNotEmptyTwo);
+        itemNotEmpty.setImages(listImageNotEmpty);
+        userNotEmptyAdmin.setItems(listItemNotEmpty);
+        categoryNotEmpty.setItems(listItemNotEmptyForCategory);
+        itemNotEmpty.setBids(listBidNotEmptyForItem);
+
+        listBidNotEmpty = userNotEmptyAdmin.getBids();
+        listBidNotEmptyTwo = userNotEmpty.getBids();
+        listImageNotEmpty = itemNotEmpty.getImages();
+        listItemNotEmpty = userNotEmptyAdmin.getItems();
+        listItemNotEmptyForCategory = categoryNotEmpty.getItems();
+        listBidNotEmptyForItem = itemNotEmpty.getBids();
     }
 
     @Test
@@ -107,22 +127,22 @@ public class TestCategoryService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreateCategory_NullPointerException() throws UserNotValidException, CategoryNotValidException {
+    public void testCreateCategory_NullPointerException_CategoryNull() throws UserNotValidException, CategoryNotValidException {
         categoryService.createCategory(categoryNull, userNotEmptyAdmin);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreateCategory_NullPointerException2() throws UserNotValidException, CategoryNotValidException {
+    public void testCreateCategory_NullPointerException_UserNull() throws UserNotValidException, CategoryNotValidException {
         categoryService.createCategory(categoryNull, userNull);
     }
 
     @Test(expected = UserNotValidException.class)
-    public void testCreateCategory_UserNotValidException() throws UserNotValidException, CategoryNotValidException {
+    public void testCreateCategory_UserNotValidException_UserNotAdmin() throws UserNotValidException, CategoryNotValidException {
         categoryService.createCategory(categoryNotEmptyTwo, userNotEmpty);
     }
 
     @Test(expected = CategoryNotValidException.class)
-    public void testCreateCategory_CategoryNotValidException() throws UserNotValidException, CategoryNotValidException {
+    public void testCreateCategory_CategoryNotValidException_CategoryAlreadyExists() throws UserNotValidException, CategoryNotValidException {
         doReturn(listCategoryNotEmpty).when(categoryRepositoryMock).findAll();
         categoryService.createCategory(categoryNotEmpty, userNotEmptyAdmin);
     }

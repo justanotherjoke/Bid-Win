@@ -57,7 +57,7 @@ public class BidService {
 
         Bid bestBid = bidRepository.findFirstByItemIdOrderByBidOfferDesc(bid.getItem().getId());
 
-        if (item.getUser().getId() == user.getId() && bestBid.getUser().getId() != user.getId()) { // saját tárgyra ne licitáljunk! 
+        if (item.getUser().getId() == user.getId() && bestBid.getUser().getId() != user.getId()) {
             throw new UserNotValidException();
         }
 
