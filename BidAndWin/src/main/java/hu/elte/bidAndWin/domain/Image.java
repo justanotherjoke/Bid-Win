@@ -28,4 +28,9 @@ public class Image {
 
     @Column(columnDefinition = "TEXT")
     private String pic;
+
+    public Image(String imageStr, String path, Item item) {
+        this.pic = imageStr;
+        this.item = item;
+    }
 }
