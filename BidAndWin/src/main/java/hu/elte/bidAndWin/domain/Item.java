@@ -66,4 +66,17 @@ public class Item {
 
     @Column(nullable = false)
     private long bestBidId;
+
+    public Item(List<Image> images, User user, Category category, String name, String description, long startPrice,
+            long buyItPrice, Timestamp endTime, long bidIncrement) {
+        this.images = images;
+        this.user = user;
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.startPrice = startPrice;
+        this.buyItPrice = buyItPrice;
+        this.endTime = endTime;
+        this.bidIncrement = bidIncrement;
+    }
 }
