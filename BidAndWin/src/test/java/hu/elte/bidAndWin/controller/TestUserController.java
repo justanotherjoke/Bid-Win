@@ -94,9 +94,9 @@ public class TestUserController {
         userNotEmptyAdmin = new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN);
         categoryNotEmpty = new Category(listItemNotEmpty, 1, "auto");
         categoryNotEmptyTwo = new Category(listItemEmpty, 2, "szamitogep");
-        itemNotEmpty = new Item(listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100);
-        imageNotEmpty = new Image("autoitem", "path", itemNotEmpty);
-        imageNotEmptyTwo = new Image("autoitem2", "path2", itemNotEmpty);
+        itemNotEmpty = new Item(listBidNotEmpty, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1);
+        imageNotEmpty = new Image(itemNotEmpty, 1, "autoitem");
+        imageNotEmptyTwo = new Image(itemNotEmpty, 2, "autoitem2");
         bidNotEmpty = new Bid(itemNotEmpty, userNotEmpty, 2, 1000);
         bidNotEmptyOriginal = new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500);
 
@@ -105,6 +105,16 @@ public class TestUserController {
         listImageNotEmpty.add(imageNotEmpty);
         listItemNotEmpty.add(itemNotEmpty);
         listCategoryNotEmpty.add(categoryNotEmpty);
+
+        userNotEmptyAdmin.setBids(listBidNotEmpty);
+        userNotEmpty.setBids(listBidNotEmptyTwo);
+        itemNotEmpty.setImages(listImageNotEmpty);
+        userNotEmptyAdmin.setItems(listItemNotEmpty);
+
+        listBidNotEmpty = userNotEmptyAdmin.getBids();
+        listBidNotEmptyTwo = userNotEmpty.getBids();
+        listImageNotEmpty = itemNotEmpty.getImages();
+        listItemNotEmpty = userNotEmptyAdmin.getItems();
     }
 
     @Test

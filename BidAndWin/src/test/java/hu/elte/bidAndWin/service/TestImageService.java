@@ -49,6 +49,8 @@ public class TestImageService {
     List<Image> listImageNotEmpty;
     List<Category> listCategoryNotEmpty;
     List<Item> listItemNotEmpty;
+    List<Item> listItemNotEmptyForCategory;
+    List<Bid> listBidNotEmptyForItem;
 
     Timestamp timestampFuture;
     byte[] byteEmpty;
@@ -83,6 +85,8 @@ public class TestImageService {
         listImageNotEmpty = new LinkedList<>();
         listCategoryNotEmpty = new LinkedList<>();
         listItemNotEmpty = new LinkedList<>();
+        listItemNotEmptyForCategory = new LinkedList<>();
+        listBidNotEmptyForItem = new LinkedList<>();
 
         timestampFuture = new Timestamp(1000000000000000000L);
 
@@ -90,11 +94,11 @@ public class TestImageService {
 
         userNotEmpty = spy(new User(listItemEmpty, listBidNotEmptyTwo, 2, "david", "2222", "2@2", User.Role.USER));
         userNotEmptyAdmin = spy(new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN));
-        categoryNotEmpty = spy(new Category(listItemNotEmpty, 1, "auto"));
+        categoryNotEmpty = spy(new Category(listItemNotEmptyForCategory, 1, "auto"));
         categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
-        itemNotEmpty = spy(new Item(listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100));
-        imageNotEmpty = spy(new Image("autoitem", "path", itemNotEmpty));
-        imageNotEmptyTwo = spy(new Image("autoitem2", "path2", itemNotEmpty));
+        itemNotEmpty = new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1);
+        imageNotEmpty = spy(new Image(itemNotEmpty, 1, "autoitem"));
+        imageNotEmptyTwo = spy(new Image(itemNotEmpty, 2, "autoitem2"));
         bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));
         bidNotEmptyOriginal = spy(new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500));
 
@@ -103,21 +107,37 @@ public class TestImageService {
         listImageNotEmpty.add(imageNotEmpty);
         listItemNotEmpty.add(itemNotEmpty);
         listCategoryNotEmpty.add(categoryNotEmpty);
+        listItemNotEmptyForCategory.add(itemNotEmpty);
+        listBidNotEmptyForItem.add(bidNotEmptyOriginal);
+
+        userNotEmptyAdmin.setBids(listBidNotEmpty);
+        userNotEmpty.setBids(listBidNotEmptyTwo);
+        itemNotEmpty.setImages(listImageNotEmpty);
+        userNotEmptyAdmin.setItems(listItemNotEmpty);
+        categoryNotEmpty.setItems(listItemNotEmptyForCategory);
+        itemNotEmpty.setBids(listBidNotEmptyForItem);
+
+        listBidNotEmpty = userNotEmptyAdmin.getBids();
+        listBidNotEmptyTwo = userNotEmpty.getBids();
+        listImageNotEmpty = itemNotEmpty.getImages();
+        listItemNotEmpty = userNotEmptyAdmin.getItems();
+        listItemNotEmptyForCategory = categoryNotEmpty.getItems();
+        listBidNotEmptyForItem = itemNotEmpty.getBids();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testgetImageByItemId_NullPointerException() throws UserNotValidException {
+    public void testgetImageByItemId_NullPointerException_UserNull() throws UserNotValidException {
         imageService.getImageByItemId(1, userNull);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testgetImageByItemId_NullPointerException2() throws UserNotValidException {
+    public void testgetImageByItemId_NullPointerException_ImageDoesNotExists() throws UserNotValidException {
         doReturn(imageNull).when(imageRepositoryMock).findByItemId(1);
         imageService.getImageByItemId(1, userNotEmpty);
     }
 
     @Test(expected = UserNotValidException.class)
-    public void testgetImageByItemId_UserNotValidExceptionThrown() throws UserNotValidException {
+    public void testgetImageByItemId_UserNotValidExceptionThrown_ImageDoesNotBelongToUser() throws UserNotValidException {
         doReturn(imageNotEmpty).when(imageRepositoryMock).findByItemId(1);
         imageService.getImageByItemId(1, userNotEmpty);
     }
@@ -135,31 +155,31 @@ public class TestImageService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUploadImage_NullPointerException() throws IOException, UserNotValidException {
+    public void testUploadImage_NullPointerException_ImageNull() throws IOException, UserNotValidException {
         imageService.uploadImage(imageNull, userNotEmptyAdmin);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUploadImage_NullPointerException2() throws IOException, UserNotValidException {
+    public void testUploadImage_NullPointerException_UserNull() throws IOException, UserNotValidException {
         imageService.uploadImage(imageNotEmpty, userNull);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUploadImage_NullPointerException3() throws IOException, UserNotValidException {
+    public void testUploadImage_NullPointerException_ItemDoesNotExists() throws IOException, UserNotValidException {
         long id = imageNotEmpty.getItem().getId();
         doReturn(itemNull).when(itemRepositoryMock).findById(id);
         imageService.uploadImage(imageNotEmpty, userNotEmptyAdmin);
     }
-    
+
     @Test(expected = UserNotValidException.class)
-    public void testUploadImage_UserNotValidException() throws IOException, UserNotValidException {
+    public void testUploadImage_UserNotValidException_ItemDoesNotBelongToUser() throws IOException, UserNotValidException {
         long id = imageNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(id);
         imageService.uploadImage(imageNotEmpty, userNotEmpty);
     }
 
     @Test
-    public void testUploadImage_ReturnImage() throws IOException, UserNotValidException {
+    public void testUploadImage_ReturnImage_OverWriteImage() throws IOException, UserNotValidException {
         long itemid = imageNotEmpty.getItem().getId();
         long imageid = imageNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(itemid);
@@ -167,8 +187,9 @@ public class TestImageService {
         doReturn(imageNotEmptyTwo).when(imageRepositoryMock).save(imageNotEmptyTwo);
         assertEquals(imageService.uploadImage(imageNotEmpty, userNotEmptyAdmin), imageNotEmptyTwo);
     }
+
     @Test
-    public void testUploadImage_ReturnImage2() throws IOException, UserNotValidException {
+    public void testUploadImage_ReturnImage() throws IOException, UserNotValidException {
         long itemid = imageNotEmpty.getItem().getId();
         long imageid = imageNotEmpty.getItem().getId();
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(itemid);

@@ -48,6 +48,8 @@ public class TestItemService {
     List<Image> listImageNotEmpty;
     List<Category> listCategoryNotEmpty;
     List<Item> listItemNotEmpty;
+    List<Item> listItemNotEmptyForCategory;
+    List<Bid> listBidNotEmptyForItem;
 
     Timestamp timestampFuture;
     byte[] byteEmpty;
@@ -82,6 +84,8 @@ public class TestItemService {
         listImageNotEmpty = new LinkedList<>();
         listCategoryNotEmpty = new LinkedList<>();
         listItemNotEmpty = new LinkedList<>();
+        listItemNotEmptyForCategory = new LinkedList<>();
+        listBidNotEmptyForItem = new LinkedList<>();
 
         timestampFuture = new Timestamp(1000000000000000000L);
 
@@ -89,11 +93,11 @@ public class TestItemService {
 
         userNotEmpty = spy(new User(listItemEmpty, listBidNotEmptyTwo, 2, "david", "2222", "2@2", User.Role.USER));
         userNotEmptyAdmin = spy(new User(listItemNotEmpty, listBidNotEmpty, 1, "zoli", "1111", "1@1", User.Role.ADMIN));
-        categoryNotEmpty = spy(new Category(listItemNotEmpty, 1, "auto"));
+        categoryNotEmpty = spy(new Category(listItemNotEmptyForCategory, 1, "auto"));
         categoryNotEmptyTwo = spy(new Category(listItemEmpty, 2, "szamitogep"));
-        itemNotEmpty = spy(new Item(listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100));
-        imageNotEmpty = spy(new Image("autoitem", "path", itemNotEmpty));
-        imageNotEmptyTwo = spy(new Image("autoitem2", "path2", itemNotEmpty));
+        itemNotEmpty = new Item(listBidNotEmptyForItem, listImageNotEmpty, userNotEmptyAdmin, categoryNotEmpty, 1, "trabant", "jokocsi", 0, 1000000, timestampFuture, 100, 1);
+        imageNotEmpty = spy(new Image(itemNotEmpty, 1, "autoitem"));
+        imageNotEmptyTwo = spy(new Image(itemNotEmpty, 2, "autoitem2"));
         bidNotEmpty = spy(new Bid(itemNotEmpty, userNotEmpty, 2, 1000));
         bidNotEmptyOriginal = spy(new Bid(itemNotEmpty, userNotEmptyAdmin, 1, 500));
 
@@ -102,26 +106,42 @@ public class TestItemService {
         listImageNotEmpty.add(imageNotEmpty);
         listItemNotEmpty.add(itemNotEmpty);
         listCategoryNotEmpty.add(categoryNotEmpty);
+        listItemNotEmptyForCategory.add(itemNotEmpty);
+        listBidNotEmptyForItem.add(bidNotEmptyOriginal);
+
+        userNotEmptyAdmin.setBids(listBidNotEmpty);
+        userNotEmpty.setBids(listBidNotEmptyTwo);
+        itemNotEmpty.setImages(listImageNotEmpty);
+        userNotEmptyAdmin.setItems(listItemNotEmpty);
+        categoryNotEmpty.setItems(listItemNotEmptyForCategory);
+        itemNotEmpty.setBids(listBidNotEmptyForItem);
+
+        listBidNotEmpty = userNotEmptyAdmin.getBids();
+        listBidNotEmptyTwo = userNotEmpty.getBids();
+        listImageNotEmpty = itemNotEmpty.getImages();
+        listItemNotEmpty = userNotEmptyAdmin.getItems();
+        listItemNotEmptyForCategory = categoryNotEmpty.getItems();
+        listBidNotEmptyForItem = itemNotEmpty.getBids();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreateItem_NullPointerException() throws ItemNotValidException {
+    public void testCreateItem_NullPointerException_ItemNull() throws ItemNotValidException {
         itemService.createItem(itemNull, userNotEmptyAdmin);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreateItem_NullPointerException2() throws ItemNotValidException {
+    public void testCreateItem_NullPointerException_UserNull() throws ItemNotValidException {
         itemService.createItem(itemNotEmpty, userNull);
     }
 
     @Test(expected = ItemNotValidException.class)
-    public void testCreateItem_ItemNotValidException() throws ItemNotValidException {
+    public void testCreateItem_ItemNotValidException_CurrentTimeIsBeforeEndTime() throws ItemNotValidException {
         itemNotEmpty.setEndTime(new Timestamp(0));
         itemService.createItem(itemNotEmpty, userNotEmptyAdmin);
     }
 
     @Test(expected = ItemNotValidException.class)
-    public void testCreateItem_ItemNotValidException2() throws ItemNotValidException {
+    public void testCreateItem_ItemNotValidException_StartPriceIsHigherThenBuyItPrice() throws ItemNotValidException {
         itemNotEmpty.setStartPrice(2000000);
         itemService.createItem(itemNotEmpty, userNotEmptyAdmin);
     }
@@ -134,7 +154,7 @@ public class TestItemService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetItem_NullPointerException() {
+    public void testGetItem_NullPointerException_UserNull() {
         itemService.getItem(1, userNull);
     }
 
@@ -151,7 +171,7 @@ public class TestItemService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testGetMyItems_NullPointerException() {
+    public void testGetMyItems_NullPointerException_UserNull() {
         itemService.getMyItems(userNull);
     }
 
@@ -163,36 +183,36 @@ public class TestItemService {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUpdateItem_NullPointerException() throws ItemNotValidException, UserNotValidException {
+    public void testUpdateItem_NullPointerException_ItemNull() throws ItemNotValidException, UserNotValidException {
         itemService.updateItem(1, itemNull, userNotEmptyAdmin);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUpdateItem_NullPointerException2() throws ItemNotValidException, UserNotValidException {
+    public void testUpdateItem_NullPointerException_UserNull() throws ItemNotValidException, UserNotValidException {
         itemService.updateItem(1, itemNotEmpty, userNull);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUpdateItem_NullPointerException3() throws ItemNotValidException, UserNotValidException {
+    public void testUpdateItem_NullPointerException_ItemDoesNotExists() throws ItemNotValidException, UserNotValidException {
         doReturn(itemNull).when(itemRepositoryMock).findById(1);
         itemService.updateItem(1, itemNotEmpty, userNotEmptyAdmin);
     }
 
     @Test(expected = UserNotValidException.class)
-    public void testUpdateItem_UserNotValidException() throws ItemNotValidException, UserNotValidException {
+    public void testUpdateItem_UserNotValidException_ItemDoesNotBelongToUser() throws ItemNotValidException, UserNotValidException {
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(1);
         itemService.updateItem(1, itemNotEmpty, userNotEmpty);
     }
 
     @Test(expected = ItemNotValidException.class)
-    public void testUpdateItem_ItemNotValidException() throws ItemNotValidException, UserNotValidException {
+    public void testUpdateItem_ItemNotValidException_CurrentTimeIsBeforeEndTime() throws ItemNotValidException, UserNotValidException {
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(1);
         itemNotEmpty.setEndTime(new Timestamp(0));
         itemService.updateItem(1, itemNotEmpty, userNotEmptyAdmin);
     }
 
     @Test(expected = ItemNotValidException.class)
-    public void testUpdateItem_ItemNotValidException2() throws ItemNotValidException, UserNotValidException {
+    public void testUpdateItem_ItemNotValidException_StartPriceIsHigherThenBuyItPrice() throws ItemNotValidException, UserNotValidException {
         doReturn(itemNotEmpty).when(itemRepositoryMock).findById(1);
         itemNotEmpty.setStartPrice(2000000);
         itemService.updateItem(1, itemNotEmpty, userNotEmptyAdmin);
