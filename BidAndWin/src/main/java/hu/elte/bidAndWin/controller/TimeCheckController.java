@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TimeCheckController {
 	
     @GetMapping(value = "/get")
-    public Date getAllBids() {
+    public Date getTime() {
     	Date date = new Date();
     	Timestamp currentTime = new Timestamp(date.getTime());
 		return currentTime;
