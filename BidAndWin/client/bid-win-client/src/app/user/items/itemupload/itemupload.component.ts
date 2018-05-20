@@ -50,9 +50,19 @@ export class ItemuploadComponent implements OnInit {
   onSubmit(){
     this.model.category={id:this.model.categoryId};
     this.model.categoryId=undefined;
-    this.model.picture=window.IMAGE_RESULT.substring(23);
-    window.IMAGE_RESULT=undefined;
+    
+    if(window.IMAGE_RESULT !== undefined){
+      this.model.picture=window.IMAGE_RESULT.substring(23);
+    }window.IMAGE_RESULT=undefined;
     this.itemService.uploadItem(this.model);
+    setTimeout(300);
+    this.itemService.getAllItems();
+    this.itemService.getAllBids();
+    this.itemService.getAllCategories();
+    this.itemService.getAllImages();
+    setTimeout(300);
+    this.authService.getServerTime();
+    this.itemService.fuseItemsBidsImages();
     this.router.navigateByUrl("/index");
   }
   ngOnInit() {
