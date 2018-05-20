@@ -40,6 +40,7 @@ public class ItemService {
             it.setStartPrice(item.getStartPrice());
             it.setCategory(item.getCategory());
             itemRepository.save(it);
+            
             Bid bid = new Bid(it, -1, user);
             bidRepository.save(bid);
            
