@@ -57,5 +57,9 @@ textarea {
     border: none;
     border-style: none;
     block-size: auto;
+    max-width: 160px;
+    min-width: 160px;
+    max-height: 120px;
+    min-height: 120px;
 }
 

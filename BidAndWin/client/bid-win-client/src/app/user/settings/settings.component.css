@@ -1,0 +1,14 @@
+div span {
+    margin: 0;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: block;
+    position: relative;
+    right: 0;
+    left: 15%;
+    top: 12.5%;
+}
