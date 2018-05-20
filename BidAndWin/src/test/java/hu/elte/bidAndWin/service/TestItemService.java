@@ -226,5 +226,4 @@ public class TestItemService {
         doReturn(itemNotEmpty).when(itemRepositoryMock).save(itemNotEmpty);
         assertEquals(itemService.updateItem(1, itemNotEmpty, userNotEmptyAdmin), itemNotEmpty);
     }
-
 }
