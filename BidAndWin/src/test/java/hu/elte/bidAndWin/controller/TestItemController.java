@@ -1,21 +1,25 @@
 package hu.elte.bidAndWin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.bidAndWin.domain.Bid;
 import hu.elte.bidAndWin.domain.Category;
 import hu.elte.bidAndWin.domain.Image;
 import hu.elte.bidAndWin.domain.Item;
 import hu.elte.bidAndWin.domain.User;
+import hu.elte.bidAndWin.service.BidNotValidException;
 import hu.elte.bidAndWin.service.BidService;
+import hu.elte.bidAndWin.service.ItemNotValidException;
+import hu.elte.bidAndWin.service.ItemService;
+import hu.elte.bidAndWin.service.UserNotValidException;
 import hu.elte.bidAndWin.service.UserService;
 import java.sql.Timestamp;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
@@ -30,16 +34,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(BidController.class)
+@WebMvcTest(ItemController.class)
 public class TestItemController {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private BidService bidService;
+    private ItemService itemService;
     @MockBean
     private UserService userService;
 
@@ -109,8 +114,99 @@ public class TestItemController {
     }
 
     @Test
-    public void testgetAllBids_ReturnOK() throws Exception {
-        doReturn(listBidNotEmpty).when(bidService).getAllBids();
-        mvc.perform(get("/api/bids/all")).andExpect(status().isOk());
+    public void testCreateItem_ReturnOK() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(itemNotEmpty).when(itemService).createItem(Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/createitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreateItem_ReturnBadRequest() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(ItemNotValidException.class).when(itemService).createItem(Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/createitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCreateItem_ReturnBadRequest2() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(itemService).createItem(Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/createitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetItem_ReturnOk() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(itemNotEmpty).when(itemService).getItem(1, userNotEmptyAdmin);
+        mvc.perform(get("/api/items/1")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetItem_ReturnBadRequest() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(itemService).getItem(1, userNotEmptyAdmin);
+        mvc.perform(get("/api/items/1")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetAllItems_ReturnOk() throws Exception {
+        doReturn(listItemNotEmpty).when(itemService).getAllItems();
+        mvc.perform(get("/api/items/all")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetMyItems_ReturnOk() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(listItemNotEmpty).when(itemService).getMyItems(userNotEmptyAdmin);
+        mvc.perform(get("/api/items/myitems")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetMyItems_ReturnBadRequest() throws Exception {
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(itemService).getMyItems(userNotEmptyAdmin);
+        mvc.perform(get("/api/items/myitems")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateItem_ReturnOK() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doReturn(itemNotEmpty).when(itemService).updateItem(Mockito.any(Long.class), Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/updateitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateItem_ReturnBadRequest() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(ItemNotValidException.class).when(itemService).updateItem(Mockito.any(Long.class), Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/updateitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateItem_ReturnBadRequest2() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(UserNotValidException.class).when(itemService).updateItem(Mockito.any(Long.class), Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/updateitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateItem_ReturnBadRequest3() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(itemNotEmpty);
+        doReturn(userNotEmptyAdmin).when(userService).getLoggedInUser();
+        doThrow(NullPointerException.class).when(itemService).updateItem(Mockito.any(Long.class), Mockito.any(Item.class), Mockito.any(User.class));
+        mvc.perform(MockMvcRequestBuilders.post("/api/items/updateitem").content(jsonInString).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 }
