@@ -8,7 +8,7 @@
       <option *ngFor="let category of itemService.categories" value="{{category.id}}">{{category.name}}</option>
     </select></div>
     <div><label for="file">Tárgyról készült kép: (jpeg formátum)</label><input type="file" name="file" [(ngModel)]="model.file" #file="ngModel" accept="image/jpeg" (change)="readUrl($event)"/></div>
-    <div><label for="description">Tárgy részletes leírása:</label><textarea name="description" [(ngModel)]="model.description" #description="ngModel"></textarea></div>
+    <div><label for="description">Tárgy részletes leírása:</label></div><div><textarea name="description" [(ngModel)]="model.description" #description="ngModel"></textarea></div>
     <div><label for="startPrice">Tárgy kezdő ára:</label><input type="text" name="startPrice" [(ngModel)]="model.startPrice"/></div>
     <div><label for="bidIncrement">Tárgy árának növekedése:</label><input type="text" name="bidIncrement" [(ngModel)]="model.bidIncrement"/></div>
     <div><label for="buyItPrice">Tárgy kivásárlási ára:</label><input type="text" name="buyItPrice" [(ngModel)]="model.buyItPrice" /></div>
