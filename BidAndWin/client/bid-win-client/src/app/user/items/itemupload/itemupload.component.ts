@@ -53,7 +53,7 @@ export class ItemuploadComponent implements OnInit {
     this.model.picture=window.IMAGE_RESULT.substring(23);
     window.IMAGE_RESULT=undefined;
     this.itemService.uploadItem(this.model);
-    //this.router.navigateByUrl("/index");
+    this.router.navigateByUrl("/index");
   }
   ngOnInit() {
   }
